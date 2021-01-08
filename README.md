@@ -20,8 +20,9 @@ All materials are indexed here: <https://3mmarand.github.io/BIO00017C-Data-Analy
 
 ## **Learning objectives**
 
--   By the end of "Data Analysis in R" the successful student will be able to:  
-    Explain the purpose of data analysis.
+By the end of "Data Analysis in R" the successful student will be able to:
+
+-   Explain the purpose of data analysis.
 -   Name, identify and choose classical univariate statistical tests (and some non-parametric equivalents) appropriate to a given scenario and recognise when these are not suitable.
 -   Use R to perform these analyses on data in a variety of formats.
 -   Interpret, report and graphically present the results of covered tests.
