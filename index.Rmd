@@ -27,9 +27,10 @@ xaringanExtra::style_share_again(
 )
 ```
 
-# Module Index
+# Week 2
 .font50[
 
+[RStudio Anatomy](x-slides/rstudio-anatomy.html)  
 
 ]
 
