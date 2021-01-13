@@ -1,0 +1,81 @@
+---
+title: "Workshop 1 - prior study"
+subtitle: "Data Analysis in R for BIO00017C."
+author: "Emma Rand"
+institute: "University of York, UK"
+output:
+  xaringan::moon_reader:
+    css: [default, ../css_files/emma.css, ../css_files/emma-fonts.css]
+    lib_dir: libs
+    seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width=4, 
+                      fig.height=4, 
+                      fig.retina=3)
+options(htmltools.dir.version = FALSE)
+```
+
+```{r packages, include=FALSE}
+library(RefManageR)
+library(kableExtra)
+library(tidyverse)
+```
+
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+class: inverse
+
+```{r, echo=FALSE}
+knitr::include_graphics("http://www-users.york.ac.uk/~er13/RStudio%20Anatomy.svg")
+```
+
+---
+
+class: inverse
+
+# `r emo::ji("party")` 
+
+.footnote[
+Slides made with with xaringan `r Cite(myBib, "xaringan")`
+
+]
+---
+# References
+.font60[
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(myBib)  
+```
+]
+---
+
+
+Emma Rand [emma.rand@york.ac.uk](mailto:emma.rand@york.ac.uk)  
+Twitter: [@er13_r](https://twitter.com/er13_r)  
+GitHub: [3mmaRand](https://github.com/3mmaRand)  
+blog: https://buzzrbeeline.blog/  
+<br>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Data Analysis in R for BIO00017C</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Emma Rand</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
+
+
+
+
