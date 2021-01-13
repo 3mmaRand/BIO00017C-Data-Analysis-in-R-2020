@@ -13,6 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
+class: inverse
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
@@ -22,6 +23,18 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.retina=3)
 options(htmltools.dir.version = FALSE)
 ```
+
+```{r style-share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+xaringanExtra::style_share_again(
+  share_buttons = "all")
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE)
+```
+
+
 
 ```{r packages, include=FALSE}
 library(RefManageR)
@@ -42,7 +55,6 @@ BibOptions(check.entries = FALSE,
 myBib <- ReadBib("../refs/refs.bib", check = FALSE)
 ```
 
-class: inverse
 
 ```{r, echo=FALSE}
 knitr::include_graphics("http://www-users.york.ac.uk/~er13/RStudio%20Anatomy.svg")
