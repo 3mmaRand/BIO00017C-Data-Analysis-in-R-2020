@@ -424,9 +424,9 @@ ggplot(data = nest_data, aes(x = n, y = freq)) +
 
 Please note that next week's work assumes you have carried out the independent study.
 
-1. Reading. From Dani Navarro's Learning statistics with R: Read [1.1 On the psychology of statistics section](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy) of the chapter 1 Why do we learn stastistics? Approx 5 minutes.
+1. Read [1.1 On the psychology of statistics section](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy) from Dani Navarro's Learning statistics with R. It is the first part of Chapter 1 Why do we learn statistics? Approx 5 minutes.
 
-2. Getting help in RStudio. Being able to use the manual is a **threshold concept** in R. You will get a feel for the structure and pattern of commands much more quickly if you make a habit of briefly reading the manual for the commands you are using. ![GC](../pics/GC.png) Watch [Getting help in RStudio](https://youtu.be/tVQHFuitFJw) which explains how to bring up the manual pages and understand them.
+2. ![GC](../pics/GC.png) Watch [Getting help in RStudio](https://youtu.be/tVQHFuitFJw) which explains how to bring up the manual pages and understand them. Getting help in RStudio. Being able to use the manual is a **threshold concept** in R. You will get a feel for the structure and pattern of commands much more quickly if you make a habit of briefly reading the manual for the commands you are using. 
 
 
 # The Code files
@@ -434,10 +434,11 @@ Please note that next week's work assumes you have carried out the independent s
 These contain all the code needed in the workshop even where it is not visible on the webpage.
 
 [Rmd file](01IntroductionToModuleAndRStudio.Rmd)
-The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RSudio.
+The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/01IntroductionToModuleAndRStudio.Rmd).
 
 [Plain script file](../scripts/01IntroductionToModuleAndRStudio.R)
-This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio but you should find you can click on it and view it in your browser.
+This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio.
+Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/01IntroductionToModuleAndRStudio.R).
 
 
 Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra``r Cite(myBib, "kableExtra")`, `RefManager``r Cite(myBib, "RefManager")` 
