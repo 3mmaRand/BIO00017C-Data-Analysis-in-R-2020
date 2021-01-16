@@ -1,0 +1,441 @@
+---
+title:  "Introduction to module and RStudio"
+author: "Emma Rand"
+output:
+  html_document:
+    toc: true
+    depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: flatly
+    highlight: pygments
+    css: [../css_files/emma.css, ../css_files/emma-fonts.css]
+  word_document: default
+---
+![](../pics/17C.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width=4, 
+                      fig.height=4, 
+                      fig.retina=3)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(RefManageR)
+```
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+
+
+# Introduction
+
+## Session overview
+
+In this session you will read in data files of various formats, data types, summarising and plotting data. We also cover saving figures and laying out a report in word.
+
+## Learning Outcomes 
+
+By actively following the materials and carrying out the independent study before and after the contact hours the successful student will be able to:
+
+* explain what response and explanatory variables are, distinguish between data types and describe how these impact choice of test (MLO 1 and 2)  (MLO 1)
+* explain the logic of hypothesis testing (MLO 1)
+* demonstrate the process of hypothesis testing with an example and evaluate potential inferences (MLO 1 and 2)
+* read in data in to RStudio, create simple summaries and plots using manual pages where necessary (MLO 3)
+* save figures to file (MLO 4)
+* create neat reports in Word which include text and figures (MLO 4)
+
+
+## Philosophy
+
+Workshops are not a test. It is expected that you often don't know how to start, make a lot of mistakes and need help.
+Do not be put off and don't let what you can not do interfere with what you can do. You will benefit from collaborating with others and/or discussing your results.
+It is expected that you are familiar with independent study content before the workshop. However, you need not remember or understand every detail as the workshop should build and consolidate your understanding. 
+You may wish to refer to the independent study materials for reference.
+
+## Key
+
+These four symbols are used at the beginning of each instruction so you know where to carry out the instruction.
+
+![W](../pics/W.png) is something you need to do on your computer. It may be opening programs or documents or locating a file. 
+
+![R](../pics/R.png) is something you should do in RStudio. It will often be typing a command or using the menus but might also be creating folders, locating or moving files.  
+
+![GC](../pics/GC.png) is something you should do in your browser on the internet. It may be searching for information, going to the VLE or downloading a file.  
+
+![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.  
+
+
+![Artwork by @allison_horst](../pics/horst/welcome_to_rstats_twitter.png)
+
+# Getting started
+
+
+![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png). 
+
+My RStudio Anatomy may be a useful reference.
+
+[![](http://www-users.york.ac.uk/~er13/RStudio%20Anatomy.svg)](http://www-users.york.ac.uk/~er13/RStudio%20Anatomy.svg)
+
+![R](../pics/R.png) Go the Files tab in the lower right pane and click on the [three dots on the right](../pics/three-dots.png). This will open a "Go to folder" window. Navigate to a place on your computer (or University account if using the VDS) where you keep your work. Click Open. 
+
+![R](../pics/R.png) Also on the Files tab click on New Folder. In the box that appears type "data-analysis-in-r". This will be the folder that we work in throughout the Data Analysis in R part of 17C.
+
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory.
+
+![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work. 
+
+
+# Exercise
+
+# Exercises
+
+## Import Data
+
+The data in [pigeon.txt](../data/pigeon.txt) are 40 measurements of [interorbital](../../pics/interorbital.png) width (in mm) in a sample of domestic pigeons measured to the nearest 0.1mm
+
+![W](../../pics/W.png) Save a copy (right click and Save) to your working directory
+
+![R](../../pics/R.png) Read the data in to R by using the `read.table()` command:
+
+`pigeon <- read.table("pigeon.txt")`
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# I have my files organised differently so I use a different 'path' to my file
+pigeon <- read.table("../data/pigeon.txt")
+```
+
+You should find an object called pigeon can be seen in the Environment window. If you click on that object a [view](../../pics/pigeondf.png) of the data appears in the same window as the script.
+
+![R](../../pics/R.png) Use `str()` to see what data structure is created
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+#---CODING ANSWER---
+str(pigeon)
+```
+
+![R](../../pics/R.png) Change the variable name using ` names() `
+```{r, message=FALSE, warning=FALSE}
+names(pigeon)[1] <- "interorbital"
+
+#and look again with str
+str(pigeon)
+```
+
+## Exploring single group data
+
+Values can be extract by indexing - giving the row number (`r`) and column number (`c`) of the element you want: `pigeon[r, c]`
+
+The column is referred to using either
+
+1. the index `pigeon[,1]` (note `pigeon[1]` will also work because R assumes you mean the column if you give only one index for a dataframe) 
+
+2. or the dollar notation `pigeon$interorbital`. 
+
+![R](../../pics/R.png) Can you extract the 14th value in the column? 
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+#---CODING ANSWER---
+pigeon$interorbital[14]
+#or
+pigeon[14, 1] 
+```
+
+
+![R](../../pics/R.png) We can use the 'base' plotting system (as opposed to the ggplot plotting system) to make a histogram with:
+```{r}
+hist(pigeon$interorbital)
+```
+
+![R](../../pics/R.png) Can you create this histogram  by reading the manual page for `hist()`
+
+```{r echo=FALSE}
+#---CODING ANSWER---
+names(pigeon)[1] <- "interorbital"
+hist(pigeon$interorbital,
+     xlim = c(8, 14),
+     main = NULL,
+     xlab = "Width (mm)",
+     ylab = "Number of pigeons",
+     col = "grey")
+    ```
+   
+Note: the _x_ axis goes from 8 to 14 which is given by c(8,14) and to lose text you can set the appropriate argument to NULL.
+
+It's useful to learn to `ggplot` way to do a histogram as it is far more more useful when we do more complex figures. `ggplot2` is one of the `tidyverse` packages.
+
+![R](../../pics/R.png) Do a `ggplot()` histogram
+```{r, message=FALSE, warning=FALSE}
+# library statement is only needed once per session
+library(tidyverse)
+
+ggplot(data = pigeon, aes(x = interorbital)) +
+  geom_histogram()
+
+```
+
+![R](../../pics/R.png) We can improve it by changes the number of bins
+```{r, message=FALSE, warning=FALSE}
+ggplot(data = pigeon, aes(x = interorbital)) +
+  geom_histogram(bins = 10, colour = "black")
+
+```
+
+
+
+R provides many functions to allow you to make calculations on your data.
+
+![R](../../pics/R.png) Find out which functions will calculate the mean, standard deviation and the number of cases, i.e., the length of the vector. Google or make intelligent guesses and verfiy with the manual.
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+#---CODING ANSWER---
+mean(pigeon$interorbital)
+sd(pigeon$interorbital)
+length(pigeon$interorbital) 
+```
+
+## Import Data 2
+
+Now you will practice with 'paths' and 'relative paths'. These are a threshold concept in computing.
+
+The data in [pigeon2.txt](../data/pigeon2.txt) are similar data of interorbital distances in two columns rather than just one.  They are from two different populations, A and B.
+
+![W](../../pics/W.png) Make a [folder](../../pics/folderdata.png) in your working directory called 'data'
+
+![W](../../pics/W.png) Save a copy of [pigeon2.txt](../data/pigeon2.txt) to the 'data' folder
+
+![R](../../pics/R.png) To read the data in to R you need to use the  relative path to the file in the `read.table()` command:
+
+`data2 <- read.table("data/pigeon2.txt", header = TRUE)`
+
+The `data/` part is the 'relative path' to the file. It says where the file is relative to your working directory:  pigeon2.txt is inside a folder (directory) called 'data' which is in your working directory. `header = TRUE`  tells R that first row of the data file contains the column  names. 
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+#I have my files organised differently so I use a different 'path' to my file
+data2 <- read.table("../data/pigeon2.txt", header = T)
+```
+
+![R](../../pics/R.png) look at the structure of the dataframe data2 using `str()`
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+#---CODING ANSWER---
+str(data2) 
+```
+
+You can see that R has used the first value in each column as the variable name.
+
+![R](../../pics/R.png) Find the mean for each population. Remember, to refer to a single column of the data we need to use the dollar notation 
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+#---CODING ANSWER---
+mean(data2$A)
+mean(data2$B) 
+```
+
+## Tidy format
+Instead of having a population in each column, we very often have, **and want**, data organised so the measurements are all in one column and a second column gives the group. This format is described as 'tidy' [@Wickham2014-nl]: it has a variable in each column and only one observation (case) per row.
+
+We can put this data in such a format with the `gather()` function from the `tidyverse`:
+
+![R](../../pics/R.png) To use gather you need to give a `key` which will become the name of the variable indicating which column (group) the value came from and a `value` which will become the name of the measurements (responses). Examine the structure 
+```{r}
+# library statement is only needed once per session
+data3 <- gather(data = data2, key = population, value = distance)
+str(data3)
+```
+
+How do we find the mean for each group now? If we use `mean(data3$distance)` we will get the mean of the whole column, not the means for each population. 
+We can use 'selection' to apply a function only where a particular condition is met. For example:
+```{r} 
+mean(data3$distance[data3$population == "A"])
+``` 
+
+This selects the rows in column `$distance` where the value in column `$population` is equal to A. `==` means 'is it equal to?' rather than 'make it equal to' given by `=`
+
+![R](../../pics/R.png) Find the mean for population B using data3
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+#---CODING ANSWER---
+mean(data3$distance[data3$population == "B"])
+```
+
+Since data are so often organised in this format (one column for the measure with additional columns giving the groups), R has easier ways to apply a function to each group. We can apply the mean function to the `$distance` column separately for each population using a combination of two `tidyverse` functions: `group_by()` and `summarise()` and the 'pipe' (`%>%`)
+
+```{r}
+data3 %>% 
+  group_by(population) %>% 
+  summarise(mean(distance))
+``` 
+
+`%>% ` is called the pipe. It is a special operator that is realtively new in R and makes code easier to read and write. Usually, when you want to give data to a function you pass it as an argument inside the brackets. The pipe allows you to have the data on the left, then a pipe then the function with and additional arguments. This especially useful when you want to apply one function after another. The independent study covers the pipe further.
+
+As you can imagine, this is much more convenient than using selection when you have many different groups.
+
+![R](../../pics/R.png) Find the number of cases and variance of each group using `group_by()` and `summarise()`.
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+#---CODING ANSWER---
+# variance
+data3 %>% 
+  group_by(population) %>% 
+  summarise(var(distance))
+
+# the number of cases (rows) is given by the length of the vector
+data3 %>% 
+  group_by(population) %>% 
+  summarise(length(distance))
+```
+
+# Word reports with figures
+
+Now we will create a word document with some text and figures. I find the best way to include figures in a word document is to use a table with the borders turned off. This can make it easier to control the layout. [This](../../pics/wordhist.png) is what you are aiming for.
+
+![W](../../pics/W.png) open a word document
+
+![W](../../pics/W.png) add some text
+
+![W](../../pics/W.png) insert a 2 x 2 table
+
+![W](../../pics/W.png) merge the cells on the second row and add a figure legend
+
+![R](../../pics/R.png) Create a histogram for each group, trying to match those illustrated.
+
+![R](../../pics/R.png) Copy the figure using [Export | Copy to the Clipboard](../../pics/savehist.png)
+
+![W](../../pics/W.png) Paste in to a table cell in word
+
+![W](../../pics/W.png) select the table and give it [No borders](../../pics/noborders.png)
+
+
+```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE,fig.width=4,fig.height=4}
+#---CODING ANSWER---
+# histograms for the word document
+# Create a histogram for each population, trying to match those illustrated.
+hist(data3$distance[data3$population == "A"],
+     xlim = c(8, 14),
+     ylim = c(0, 15),
+     main = NULL,
+     xlab = "Width (mm)",
+     ylab = "Number of pigeons",
+     col = "pink")
+hist(data3$distance[data3$population == "B"],
+     xlim = c(8, 14),
+     ylim = c(0, 15),
+     main = NULL,
+     xlab = "Width (mm)",
+     ylab = "Number of pigeons",
+     col = "lightblue")
+```
+
+
+
+
+# Independent study
+You need to carry out this work before the next practical.
+
+## 1. Understanding the pipe: ` %>% `
+
+The `magrittr` package [@magrittr] is part of the tidyverse and includes the pipe operater which can improve code readability by:
+
+* structuring sequences of data operations left-to-right (as opposed to from the inside and out),
+* minimizing the need for intermediates, 
+* making it easy to add steps anywhere in the sequence of operations.
+
+For example, to apply a log-squareroot transformation you might use:
+```{r}
+# generate some numbers
+nums <- sample(1:100, size = 10, replace = FALSE)
+
+# transformation either:
+# a) nested functions
+tnums <- log(sqrt(nums))
+# b) intermediates
+sqrtnums <- sqrt(nums)
+tnums <- log(sqrtnums)
+```
+
+Nesting the functions means you have to read inside out and creating intermediates can be cluttered. 
+The pipe allows you to avoid these by taking the output of one operation as the input of the next. The pipe has long been used by Unix operating systems (where the pipe operator is |). The R pipe operator is `%>%`, a short cut for which is ctrl-shift-M. 
+
+```{r}
+tnums <- nums %>% 
+  sqrt() %>% 
+  log()
+```
+
+This is short for 
+```{r}
+tnums <- nums %>% 
+  sqrt(.) %>% 
+  log(.)
+```
+
+Where `.` stands for the object being passed in. In most cases, you don't need to include it but some functions require you to (for example when arguments are optional or there is ambiguity over which argument is meant).
+
+A additional benefit of using the pipe is that solving problems step-by-step is made easier.
+
+Also see [Pipes in R Tutorial For Beginners](https://www.datacamp.com/community/tutorials/pipe-r-tutorial) - I think a better title for this article is "Pipes For Beginners to pipes but with intermediate R experience" because it goes further than you need to be able to understand the pipe 'well enough'. However, it still contains some useful examples.
+
+## 2. Myoglobin concentration
+
+The myoglobin concentration of skeletal muscle of three species of seal in grams per kilogram of muscle was determined and the data are given in [seal.txt](../data/seal.txt). Each row represents an individual seal. The first column gives the myoglobin concentration and the second column indicates species.
+Can you write a single page word report which includes some summary statistics (for example the means and standard deviations) for each seal species and some figures? 
+ 
+## 3. Understanding Paths
+
+Do make sure you understand what a path is [What do we mean by paths?](https://youtu.be/oZblx36rqq0) 
+
+## 4. Script example
+
+This is an example of a well formatted analysis [script](../scripts/exampleprac2.R) appropriate for some of the work we have carried out in this practical. Read it, run it! 
+
+## 5. DataCamp Assignments
+
+If you have not completed the other DataCamp assignments, you should still be able to access and complete them but they'll be indicated as late.
+ You're finished!
+
+# `r emo::ji("party")` Well Done! `r emo::ji("party")`
+
+![Artwork by @allison_horst](../pics/horst/r_first_then.png)
+
+# Independent study following the workshop
+
+Please note that next week's work assumes you have carried out the independent study.
+
+1. Read [1.1 On the psychology of statistics section](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy) from Dani Navarro's Learning statistics with R. It is the first part of Chapter 1 Why do we learn statistics? Approx 5 minutes.
+
+2. ![GC](../pics/GC.png) Watch [Getting help in RStudio](https://youtu.be/tVQHFuitFJw) which explains how to bring up the manual pages and understand them. Getting help in RStudio. Being able to use the manual is a **threshold concept** in R. You will get a feel for the structure and pattern of commands much more quickly if you make a habit of briefly reading the manual for the commands you are using. 
+
+
+# The Code files
+
+These contain all the code needed in the workshop even where it is not visible on the webpage.
+
+[Rmd file](02TestingDataTypesReadingInData.Rmd)
+The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/02TestingDataTypesReadingInData.Rmd).
+
+[Plain script file](../scripts/02TestingDataTypesReadingInData.R)
+This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio.
+Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/02TestingDataTypesReadingInData.R).
+
+
+Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra``r Cite(myBib, "kableExtra")`, `RefManager``r Cite(myBib, "RefManager")` 
+
+# References 
+
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(myBib)  
+```
+
+
+
+![](../pics/17Cend.png)

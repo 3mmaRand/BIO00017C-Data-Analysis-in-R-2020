@@ -10,7 +10,7 @@ output:
       smooth_scroll: false
     theme: flatly
     highlight: pygments
-    css: [../css_files/emma.css, ../css_files/emma-fonts.css]
+    css: [../css_files/emma-workshop.css, ../css_files/emma-fonts.css]
   word_document: default
 ---
 ![](../pics/17C.png)
