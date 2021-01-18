@@ -176,9 +176,6 @@ The absolute path for a file, `pigeon.txt` could be:
 
 * Mac/unix systems: `/Users/er13/Desktop/pigeons/data-raw/pigeon.txt`  
 
---
-
-* web: `http://www-users.york.ac.uk/~er13/58M_BDS_2019/data/pigeon.txt`  
 
 ---
 # Absolute paths
@@ -186,7 +183,8 @@ The absolute path for a file, `pigeon.txt` could be:
 The absolute path for a file, `pigeon.txt` could be:  
 
 
-* Or on the web: `http://www-users.york.ac.uk/~er13/58M_BDS_2019/data/pigeon.txt`  
+* Or on the web:
+`http://www-users.york.ac.uk/~er13/58M_BDS_2019/data-raw/pigeon.txt`  
 
 ---
 # Relative paths
@@ -265,27 +263,32 @@ class: inverse
 
 ---
 
-.font150[
-`r emo::ji("party")` Congratulations! Keep practising! `r emo::ji("party")`
+
+class: inverse
+
+# `r emo::ji("party")` Congratulations! Keep practising!
+
+.footnote[
+Slides made with with xaringan `r Cite(myBib, "xaringan")`
+
 ]
-
-
 ---
 # References
-.footnote[
-Slides made with with xaringan `r Cite(myBib, "xaringan")` and xaringanExtra `r Cite(myBib, "xaringanExtra")`
-
-]
+.font60[
 ```{r refs, echo=FALSE, results="asis"}
-PrintBibliography(myBib)
+PrintBibliography(myBib)  
 ```
-
+]
 
 ---
 
-## Emma Rand <br> [emma.rand@york.ac.uk](mailto:emma.rand@york.ac.uk) <br> Twitter: [@er13_r](https://twitter.com/er13_r) <br> GitHub: [3mmaRand](https://github.com/3mmaRand)  <br> blog: https://buzzrbeeline.blog/
+Emma Rand [emma.rand@york.ac.uk](mailto:emma.rand@york.ac.uk)  
+Twitter: [@er13_r](https://twitter.com/er13_r)  
+GitHub: [3mmaRand](https://github.com/3mmaRand)  
+blog: https://buzzrbeeline.blog/  
 <br>
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Data Science strand of BIO00058M</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Emma Rand</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Data Analysis in R for BIO00017C</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Emma Rand</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 
 
 
