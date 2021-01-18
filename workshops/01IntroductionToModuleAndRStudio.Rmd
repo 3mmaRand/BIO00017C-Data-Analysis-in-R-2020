@@ -97,7 +97,7 @@ My RStudio Anatomy may be a useful reference.
 
 ![R](../pics/R.png) Also on the Files tab click on New Folder. In the box that appears type "data-analysis-in-r". This will be the folder that we work in throughout the Data Analysis in R part of 17C.
 
-![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory.
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory. Name the RStudio Project 'workshop1'.
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work. 
 
@@ -296,6 +296,7 @@ Note that `ggplot2` is the name of the package and `ggplot()` is its most import
 'Arguments' can be added to the `geom_col()` command inside the brackets.  
 
 Commands do something and their arguments (in brackets) and can specify:
+
 * what object to do it to  
 * how exactly to do it  
 
@@ -309,7 +310,7 @@ Many arguments have defaults so you don't always need to supply them.
 The manual page has several sections.
 
 * **Description** an overview of what the command does  
-* **Usage** lists argument    
+* **Usage** lists arguments    
   * form: argument name = default value  
   * some arguments MUST be supplied others have defaults
   * `...` means etc and includes arguments that can be passed to many 'geoms'

@@ -1,5 +1,5 @@
 ---
-title:  "Introduction to module and RStudio"
+title:  " The logic of hypothesis testing, data types and importing data "
 author: "Emma Rand"
 output:
   html_document:
@@ -10,7 +10,7 @@ output:
       smooth_scroll: false
     theme: flatly
     highlight: pygments
-    css: [../css_files/emma.css, ../css_files/emma-fonts.css]
+    css: [../css_files/emma-workshop.css, ../css_files/emma-fonts.css]
   word_document: default
 ---
 ![](../pics/17C.png)
@@ -19,9 +19,9 @@ output:
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
                       warning = FALSE,
-                      fig.width=4, 
-                      fig.height=4, 
-                      fig.retina=3)
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
 ```
 
 ```{r include=FALSE}
@@ -69,6 +69,8 @@ Do not be put off and don't let what you can not do interfere with what you can 
 It is expected that you are familiar with independent study content before the workshop. However, you need not remember or understand every detail as the workshop should build and consolidate your understanding. 
 You may wish to refer to the independent study materials for reference.
 
+Materials are indexed here: <https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/>
+
 ## Key
 
 These four symbols are used at the beginning of each instruction so you know where to carry out the instruction.
@@ -82,310 +84,387 @@ These four symbols are used at the beginning of each instruction so you know whe
 ![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.  
 
 
-![Artwork by @allison_horst](../pics/horst/welcome_to_rstats_twitter.png)
+![Artwork by @allison_horst](../pics/horst/continuous_discrete.png)
 
 # Getting started
 
 
 ![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png). 
 
-My RStudio Anatomy may be a useful reference.
-
-[![](http://www-users.york.ac.uk/~er13/RStudio%20Anatomy.svg)](http://www-users.york.ac.uk/~er13/RStudio%20Anatomy.svg)
-
-![R](../pics/R.png) Go the Files tab in the lower right pane and click on the [three dots on the right](../pics/three-dots.png). This will open a "Go to folder" window. Navigate to a place on your computer (or University account if using the VDS) where you keep your work. Click Open. 
-
-![R](../pics/R.png) Also on the Files tab click on New Folder. In the box that appears type "data-analysis-in-r". This will be the folder that we work in throughout the Data Analysis in R part of 17C.
-
-![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory.
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop2.
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work. 
 
-
-# Exercise
+![R](../pics/R.png) Load the `tidyverse`:
+```{r}
+library(tidyverse)
+```
 
 # Exercises
 
 ## Import Data
 
-The data in [pigeon.txt](../data/pigeon.txt) are 40 measurements of [interorbital](../../pics/interorbital.png) width (in mm) in a sample of domestic pigeons measured to the nearest 0.1mm
+The data in [pigeon.txt](../data/pigeon.txt) are 40 measurements of [interorbital](../pics/interorbital.png) width (in mm) in a sample of domestic pigeons measured to the nearest 0.1mm
 
-![W](../../pics/W.png) Save a copy (right click and Save) to your working directory
+![W](../pics/W.png) Save a copy of the data file (right click and Save) to your working directory (which will be 'workshop2')
 
-![R](../../pics/R.png) Read the data in to R by using the `read.table()` command:
-
-`pigeon <- read.table("pigeon.txt")`
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-# I have my files organised differently so I use a different 'path' to my file
-pigeon <- read.table("../data/pigeon.txt")
+![R](../pics/R.png) Read the data in to R by using the `read_table2()` command:
+```{r eval=FALSE}
+pigeon <- read_table2("pigeon.txt")
 ```
 
-You should find an object called pigeon can be seen in the Environment window. If you click on that object a [view](../../pics/pigeondf.png) of the data appears in the same window as the script.
 
-![R](../../pics/R.png) Use `str()` to see what data structure is created
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+```{r include=FALSE}
+# I have my files organised differently so I use a different 'path' to my file
+pigeon <- read_table2("../data/pigeon.txt")
+```
+
+You should find dataframe object called `pigeon` can be seen in the Environment window. Click on it to open a spreadsheet-like view of the dataframe.
+
+![R](../pics/R.png) Use `str()` to see what data structure is created
+```{r echo=FALSE}
 #---CODING ANSWER---
 str(pigeon)
 ```
 
-![R](../../pics/R.png) Change the variable name using ` names() `
-```{r, message=FALSE, warning=FALSE}
-names(pigeon)[1] <- "interorbital"
+A 'tibble' ('table' with a New Zealand accent!) is a dataframe.
 
-#and look again with str
-str(pigeon)
-```
+![Q](../pics/Q.png) What is the R data type of distance? What sort of variable is it?
+
+<!-- QUESTION ANSWER it is a number, specifically, a double (a number with decimal places) in R. It's a continuous variable.  -->
 
 ## Exploring single group data
 
-Values can be extract by indexing - giving the row number (`r`) and column number (`c`) of the element you want: `pigeon[r, c]`
-
-The column is referred to using either
+A column is referred to using either:
 
 1. the index `pigeon[,1]` (note `pigeon[1]` will also work because R assumes you mean the column if you give only one index for a dataframe) 
 
-2. or the dollar notation `pigeon$interorbital`. 
+2. or the dollar notation `pigeon$distance`. 
 
-![R](../../pics/R.png) Can you extract the 14th value in the column? 
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+![R](../pics/R.png) Find the mean of the column using the function `mean()`
+```{r echo=FALSE}
 #---CODING ANSWER---
-pigeon$interorbital[14]
+mean(pigeon$distance)
+```
+
+Individual values can be extracted by indexing - giving the row number and column number of the element you want: `pigeon[row, col]`.
+
+![R](../pics/R.png) Extract the 14th value in the column? 
+```{r echo=FALSE}
+#---CODING ANSWER---
+pigeon$distance[14]
 #or
 pigeon[14, 1] 
 ```
 
+## Visualise Data
 
-![R](../../pics/R.png) We can use the 'base' plotting system (as opposed to the ggplot plotting system) to make a histogram with:
+A histogram is a useful way to visualise the distribution of a continuous variable. We can use `ggplot()` to make histograms. A histogram has the variable on the *x*-axis divided into 'bins' or intervals and on the *y*-axis is the count of the number of values that fall within that interval. The `geom_histogram()` 'geom' will automatically 'bin' and count the values - you don't need to create intervals and count values that fall within them.
+
+For a histogram, we do not need to specify what goes on the vertical axis - `geom_histogram()` takes care of it. 
+
+![R](../pics/R.png) Create a `ggplot()` histogram:
 ```{r}
-hist(pigeon$interorbital)
-```
-
-![R](../../pics/R.png) Can you create this histogram  by reading the manual page for `hist()`
-
-```{r echo=FALSE}
-#---CODING ANSWER---
-names(pigeon)[1] <- "interorbital"
-hist(pigeon$interorbital,
-     xlim = c(8, 14),
-     main = NULL,
-     xlab = "Width (mm)",
-     ylab = "Number of pigeons",
-     col = "grey")
-    ```
-   
-Note: the _x_ axis goes from 8 to 14 which is given by c(8,14) and to lose text you can set the appropriate argument to NULL.
-
-It's useful to learn to `ggplot` way to do a histogram as it is far more more useful when we do more complex figures. `ggplot2` is one of the `tidyverse` packages.
-
-![R](../../pics/R.png) Do a `ggplot()` histogram
-```{r, message=FALSE, warning=FALSE}
-# library statement is only needed once per session
-library(tidyverse)
-
-ggplot(data = pigeon, aes(x = interorbital)) +
+ggplot(data = pigeon, aes(x = distance)) +
   geom_histogram()
 
 ```
 
-![R](../../pics/R.png) We can improve it by changes the number of bins
-```{r, message=FALSE, warning=FALSE}
-ggplot(data = pigeon, aes(x = interorbital)) +
-  geom_histogram(bins = 10, colour = "black")
+The default number of bins is 30 and that is too many for the number of values we have - it looks a bit 'steppy'.
+
+![R](../pics/R.png) We can improve the appearance by changing the number of bins:
+```{r}
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 10)
+
+```
+
+It is good practice to start axes at zero and we can achieve that using `scale_x_continuous()`.
+
+![R](../pics/R.png) Start *x*-axis at zero and finish it at 15. I'll also alter the number of bins to account for the bigger range.
+```{r}
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 32) +
+  scale_x_continuous(limits = c(0, 15))
+
+```
+
+![R](../pics/R.png) Alter the axis titles appropriately and remove the gap between the data and the axes. You may need to open your script from last week. You are aiming for something like this:
+
+```{r echo=FALSE}
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 32) +
+  scale_x_continuous(limits = c(0, 15),
+                     name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0))
+
+```
+
+![R](../pics/R.png) Add a black border to the bars and change the fill colour. You may need to look at your script from last week. You are aiming for something like this:
+
+```{r echo=FALSE}
+# I chose a green
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 32,
+                 colour = "black",
+                 fill = "#d8e39f") +
+  scale_x_continuous(limits = c(0, 15),
+                     name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0)) 
+
+```
+
+![R](../pics/R.png) Finally, we can use `theme_classic()` to take care of the background and axis lines to create something more suitable for a report:
+
+```{r}
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 32,
+                 colour = "black",
+                 fill = "#d8e39f") +
+  scale_x_continuous(limits = c(0, 15),
+                     name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0)) +
+  theme_classic()
 
 ```
 
 
+## Summarise
 
 R provides many functions to allow you to make calculations on your data.
 
-![R](../../pics/R.png) Find out which functions will calculate the mean, standard deviation and the number of cases, i.e., the length of the vector. Google or make intelligent guesses and verfiy with the manual.
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+![R](../pics/R.png) Find out which functions will calculate the mean, standard deviation and the number of cases, *i.e.*, the length of the vector. Google or make intelligent guesses and verify with the manual.
+
+```{r include=FALSE}
 #---CODING ANSWER---
-mean(pigeon$interorbital)
-sd(pigeon$interorbital)
-length(pigeon$interorbital) 
+# mean
+mean(pigeon$distance)
+# standard deviation
+sd(pigeon$distance)
+# number of values
+length(pigeon$distance) 
 ```
 
 ## Import Data 2
 
-Now you will practice with 'paths' and 'relative paths'. These are a threshold concept in computing.
+This section will introduce you to three concepts:
+
+1. 'working directories', 'paths' and  'relative paths'. This a threshold concept in computing. 
+2. Tidy data
+3. summarising data in more than group  
+
 
 The data in [pigeon2.txt](../data/pigeon2.txt) are similar data of interorbital distances in two columns rather than just one.  They are from two different populations, A and B.
 
-![W](../../pics/W.png) Make a [folder](../../pics/folderdata.png) in your working directory called 'data'
+![R](../pics/R.png) On the Files tab click on New Folder. In the box that appears type "data". This will be the folder that we save pigeon2.txt to.
 
-![W](../../pics/W.png) Save a copy of [pigeon2.txt](../data/pigeon2.txt) to the 'data' folder
+![W](../pics/W.png) Save a copy of [pigeon2.txt](../data/pigeon2.txt) to the 'data' folder
 
-![R](../../pics/R.png) To read the data in to R you need to use the  relative path to the file in the `read.table()` command:
+![R](../pics/R.png) To read the data in to R you need to use the relative path to the file in the `read-table2()` command:
 
-`data2 <- read.table("data/pigeon2.txt", header = TRUE)`
+```{r eval=FALSE}
+pigeon2 <- read_table2("data/pigeon2.txt")
+```
 
-The `data/` part is the 'relative path' to the file. It says where the file is relative to your working directory:  pigeon2.txt is inside a folder (directory) called 'data' which is in your working directory. `header = TRUE`  tells R that first row of the data file contains the column  names. 
+The `data/` part is the 'relative path' to the file. It says where the file is *relative* to your working directory:  pigeon2.txt is inside a folder (directory) called 'data' which is in your working directory. 
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
+```{r echo=FALSE}
 #I have my files organised differently so I use a different 'path' to my file
-data2 <- read.table("../data/pigeon2.txt", header = T)
+pigeon2 <- read_table2("../data/pigeon2.txt")
 ```
 
-![R](../../pics/R.png) look at the structure of the dataframe data2 using `str()`
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
-#---CODING ANSWER---
-str(data2) 
-```
 
-You can see that R has used the first value in each column as the variable name.
-
-![R](../../pics/R.png) Find the mean for each population. Remember, to refer to a single column of the data we need to use the dollar notation 
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
+![R](../pics/R.png) Find the mean for each population. Remember, to refer to a single column of the data we need to use the dollar notation 
+```{r include=FALSE}
 #---CODING ANSWER---
-mean(data2$A)
-mean(data2$B) 
+mean(pigeon2$A)
+mean(pigeon2$B) 
 ```
 
 ## Tidy format
-Instead of having a population in each column, we very often have, **and want**, data organised so the measurements are all in one column and a second column gives the group. This format is described as 'tidy' [@Wickham2014-nl]: it has a variable in each column and only one observation (case) per row.
 
-We can put this data in such a format with the `gather()` function from the `tidyverse`:
+Instead of having a population in each column, we very often have, **and want**, data organised so the measurements are all in one column and a second column gives the group. This format is described as 'tidy' `r Cite(myBib, "Wickham2014-nl")`: it has a variable in each column and only one observation (case) per row. This format captures the structure of data and allows you to specify the role of variables in analyses and visualisations.
 
-![R](../../pics/R.png) To use gather you need to give a `key` which will become the name of the variable indicating which column (group) the value came from and a `value` which will become the name of the measurements (responses). Examine the structure 
+Suppose we had just 3 individuals in each of two populations:
+
+**NOT TIDY!**
+```{r echo=FALSE, out.width="200px"}
+knitr::kable(pigeon2[1:3,], 
+             format = "html") %>%
+  kable_styling(font_size = 16,
+                full_width = F, position = "left")
+```
+
+```{r echo=FALSE}
+pigeon3 <- pivot_longer(data = pigeon2, 
+                        cols = everything(), 
+                        names_to = "population", 
+                        values_to = "distance")
+```
+
+
+**TIDY!**
+```{r echo=FALSE}
+knitr::kable(head(pigeon3[c(1:3,41:43),]), 
+             format = "html",
+             row.names = FALSE) %>%
+  kable_styling(font_size = 16,
+                full_width = F, position = "left")
+```
+
+
+
+
+We can put this data in such a format with the `pivot_longer()` function from the `tidyverse`:
+
+`pivot_longer()` collects the values from specified columns (`cols`) into a single column (`values_to`) and creates a column to indicate the group (`names_to`). 
+
+![R](../pics/R.png) Put the data in tidy format in a dataframe called `pigeon3`:
 ```{r}
-# library statement is only needed once per session
-data3 <- gather(data = data2, key = population, value = distance)
-str(data3)
+pigeon3 <- pivot_longer(data = pigeon2, 
+                        cols = everything(), 
+                        names_to = "population", 
+                        values_to = "distance")
+
 ```
 
-How do we find the mean for each group now? If we use `mean(data3$distance)` we will get the mean of the whole column, not the means for each population. 
-We can use 'selection' to apply a function only where a particular condition is met. For example:
-```{r} 
-mean(data3$distance[data3$population == "A"])
-``` 
+Now we have a dataframe in tidy format which *will* make it easier to summarise, analyse and visualise.
 
-This selects the rows in column `$distance` where the value in column `$population` is equal to A. `==` means 'is it equal to?' rather than 'make it equal to' given by `=`
+To summarise data in this format we use the `group_by()` and `summarise()` functions. We will also use the pipe operator: ` %>% `
 
-![R](../../pics/R.png) Find the mean for population B using data3
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
-#---CODING ANSWER---
-mean(data3$distance[data3$population == "B"])
-```
-
-Since data are so often organised in this format (one column for the measure with additional columns giving the groups), R has easier ways to apply a function to each group. We can apply the mean function to the `$distance` column separately for each population using a combination of two `tidyverse` functions: `group_by()` and `summarise()` and the 'pipe' (`%>%`)
+![R](../pics/R.png) To calculate the means for each group in tidy data:
 
 ```{r}
-data3 %>% 
+pigeon3 %>% 
   group_by(population) %>% 
-  summarise(mean(distance))
-``` 
-
-`%>% ` is called the pipe. It is a special operator that is realtively new in R and makes code easier to read and write. Usually, when you want to give data to a function you pass it as an argument inside the brackets. The pipe allows you to have the data on the left, then a pipe then the function with and additional arguments. This especially useful when you want to apply one function after another. The independent study covers the pipe further.
-
-As you can imagine, this is much more convenient than using selection when you have many different groups.
-
-![R](../../pics/R.png) Find the number of cases and variance of each group using `group_by()` and `summarise()`.
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE}
-#---CODING ANSWER---
-# variance
-data3 %>% 
-  group_by(population) %>% 
-  summarise(var(distance))
-
-# the number of cases (rows) is given by the length of the vector
-data3 %>% 
-  group_by(population) %>% 
-  summarise(length(distance))
+  summarise(mean = mean(distance))
 ```
+`%>% ` is called the pipe. It is a special operator that is relatively new in R and makes code easier to read and write. Usually, when you want to give data to a function you pass it as an argument inside the brackets. The pipe allows you to have the data on the left, then a pipe then the function with and additional arguments. This especially useful when you want to apply one function after another. The independent study following this workshop covers the pipe further.
+
+The code can be read as:  
+  - take pigeon3 *and then*  
+  - group it by population *and then*  
+  - summarise it by calculating the mean  
+
+*i.e.*, the mean is done for each population.
+
+The `mean` before the `=` is just a name which could be `x` or `bob` (it's sensible to use a name that says what it is though!).
+
+We can get additional summary information for each group by adding code in to the `summarise()` function. 
+
+![R](../pics/R.png) Find the number of pigeons in each group using the `length()` function.
+
+```{r}
+pigeon3 %>% 
+  group_by(population) %>% 
+  summarise(mean = mean(distance),
+            n = length(distance))
+```
+
+
+![R](../pics/R.png) Add a column for the standard deviation
+
+![R](../pics/R.png) Add a column for the standard error given by $\frac{s.d.}{\sqrt{n}}$
+
+```{r include=FALSE}
+pigeon3 %>% 
+  group_by(population) %>% 
+  summarise(mean = mean(distance),
+            n = length(distance),
+            sd = sd(distance), 
+            se = sd/sqrt(n))   
+```
+
+
 
 # Word reports with figures
 
-Now we will create a word document with some text and figures. I find the best way to include figures in a word document is to use a table with the borders turned off. This can make it easier to control the layout. [This](../../pics/wordhist.png) is what you are aiming for.
-
-![W](../../pics/W.png) open a word document
-
-![W](../../pics/W.png) add some text
-
-![W](../../pics/W.png) insert a 2 x 2 table
-
-![W](../../pics/W.png) merge the cells on the second row and add a figure legend
-
-![R](../../pics/R.png) Create a histogram for each group, trying to match those illustrated.
-
-![R](../../pics/R.png) Copy the figure using [Export | Copy to the Clipboard](../../pics/savehist.png)
-
-![W](../../pics/W.png) Paste in to a table cell in word
-
-![W](../../pics/W.png) select the table and give it [No borders](../../pics/noborders.png)
+Now we will create a word document with some text and figures. I find the best way to include figures in a word document is to use a table with the borders turned off. This can make it easier to control the layout. This is what you are aiming for: [pdf of word doc](pigeon.pdf)
 
 
-```{r echo=FALSE,results="hide",warning=FALSE,message=FALSE,fig.width=4,fig.height=4}
-#---CODING ANSWER---
-# histograms for the word document
-# Create a histogram for each population, trying to match those illustrated.
-hist(data3$distance[data3$population == "A"],
-     xlim = c(8, 14),
-     ylim = c(0, 15),
-     main = NULL,
-     xlab = "Width (mm)",
-     ylab = "Number of pigeons",
-     col = "pink")
-hist(data3$distance[data3$population == "B"],
-     xlim = c(8, 14),
-     ylim = c(0, 15),
-     main = NULL,
-     xlab = "Width (mm)",
-     ylab = "Number of pigeons",
-     col = "lightblue")
-```
+![W](../pics/W.png) open a word document
 
+![W](../pics/W.png) add some text
 
+![W](../pics/W.png) insert a 2 row x 1 column table
 
+![W](../pics/W.png) Add a figure legend to the second row.
 
-# Independent study
-You need to carry out this work before the next practical.
-
-## 1. Understanding the pipe: ` %>% `
-
-The `magrittr` package [@magrittr] is part of the tidyverse and includes the pipe operater which can improve code readability by:
-
-* structuring sequences of data operations left-to-right (as opposed to from the inside and out),
-* minimizing the need for intermediates, 
-* making it easy to add steps anywhere in the sequence of operations.
-
-For example, to apply a log-squareroot transformation you might use:
+![R](../pics/R.png) Create a histogram of the whole dataset:
 ```{r}
-# generate some numbers
-nums <- sample(1:100, size = 10, replace = FALSE)
-
-# transformation either:
-# a) nested functions
-tnums <- log(sqrt(nums))
-# b) intermediates
-sqrtnums <- sqrt(nums)
-tnums <- log(sqrtnums)
+ggplot(data = pigeon3, aes(x = distance)) +
+  geom_histogram()
 ```
 
-Nesting the functions means you have to read inside out and creating intermediates can be cluttered. 
-The pipe allows you to avoid these by taking the output of one operation as the input of the next. The pipe has long been used by Unix operating systems (where the pipe operator is |). The R pipe operator is `%>%`, a short cut for which is ctrl-shift-M. 
+![R](../pics/R.png) Create a histogram of the whole dataset:
 
 ```{r}
-tnums <- nums %>% 
-  sqrt() %>% 
-  log()
+ggplot(data = pigeon3, aes(x = distance)) +
+  geom_histogram()
 ```
 
-This is short for 
+![R](../pics/R.png) Add 'facets' to put each population of a separate figure:
+
 ```{r}
-tnums <- nums %>% 
-  sqrt(.) %>% 
-  log(.)
+ggplot(data = pigeon3, aes(x = distance)) +
+  geom_histogram() +
+  facet_grid(.~population)
 ```
 
-Where `.` stands for the object being passed in. In most cases, you don't need to include it but some functions require you to (for example when arguments are optional or there is ambiguity over which argument is meant).
+Note:`.~ population` means everything (`.`) separately for each (`~`) value in `population`.
 
-A additional benefit of using the pipe is that solving problems step-by-step is made easier.
+![R](../pics/R.png) Can you format the graph like this:
 
-Also see [Pipes in R Tutorial For Beginners](https://www.datacamp.com/community/tutorials/pipe-r-tutorial) - I think a better title for this article is "Pipes For Beginners to pipes but with intermediate R experience" because it goes further than you need to be able to understand the pipe 'well enough'. However, it still contains some useful examples.
+```{r echo=FALSE}
+ggplot(data = pigeon3, aes(x = distance)) +
+   geom_histogram(bins = 32,
+                 colour = "black",
+                 fill = "#d8e39f") +
+  scale_x_continuous(limits = c(0, 15),
+                     name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0),
+                     limits = c(0, 15)) +
+  theme_classic() +
+  theme(strip.background = element_blank()) +
+  facet_grid(.~population)
+```
 
-## 2. Myoglobin concentration
+Note: `theme(strip.background = element_blank())` will remove the border around the facet labels.
+
+
+![R](../pics/R.png) Save the figure using: 
+
+```{r}
+ggsave("fig1.png",
+       width = 5,
+       height = 4,
+       units = "in")
+```
+
+![W](../pics/W.png) In Word, put your cursor in the top cell of the table and choose Insert | Pictures
+
+![W](../pics/W.png) select the table and give it No borders.
+
+
+# `r emo::ji("party")` Well Done! `r emo::ji("party")`
+
+![Artwork by @allison_horst](../pics/horst/nominal_ordinal_binary.png)
+
+# Independent study following the workshop
+
+Please note that next week's work assumes you have carried out the independent study.
+
+
+
+1. Myoglobin concentration in seals
 
 The myoglobin concentration of skeletal muscle of three species of seal in grams per kilogram of muscle was determined and the data are given in [seal.txt](../data/seal.txt). Each row represents an individual seal. The first column gives the myoglobin concentration and the second column indicates species.
 Can you write a single page word report which includes some summary statistics (for example the means and standard deviations) for each seal species and some figures? 
@@ -397,24 +476,6 @@ Do make sure you understand what a path is [What do we mean by paths?](https://y
 ## 4. Script example
 
 This is an example of a well formatted analysis [script](../scripts/exampleprac2.R) appropriate for some of the work we have carried out in this practical. Read it, run it! 
-
-## 5. DataCamp Assignments
-
-If you have not completed the other DataCamp assignments, you should still be able to access and complete them but they'll be indicated as late.
- You're finished!
-
-# `r emo::ji("party")` Well Done! `r emo::ji("party")`
-
-![Artwork by @allison_horst](../pics/horst/r_first_then.png)
-
-# Independent study following the workshop
-
-Please note that next week's work assumes you have carried out the independent study.
-
-1. Read [1.1 On the psychology of statistics section](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy) from Dani Navarro's Learning statistics with R. It is the first part of Chapter 1 Why do we learn statistics? Approx 5 minutes.
-
-2. ![GC](../pics/GC.png) Watch [Getting help in RStudio](https://youtu.be/tVQHFuitFJw) which explains how to bring up the manual pages and understand them. Getting help in RStudio. Being able to use the manual is a **threshold concept** in R. You will get a feel for the structure and pattern of commands much more quickly if you make a habit of briefly reading the manual for the commands you are using. 
-
 
 # The Code files
 
@@ -428,7 +489,7 @@ This is plain script (.R) version of the practical generated from the Rmd. Again
 Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/02TestingDataTypesReadingInData.R).
 
 
-Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra``r Cite(myBib, "kableExtra")`, `RefManager``r Cite(myBib, "RefManager")` 
+Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra` `r Cite(myBib, "kableExtra")`, `RefManager` `r Cite(myBib, "RefManager")` 
 
 # References 
 

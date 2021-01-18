@@ -31,13 +31,65 @@ xaringanExtra::use_extra_styles(
   mute_unhighlighted_code = TRUE)
 ```
 
-# Week 2
+# Index
+
+**Week 2**
 .font50[
 
 [RStudio Anatomy](x-slides/rstudio-anatomy.html)  
 [Workshop](workshops/01IntroductionToModuleAndRStudio.html) 
+
 ]
 
+**Week 3**
+.font50[
+
+[Workshop](workshops/02TestingDataTypesReadingInData.html) 
+
+]
+
+
+**Week 4**
+.font50[
+
+
+]
+---
+# Index
+
+**Week 5**
+.font50[
+
+
+]
+
+**Week 6**
+.font50[
+
+
+]
+
+**Week 7**
+.font50[
+
+]
+
+---
+# Index
+**Week 8**
+.font50[
+
+]
+
+**Week 9**
+.font50[
+
+]
+
+**Week 10**
+.font50[
+
+]
 ---
 
 
