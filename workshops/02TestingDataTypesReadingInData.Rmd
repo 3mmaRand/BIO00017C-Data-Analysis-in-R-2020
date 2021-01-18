@@ -462,20 +462,52 @@ ggsave("fig1.png",
 
 Please note that next week's work assumes you have carried out the independent study.
 
+## 1. Understanding the pipe: ` %>% `
+
+The `magrittr` package `r Cite(myBib, "magrittr")`is part of the tidyverse and includes the pipe operator which can improve code readability by:
+
+* structuring sequences of data operations left-to-right (as opposed to from the inside and out),
+* minimizing the need for intermediates, 
+* making it easy to add steps anywhere in the sequence of operations.
+
+For example, to apply a log-squareroot transformation you might use:
+```{r}
+# generate some numbers
+nums <- sample(1:100, size = 10, replace = FALSE)
+
+# transformation either:
+# a) nested functions
+tnums <- log(sqrt(nums))
+# b) intermediates
+sqrtnums <- sqrt(nums)
+tnums <- log(sqrtnums)
+```
+
+Nesting the functions means you have to read inside out and creating intermediates can be cluttered. 
+The pipe allows you to avoid these by taking the output of one operation as the input of the next. The pipe has long been used by Unix operating systems (where the pipe operator is |). The R pipe operator is `%>%`, a short cut for which is CTRL+SHIFT+M. 
+
+```{r}
+tnums <- nums %>% 
+  sqrt() %>% 
+  log()
+```
+
+This is short for 
+```{r}
+tnums <- nums %>% 
+  sqrt(.) %>% 
+  log(.)
+```
+
+Where `.` stands for the object being passed in. In most cases, you don't need to include it but some functions require you to (for example when arguments are optional or there is ambiguity over which argument is meant).
+
+A additional benefit of using the pipe is that solving problems step-by-step is made easier.
 
 
-1. Myoglobin concentration in seals
+## 2. `ggplot2` practice
+Study [Data visualisation](https://r4ds.had.co.nz/data-visualisation.html) 3.1 to 3.6 inclusive from Wickham and Grolemund's "R for Data Science" `r Cite(myBib, "Wickham:2017:RDS:3086927")`. This will give you a little more grounding in the 'grammar' of `ggplot2` such as 'layers', 'aesthetic mappings' and 'facets'. There are exercises to try.
 
-The myoglobin concentration of skeletal muscle of three species of seal in grams per kilogram of muscle was determined and the data are given in [seal.txt](../data/seal.txt). Each row represents an individual seal. The first column gives the myoglobin concentration and the second column indicates species.
-Can you write a single page word report which includes some summary statistics (for example the means and standard deviations) for each seal species and some figures? 
- 
-## 3. Understanding Paths
 
-Do make sure you understand what a path is [What do we mean by paths?](https://youtu.be/oZblx36rqq0) 
-
-## 4. Script example
-
-This is an example of a well formatted analysis [script](../scripts/exampleprac2.R) appropriate for some of the work we have carried out in this practical. Read it, run it! 
 
 # The Code files
 

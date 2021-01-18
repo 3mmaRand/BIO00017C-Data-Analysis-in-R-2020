@@ -425,9 +425,12 @@ ggplot(data = nest_data, aes(x = n, y = freq)) +
 
 Please note that next week's work assumes you have carried out the independent study.
 
-1. Read [1.1 On the psychology of statistics section](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy) from Dani Navarro's Learning statistics with R. It is the first part of Chapter 1 Why do we learn statistics? Approx 5 minutes.
+## 1. Read "On the psychology of statistics"
+Read [1.1 On the psychology of statistics section](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy) from Dani Navarro's Learning statistics with R. It is the first part of Chapter 1 Why do we learn statistics? Approx 5 minutes.
 
-2. ![GC](../pics/GC.png) Watch [Getting help in RStudio](https://youtu.be/tVQHFuitFJw) which explains how to bring up the manual pages and understand them. Getting help in RStudio. Being able to use the manual is a **threshold concept** in R. You will get a feel for the structure and pattern of commands much more quickly if you make a habit of briefly reading the manual for the commands you are using. 
+## 2. Watch "Getting help in RStudio"
+Watch [Getting help in RStudio](https://youtu.be/tVQHFuitFJw) 
+which explains how to bring up the manual pages and understand them. Getting help in RStudio. Being able to use the manual is a **threshold concept** in R. You will get a feel for the structure and pattern of commands much more quickly if you make a habit of briefly reading the manual for the commands you are using. 
 
 
 # The Code files
