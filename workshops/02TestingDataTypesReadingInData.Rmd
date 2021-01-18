@@ -385,7 +385,7 @@ pigeon3 %>%
 
 # Word reports with figures
 
-Now we will create a word document with some text and figures. I find the best way to include figures in a word document is to use a table with the borders turned off. This can make it easier to control the layout. This is what you are aiming for: [pdf of word doc](pigeon.pdf)
+Now we will create a word document with some text and figures. I find the best way to include figures in a word document is to use a table with the borders turned off. This can make it easier to control the layout. This is what you are aiming for: [pdf of word doc](pigeon.pdf) (should open in your browser.)
 
 
 ![W](../pics/W.png) open a word document

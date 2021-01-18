@@ -97,7 +97,7 @@ My RStudio Anatomy may be a useful reference.
 
 ![R](../pics/R.png) Also on the Files tab click on New Folder. In the box that appears type "data-analysis-in-r". This will be the folder that we work in throughout the Data Analysis in R part of 17C.
 
-![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory. Name the RStudio Project 'workshop1'.
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project, then New Directory, then New Project. Name the RStudio Project 'workshop1'.
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work. 
 
@@ -258,7 +258,7 @@ We can make a dataframe of the two vectors, `n` and `freq` usinf the `data.frame
 nest_data <- data.frame(n = factor(n), freq)
 ```
 
-`n` was made into a factor (a categorical variable).
+`n` was made into a factor (a categorical variable) because there are only 6 values and I want to make a bar plot.
 
 ![R](../pics/R.png) Check the structure of `nest_data`
 ```{r include=FALSE}
@@ -388,7 +388,7 @@ We can make changes to the axes using:
 
 `ggplot` automatically extends the axes slightly. You can turn this behaviour off with the `expand` argument in `scale_x_discrete()` and `scale_y_continuous()`.
 
-![R](../pics/R.png) Remove the gap betweenthe axes and the data:
+![R](../pics/R.png) Remove the gap between the axes and the data:
 ```{r}
 ggplot(data = nest_data, aes(x = n, y = freq)) +
   geom_col(fill = "lightblue", 
@@ -400,7 +400,7 @@ ggplot(data = nest_data, aes(x = n, y = freq)) +
 
 Each 'layer' is added to the ggplot() command with a `+`
 
-![R](../pics/R.png) Look up `scale_x_discrete` in the manual and work out how to change the axis title from "n" to "Number of Males". 
+![R](../pics/R.png) Look up `scale_x_discrete` in the manual and work out how to change the axis title from "n" to "Number of Males". Also change the *y*-axis title.
 
 ```{r echo=FALSE}
 ggplot(data = nest_data, aes(x = n, y = freq)) +
@@ -408,7 +408,7 @@ ggplot(data = nest_data, aes(x = n, y = freq)) +
            width = 1, 
            colour = "black") +
   scale_x_discrete(expand = c(0, 0),
-                   name = "Number of Males") + #<<
+                   name = "Number of Males") + 
   scale_y_continuous(expand = c(0, 0),
                      name = "Number of Nests") 
 
