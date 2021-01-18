@@ -1,0 +1,293 @@
+---
+title: "Working directories, relative paths and absolute paths."
+author: "Emma Rand"
+institute: "University of York, UK"
+output:
+  xaringan::moon_reader:
+    css: [default, ../css_files/emma.css, ../css_files/emma-fonts.css]
+    lib_dir: libs
+    seal: true
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
+options(htmltools.dir.version = FALSE)
+```
+
+```{r style-share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+xaringanExtra::style_share_again(
+  share_buttons = "all")
+xaringanExtra::use_clipboard()
+xaringanExtra::use_extra_styles(
+  hover_code_line = TRUE,         
+  mute_unhighlighted_code = TRUE)
+```
+
+```{r packages, include=FALSE}
+library(RefManageR)
+library(kableExtra)
+library(tidyverse)
+```
+
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+
+# Introduction
+
+## Aims
+
+The aim of this section is to show you what is meant by a working directory and a path.
+
+## Learning outcomes 
+
+The successful student will be able to:
+
+* find current working directory
+* list files in their current working directory
+* understand what is meant by working directory, absolute and relative paths
+
+
+---
+# Introduction
+
+If you are very unfamiliar with these concepts you might want to start up RStudio and follow along. In which case...
+
+`r emo::ji("clapper")` this is an instruction to do something
+
+
+---
+class: inverse
+
+#  What is a working directory?
+
+
+---
+# What is a directory?
+
+Directory is the old word for what many now call a folder `r emo::ji("folder")`.
+
+It is commonly used in scientific computing. Commands that act on directories in most programming languages and environments reflect this.
+
+For example, all of these mean "tell me my working directory":
+
+* `getwd()` **get** **w**orking **d**irectory in R
+* `pwd` **p**rint **w**orking **d**irectory in Unix systems
+* `os.getcwd()`  **get** **c**urrent **w**orking **d**irectory in Python
+
+---
+# What is a working directory?
+
+The working directory is the default location a program is using. It is where the program will read and write files by default. You have only one working directory at a time.
+
+The terms 'working directory', 'current working directory' and 'current directory' all mean the same thing.
+
+`r emo::ji("clapper")` Find your current working directory with:
+.scroll-output-width[
+```{r}
+getwd()
+```
+]
+
+---
+# What is a working directory?
+
+If you do not like the working directory that R automatically chooses on starting up you can change it using the Tools menu
+
+`r emo::ji("clapper")` Tools | Global Options. Then, under the General tab, edit the box labelled "Default working directory (when not in a project):".
+
+
+---
+# What is a working directory?
+
+Your working directory *can* be the same as the location of the script file you are using ....
+
+... but does not have to be.
+
+
+--
+
+## `r emo::ji("exclamation")` When using RStudio Projects the working directory is the Project directory.
+
+
+---
+class: inverse
+
+#  What is a path?
+
+
+---
+# What is a path?
+
+A path gives the address - or location - of a filesystem object, such as a file or directory.
+
+Paths appear in the address bar of your browser or file explorer.
+
+--
+
+We need to know a file path whenever we want to read, write or refer to a file using code rather than interactively pointing and clicking to navigate.
+
+--
+
+A path can be **absolute** or **relative**
+
+---
+
+# Absolute paths
+
+An Absolute path is given from the "root directory" of the object. 
+
+The root directory of a file system is the first or top directory in the hierarchy.
+
+For example, `C:\` or `M:\` on windows or `/` on a Mac which is displayed as Macintosh HD in Finder.
+
+---
+# Absolute paths
+
+The absolute path for a file, `pigeon.txt` could be:  
+
+* windows: `C:/Users/er13/Desktop/pigeons/data-raw/pigeon.txt`  <sup>1</sup>
+
+.footnote[
+.font60[
+1. this appears as `C:\Users\er13\Desktop\pigeons\data-raw\pigeon.txt` in Windows Explorer because Microsoft DOS didn't have directories in 1981 when it was released. At the time it used the `/` character for 'switches' (instead of the existing convention `-` `r emo::ji("roll_eyes")`) so when it did start using directories it couldn't use `/`
+]
+]
+--
+
+* Mac/unix systems: `/Users/er13/Desktop/pigeons/data-raw/pigeon.txt`  
+
+--
+
+* web: `http://www-users.york.ac.uk/~er13/58M_BDS_2019/data/pigeon.txt`  
+
+---
+# Absolute paths
+
+The absolute path for a file, `pigeon.txt` could be:  
+
+
+* Or on the web: `http://www-users.york.ac.uk/~er13/58M_BDS_2019/data/pigeon.txt`  
+
+---
+# Relative paths
+
+A relative path gives the location of a filesystem object *relative* to the working directory, (i.e., that returned by `getwd()`).
+
+When `pigeon.txt` is in the working directory the relative path is just the file name:  `pigeon.txt`  
+
+--
+
+If there is a folder in the working directory called `data-raw` and `pigeon.txt` is inside that then the relative path is `data-raw/pigeon.txt`  
+
+---
+# Paths: moving up the hierarchy
+
+`../` allows you to look in the directory above the working directory
+
+When `pigeon.txt` is in folder above the working the relative path is `../pigeon.txt`  
+
+--
+
+And if it is in a folder called `data-raw` which is in the directory above the working directory then the relative path is `../data-raw/pigeon.txt`  
+
+---
+# What's in my directory?
+
+You can list the contents of a directory using the `dir()` command
+
+* `dir()` list the contents of the working directory
+* `dir("..")` list the contents of the directory above the working directory
+* `dir(../..)` list the contents of the directory two directories above the working directory
+* `dir("data-raw")` list the contents of a folder call data-raw which is in the working directory.
+
+---
+# Relative or absolute
+
+## `r emo::ji("exclamation")` Most of the time you should use relative paths because that makes your work portable.
+
+--
+
+You only need to use absolute paths when you are referring to filesystem outside the one you are using.
+
+
+---
+class: inverse
+
+# Example
+
+---
+# Example
+
+`r emo::ji("clapper")` Download and unzip [pigeons.zip](../pigeons.zip) which has the following structure:
+.code80[
+```
+-- pigeons
+   |__data-processed
+      |__pigeon_long.txt
+   |__data-raw
+      |__pigeon.txt
+   |__figures
+      |__fig1.tiff
+   |__scripts
+      |__analysis.R
+      |__import_reshape.R
+   |__pigeons.Rproj
+```
+]
+---
+# Example
+
+`r emo::ji("clapper")` Open the two script files check you can alter the paths for file import and export commands if you set your working directory to
+   * `pigeons`
+   * `scripts`
+   * the directory above `pigeons` on your set up
+   * the directory two directories above `pigeons` on your set up
+
+---
+
+.font150[
+`r emo::ji("party")` Congratulations! Keep practising! `r emo::ji("party")`
+]
+
+
+---
+# References
+.footnote[
+Slides made with with xaringan `r Cite(myBib, "xaringan")` and xaringanExtra `r Cite(myBib, "xaringanExtra")`
+
+]
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(myBib)
+```
+
+
+---
+
+## Emma Rand <br> [emma.rand@york.ac.uk](mailto:emma.rand@york.ac.uk) <br> Twitter: [@er13_r](https://twitter.com/er13_r) <br> GitHub: [3mmaRand](https://github.com/3mmaRand)  <br> blog: https://buzzrbeeline.blog/
+<br>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Data Science strand of BIO00058M</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Emma Rand</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
+
+
+
+
