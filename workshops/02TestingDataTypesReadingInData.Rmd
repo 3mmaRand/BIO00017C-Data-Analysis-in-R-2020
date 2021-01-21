@@ -54,12 +54,12 @@ In this session you will read in data files of various formats, data types, summ
 
 By actively following the materials and carrying out the independent study before and after the contact hours the successful student will be able to:
 
-* explain what response and explanatory variables are, distinguish between data types and describe how these impact choice of test (MLO 1 and 2)  (MLO 1)
-* explain the logic of hypothesis testing (MLO 1)
-* demonstrate the process of hypothesis testing with an example and evaluate potential inferences (MLO 1 and 2)
-* read in data in to RStudio, create simple summaries and plots using manual pages where necessary (MLO 3)
-* save figures to file (MLO 4)
-* create neat reports in Word which include text and figures (MLO 4)
+* distinguish between data types (MLO 2)  
+* demonstrate the process of hypothesis testing with an example (MLO 1)  
+* Explain type 1 and type 2 errors (MLO 4)  
+* read in data in to RStudio, create simple summaries and plots using manual pages where necessary (MLO 3)  
+* save figures to file (MLO 4)  
+* create neat reports in Word which include text and figures (MLO 4)  
 
 
 ## Philosophy

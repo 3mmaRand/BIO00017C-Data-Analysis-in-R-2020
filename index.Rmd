@@ -44,6 +44,7 @@ xaringanExtra::use_extra_styles(
 **Week 3**
 .font50[
 
+[Working directories and Paths](x-slides/working_dir_and_paths.html)  
 [Workshop](workshops/02TestingDataTypesReadingInData.html) 
 
 ]
@@ -58,8 +59,7 @@ xaringanExtra::use_extra_styles(
 # Index
 
 **Week 5**
-.font50[
-
+.font50[Look down the list of 
 
 ]
 
