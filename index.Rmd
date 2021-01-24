@@ -33,67 +33,53 @@ xaringanExtra::use_extra_styles(
 
 # Index
 
-**Week 2**
 .font50[
+.pull-left[
+**Week 2**
 
+[Slides pdf](slides/01-Introduction-to-module.pdf)  
 [RStudio Anatomy](x-slides/rstudio-anatomy.html)  
-[Workshop](workshops/01IntroductionToModuleAndRStudio.html) 
-
-]
+[Workshop 1](workshops/01IntroductionToModuleAndRStudio.html) 
 
 **Week 3**
-.font50[
 
+[Slides pdf](slides/02-logic-data-types-importing.pdf)  
 [Working directories and Paths](x-slides/working_dir_and_paths.html)  
-[Workshop](workshops/02TestingDataTypesReadingInData.html) 
-
-]
-
+[Workshop 2](workshops/02TestingDataTypesReadingInData.html) 
 
 **Week 4**
-.font50[
 
-
-]
----
-# Index
+[Workshop 3](workshops/03NormalDistributionCalculatingProbabilitiesAndCI.html) 
 
 **Week 5**
-.font50[Look down the list of 
 
 ]
+
+.pull-right[
 
 **Week 6**
-.font50[
 
-
-]
 
 **Week 7**
-.font50[
 
-]
 
----
-# Index
 **Week 8**
-.font50[
-
-]
 
 **Week 9**
-.font50[
-
-]
 
 **Week 10**
-.font50[
 
 ]
+]
+
 ---
 
 
-## Emma Rand <br> [emma.rand@york.ac.uk](mailto:emma.rand@york.ac.uk) <br> Twitter: [@er13_r](https://twitter.com/er13_r) <br> GitHub: [3mmaRand](https://github.com/3mmaRand)  <br> blog: https://buzzrbeeline.blog/
+Emma Rand [emma.rand@york.ac.uk](mailto:emma.rand@york.ac.uk)  
+Twitter: [@er13_r](https://twitter.com/er13_r)  
+GitHub: [3mmaRand](https://github.com/3mmaRand)  
+blog: https://buzzrbeeline.blog/  
 <br>
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Data Analysis in R for BIO00017C</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Emma Rand</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 

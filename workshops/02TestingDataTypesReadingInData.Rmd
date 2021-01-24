@@ -133,28 +133,26 @@ A 'tibble' ('table' with a New Zealand accent!) is a dataframe.
 
 <!-- QUESTION ANSWER it is a number, specifically, a double (a number with decimal places) in R. It's a continuous variable.  -->
 
-## Exploring single group data
+## Summarise single group data
 
-A column is referred to using either:
-
-1. the index `pigeon[,1]` (note `pigeon[1]` will also work because R assumes you mean the column if you give only one index for a dataframe) 
-
-2. or the dollar notation `pigeon$distance`. 
+A column is referred to using the dollar notation `pigeon$distance`. 
 
 ![R](../pics/R.png) Find the mean of the column using the function `mean()`
-```{r echo=FALSE}
+```{r include=FALSE}
 #---CODING ANSWER---
 mean(pigeon$distance)
 ```
 
-Individual values can be extracted by indexing - giving the row number and column number of the element you want: `pigeon[row, col]`.
+R provides many functions to allow you to make calculations on your data.
 
-![R](../pics/R.png) Extract the 14th value in the column? 
-```{r echo=FALSE}
+![R](../pics/R.png) Find out which functions will calculate the standard deviation and the number of cases, *i.e.*, the length of the vector. Google or make intelligent guesses and verify with the manual.
+
+```{r include=FALSE}
 #---CODING ANSWER---
-pigeon$distance[14]
-#or
-pigeon[14, 1] 
+# standard deviation
+sd(pigeon$distance)
+# number of values
+length(pigeon$distance) 
 ```
 
 ## Visualise Data
@@ -179,39 +177,31 @@ ggplot(data = pigeon, aes(x = distance)) +
 
 ```
 
-It is good practice to start axes at zero and we can achieve that using `scale_x_continuous()`.
-
-![R](../pics/R.png) Start *x*-axis at zero and finish it at 15. I'll also alter the number of bins to account for the bigger range.
-```{r}
-ggplot(data = pigeon, aes(x = distance)) +
-  geom_histogram(bins = 32) +
-  scale_x_continuous(limits = c(0, 15))
-
-```
-
 ![R](../pics/R.png) Alter the axis titles appropriately and remove the gap between the data and the axes. You may need to open your script from last week. You are aiming for something like this:
 
 ```{r echo=FALSE}
 ggplot(data = pigeon, aes(x = distance)) +
-  geom_histogram(bins = 32) +
-  scale_x_continuous(limits = c(0, 15),
-                     name = "Interorbital distance (mm)",
+  geom_histogram(bins = 10) +
+  scale_x_continuous(name = "Interorbital distance (mm)",
                      expand = c(0, 0)) +
   scale_y_continuous(name = "Frequency",
                      expand = c(0, 0))
 
 ```
 
+**Important**
+Were you confused because you expected to use `scale_y_discrete()`? In statistical theory there are discrete and continuous variables. Counts are discrete. However, the phrase 'data type' means something a bit different in programming and it is to do with the way the value is stored in computer memory. In R, `scale_x_continuous()` and `scale_y_continuous()` apply to any variable that is a number and `scale_x_discrete()` and `scale_y_discrete()` to any variable that is a character (or factor). 
+
+
 ![R](../pics/R.png) Add a black border to the bars and change the fill colour. You may need to look at your script from last week. You are aiming for something like this:
 
 ```{r echo=FALSE}
 # I chose a green
 ggplot(data = pigeon, aes(x = distance)) +
-  geom_histogram(bins = 32,
+  geom_histogram(bins = 10,
                  colour = "black",
                  fill = "#d8e39f") +
-  scale_x_continuous(limits = c(0, 15),
-                     name = "Interorbital distance (mm)",
+  scale_x_continuous(name = "Interorbital distance (mm)",
                      expand = c(0, 0)) +
   scale_y_continuous(name = "Frequency",
                      expand = c(0, 0)) 
@@ -222,11 +212,10 @@ ggplot(data = pigeon, aes(x = distance)) +
 
 ```{r}
 ggplot(data = pigeon, aes(x = distance)) +
-  geom_histogram(bins = 32,
+  geom_histogram(bins = 10,
                  colour = "black",
                  fill = "#d8e39f") +
-  scale_x_continuous(limits = c(0, 15),
-                     name = "Interorbital distance (mm)",
+  scale_x_continuous(name = "Interorbital distance (mm)",
                      expand = c(0, 0)) +
   scale_y_continuous(name = "Frequency",
                      expand = c(0, 0)) +
@@ -234,22 +223,6 @@ ggplot(data = pigeon, aes(x = distance)) +
 
 ```
 
-
-## Summarise
-
-R provides many functions to allow you to make calculations on your data.
-
-![R](../pics/R.png) Find out which functions will calculate the mean, standard deviation and the number of cases, *i.e.*, the length of the vector. Google or make intelligent guesses and verify with the manual.
-
-```{r include=FALSE}
-#---CODING ANSWER---
-# mean
-mean(pigeon$distance)
-# standard deviation
-sd(pigeon$distance)
-# number of values
-length(pigeon$distance) 
-```
 
 ## Import Data 2
 
@@ -423,11 +396,10 @@ Note:`.~ population` means everything (`.`) separately for each (`~`) value in `
 
 ```{r echo=FALSE}
 ggplot(data = pigeon3, aes(x = distance)) +
-   geom_histogram(bins = 32,
+   geom_histogram(bins = 10,
                  colour = "black",
                  fill = "#d8e39f") +
-  scale_x_continuous(limits = c(0, 15),
-                     name = "Interorbital distance (mm)",
+  scale_x_continuous(name = "Interorbital distance (mm)",
                      expand = c(0, 0)) +
   scale_y_continuous(name = "Frequency",
                      expand = c(0, 0),

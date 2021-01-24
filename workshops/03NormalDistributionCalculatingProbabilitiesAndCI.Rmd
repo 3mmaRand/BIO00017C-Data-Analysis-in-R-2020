@@ -1,0 +1,498 @@
+---
+title:  "Normal distributions, calculating probabilities and Confidence Intervals"
+author: "Emma Rand"
+output:
+  html_document:
+    toc: true
+    depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: flatly
+    highlight: pygments
+    css: [../css_files/emma-workshop.css, ../css_files/emma-fonts.css]
+  word_document: default
+---
+
+![](../pics/17C.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(RefManageR)
+```
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+# Introduction
+
+## Session overview
+
+In this session you will calculate probabilities, quantiles and confidence intervals using the normal distribution.
+
+## Learning Outcomes
+
+By actively following the materials and carrying out the independent study before and after the contact hours the successful student will be able to:
+
+-   Explain the properties of 'normal distributions' (MLO 1 and 2)
+-   Define the sampling distribution of the mean and the standard error (MLO 1 and 4)
+-   Explain what a confidence interval is (MLO 1 and 4)
+-   Calculate probabilities and quantiles and in R (MLO 3 and 4) Calculate confidence intervals for large and small samples in R (MLO 3 and 4)
+
+## Philosophy
+
+Workshops are not a test. It is expected that you often don't know how to start, make a lot of mistakes and need help. Do not be put off and don't let what you can not do interfere with what you can do. You will benefit from collaborating with others and/or discussing your results. It is expected that you are familiar with independent study content before the workshop. However, you need not remember or understand every detail as the workshop should build and consolidate your understanding. You may wish to refer to the independent study materials for reference.
+
+Materials are indexed here: <https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/>
+
+## Key
+
+These four symbols are used at the beginning of each instruction so you know where to carry out the instruction.
+
+![W](../pics/W.png) is something you need to do on your computer. It may be opening programs or documents or locating a file.
+
+![R](../pics/R.png) is something you should do in RStudio. It will often be typing a command or using the menus but might also be creating folders, locating or moving files.
+
+![GC](../pics/GC.png) is something you should do in your browser on the internet. It may be searching for information, going to the VLE or downloading a file.
+
+![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.
+
+![Artwork by Allison Horst](../pics/horst/not_normal.png)
+
+# Getting started
+
+![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png).
+
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop3.
+
+![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
+
+![R](../pics/R.png) Load the `tidyverse`:
+
+```{r}
+library(tidyverse)
+```
+
+# Exercises
+
+## Distributions: the R functions
+
+For any distribution, two very useful quantities can be calculated:  
+-   the Distribution Function, which gives the **probability** that a variable takes a particular value or less.  
+-   the Quantile function which is the inverse of the Distribution function, *i.e.*, it returns the value ('quantile') for a given probability.
+
+The functions are named with a letter `p` or `q` preceding the distribution name. Below are some examples:
+
+```{r echo=FALSE}
+
+stattable <- read.table("stattable.txt", 
+                        sep = "/", 
+                        header = TRUE, 
+                        row.names = 1)
+kable_styling(knitr::kable(stattable, "html") )
+
+```
+
+## Calculating Probabilities for single value
+
+### Using `pnorm()`
+
+Look up `pnorm()` in the manual using `?pnorm`
+
+You give it a values for which you want a probability and by default it gives you the probability of getting that value or less from a normal distribution with a mean of 0 and a standard deviation of 1. If you want the probability of a value from a different normal distribution you need to set the mean and standard deviation appropriately.
+
+For example, I.Q. in the U.K. population is normally distributed with a mean of 100 and a standard deviation of 15. We can use `pnorm()` to calculate probabilities associated with having a particular range of IQs.
+
+```{r echo=FALSE, fig.width=4,fig.height=4}
+# figure to show IQ
+# only for illustration    
+m <- 100
+sd <- 15
+IQ <- seq(40, 160, 1)
+curve(dnorm(x, 100, 15),
+      xlim = c(40, 160), bty = "n",
+      axes = F, xlab = "IQ", ylab = "") 
+axis(1, pos = 0)
+    
+```
+
+We can use the values of mean = 100 and standard deviation = 15 in `pnorm()` to work out the probability of having an I.Q. of *115 or less*.
+
+![R](../pics/R.png) First, create variables for the parameter values - this is considered good practice.
+
+```{r}
+# create variables for the parameter values
+m <- 100
+sd <- 15
+```
+
+![R](../pics/R.png) Now pass those variables to the `pnorm()` function along with the value for which we want a probability:
+
+```{r}
+# Now use pnorm()
+pnorm(115, m, sd)
+```
+
+![R](../pics/R.png) Look at the manual page. Because the default is lower.tail = TRUE, we get the probability we want, P[IQ \< 115]
+
+```{r echo=FALSE, fig.width=4,fig.height=4}
+# fig to illustrate IQ < 115
+# only for illustration
+IQ <- seq(40, 160, 1)
+cord.x <- c(40, seq(40, 115, 1), 115) 
+cord.y <- c(0, dnorm(seq(40, 115, 1), 100, 15), 0) 
+curve(dnorm(x, 100, 15),
+      xlim = c(40, 160),
+      bty = "n",axes = F,
+      xlab = "IQ", ylab = "") 
+polygon(cord.x, cord.y, col = "gray")
+axis(1, pos = 0)
+```
+
+I recommend sketching the distribution and shading the area you want to work out what arguments you want to give the function.
+
+![R](../pics/R.png) Determine the probability of having an IQ of 115 OR MORE? Do a sketch first.
+
+```{r echo=FALSE,results="hide"}
+#---CODING ANSWER---
+pnorm(115, m, sd, lower.tail = FALSE)
+```
+
+![R](../pics/R.png) Determine the probability of having an IQ between 85 and 115? Do a sketch first.
+
+```{r echo=FALSE, fig.width=4,fig.height=4}
+# fig to illustrate IQ between 85 and 115
+# Your sketch should look like this:
+IQ <- seq(40, 160, 1)
+cord.x <- c(85, seq(85, 115, 1), 115) 
+cord.y <- c(0, dnorm(seq(85, 115, 1), 100, 15), 0) 
+curve(dnorm(x, 100, 15),
+      xlim = c(40, 160),
+      bty = "n",axes = F,
+      xlab = "IQ", ylab = "") 
+polygon(cord.x, cord.y, col = "gray")
+axis(1, pos = 0)
+```
+
+```{r include=FALSE}
+#---CODING ANSWER---
+pnorm(115, m, sd) - pnorm(85, m, sd)
+```
+
+![Q](../pics/Q.png)Is this what you expect? <!-- #---THINKING ANSWER--- --> <!-- # You should expect this if you remember from the lecture that about 68% of the values are between - 1 s.d. and + 1 s.d and that 15 is the s.d. in this case -->
+
+![R](../pics/R.png) What is 1.96 $\times$ standard deviation?
+
+```{r include=FALSE}
+#---CODING ANSWER---
+v <- 1.96 * 15
+```
+
+![R](../pics/R.png) What is the probability of having an IQ between -1.96 standard deviations and +1.96 standard deviations? Is this what you expect?
+
+```{r include=FALSE}
+#---CODING ANSWER---
+pnorm(m + v, m, sd) - pnorm(m - v, m, sd)
+# 95% because 95% of values lies between +1.96 s.d. and -1.96 s.d.
+
+```
+
+### Using qnorm()
+
+We can use `qnorm()` to find the IQ associated with a particular probability.
+
+We will again use the values of mean = 100 and standard deviation = 15 in `qnorm()` to work out what I.Q. value 0.2 (20%) of people fall below. Make sure you relate the manual information to the command.
+
+![R](../pics/R.png) To find the I.Q. value that 20% people fall below:
+
+```{r}
+ qnorm(0.2, m, sd)
+```
+
+```{r echo=FALSE, fig.width=4,fig.height=4}
+# fig to illustrate IQ value that 20% people are below
+
+IQ <- seq(40, 160, 1)
+cord.x <- c(0, seq(0, 87, 1), 87) 
+cord.y <- c(0, dnorm(seq(0, 87, 1), 100, 15), 0) 
+curve(dnorm(x, 100, 15),
+      xlim = c(40, 160),
+      ylim = c(-0.006, 0.03),
+      bty = "n",axes = F,
+      xlab = "IQ", ylab = "") 
+polygon(cord.x, cord.y, col = "gray")
+text(65, 0.01, "p = 0.2")
+arrows(65, 0.009, 75, 0.004, length = .15)
+text(87, -0.006, "?", col = "red")
+arrows(87, -0.004,87, 0, length = .15, col = "red")
+axis(1, pos = 0, labels = FALSE)
+
+
+```
+
+20% people have an IQ less than `r round(qnorm(0.2, m, sd),1)`
+
+![R](../pics/R.png) What I.Q. value are 0.025 (2.5%) of people below?
+
+```{r include=FALSE}
+#---CODING ANSWER---
+qnorm(0.025, m, sd)
+```
+
+![R](../pics/R.png) In what range do 99% of the population fall? Note that 99% means 1% (0.01) in both tails so 0.5% (0.005) in each tail. The figure may help you.
+
+```{r echo=FALSE, fig.width=6,fig.height=4.5}
+# the figure for 99% 
+# only for illustration
+z <- qnorm(0.995)
+cord.x <- c(-z, seq(-z, z, 0.01), z) 
+cord.y <- c(0, dnorm(seq(-z, z, 0.01)), 0) 
+curve(dnorm(x, 0, 1),
+      xlim = c(-3, 3),
+      ylim = c(-0.15, 0.45),
+      bty = "n", 
+      axes = F, xlab = "IQ",
+      ylab = "") 
+polygon(cord.x, cord.y, col = "gray")
+arrows(-2.7, 0.1, -2.7, 0.01, length = .15)
+text(-2.6, 0.11, "p = 0.005")
+arrows(2.7, 0.1, 2.7, 0.01, length = .15)
+text(2.6, 0.11, "p = 0.005")
+text(0, 0.13, "p = 0.99")
+text(z, -0.06, "?", col = "red")
+arrows(z, -0.04,z, 0, length = .15, col = "red")
+text(-z, -0.06, "?", col = "red")
+arrows(-z, -0.04,-z, 0, length = .15, col = "red")
+axis(1, pos = 0, labels = FALSE)
+```
+
+```{r include=FALSE}
+#---CODING ANSWER---
+qnorm(0.005, m, sd)
+qnorm(0.995, m, sd)
+# between 61.4 and 138.6
+```
+
+## Calculating Probabilities for samples
+
+The only difference in using `pnorm()` and `qnorm()` for samples is in what we give as the sd argument. Since we are now thinking about the distribution of the sample means, we need to use the standard error.
+
+We used mean = 100 and standard deviation = 15 in `pnorm()` to work out the probability of an *individual* having an I.Q. of *115 or less*.
+
+We can use a similar approach to find the probability of getting a *sample* of n = 5 having a mean I.Q. of 115 or less The only difference is that we use the standard error instead of the standard deviation.
+
+![R](../pics/R.png) First, calculate the standard error:
+
+```{r}
+n <- 5
+se <- 15 / sqrt(n)
+```
+
+![R](../pics/R.png) Now the probability of getting a sample mean of 115 or less from that distribution:
+
+```{r}
+pnorm(115, m, se)
+```
+
+There's a `r round(pnorm(115, m, se), 4)` probability that a sample of 5 people will have a mean of 115 or less. Thus there is a probability of just `r round(pnorm(115, m, se, lower.tail = FALSE), 4)` that a sample of n = 5 will have a mean above 115. This is quite unlikely and we might suspect this group was not sampled from the general population.
+
+![R](../pics/R.png) What is the probability of sample of size 10 having a mean of 105 or more?
+
+```{r include=FALSE}
+#---CODING ANSWER---
+n <- 10
+se <- 15 / sqrt(n)
+pnorm(105, m, se, lower.tail = FALSE)
+# it is about 0.146
+```
+
+## Confidence intervals (large samples)
+
+The data in [beewing.txt](../data/beewing.txt) are left wing widths of 100 honey bees (mm). The confidence interval for large samples is given by: $\bar{x} \pm 1.96 \times s.e.$)
+
+Where 1.96 is the quantile for 95% confidence.
+
+You may need to refer to previous practicals to remind yourself how to carry out some of the following steps.
+
+![W](../pics/W.png) Save a copy of the file. I saved mine to my 'data' directory
+
+![R](../pics/R.png) Read in the data and check the structure of the resulting dataframe
+
+```{r include=FALSE}
+#---CODING ANSWER---
+bee <- read.table("../data/beewing.txt", header = FALSE)
+str(bee)
+```
+
+![R](../pics/R.png) Rename the column to 'wing'
+
+```{r include=FALSE}
+#---CODING ANSWER---
+names(bee) <- "wing"
+str(bee)
+```
+
+![R](../pics/R.png) Calculate and assign to variables: the mean, standard deviation and standard error
+
+```{r include=FALSE}
+#---CODING ANSWER---
+m <- mean(bee$wing)
+sd <- sd(bee$wing)
+n <- length(bee$wing)
+se <- sd / sqrt(n)
+```
+
+![R](../pics/R.png) To calculate the 95% confidence interval we need to look up quantile (multiplier) using `qnorm()`
+
+```{r}
+q <- qnorm(0.975)
+```
+
+![R](../pics/R.png) Now we can use it in our confidence interval calculation
+
+```{r}
+lcl <- m - q * se
+ucl <- m + q * se
+```
+
+![R](../pics/R.png) Between what values would you be 99% confident of the population mean being?
+
+```{r include=FALSE}
+#---CODING ANSWER---
+q <- qnorm(0.995)
+lcl <- m - q * se
+ucl <- m + q * se
+#---THINKING ANSWER---
+# the mean is 4.55 +/- 0.077. We are 95% certain the populations mean lies between 4.627 and 4.473
+```
+
+## Confidence intervals (small samples)
+
+The confidence interval for small samples is given by: $\bar{x} \pm \sf t_{[d.f]} \times s.e.$
+
+The fatty acid Docosahexaenoic acid (DHA) is a major component of membrane phospholipids in nerve cells and deficiency leads to many behavioural and functional deficits. The cross sectional area of neurons in the CA 1 region of the hippocampus of normal rats is 155 $\mu m^2$. A DHA deficient diet was fed to 8 animals and the cross sectional area (csa) of neurons is given in [neuron.txt](../data/neuron.txt)
+
+![W](../pics/W.png) Save a copy of the file. I saved mine to my 'data' directory
+
+![R](../pics/R.png) Read in the data and check the structure of the resulting dataframe
+
+```{r include=FALSE}
+#---CODING ANSWER---
+neur <- read.table("../data/neuron.txt", header = TRUE)
+str(neur)
+```
+
+![R](../pics/R.png) Assign the mean to m
+
+```{r include=FALSE}
+#---CODING ANSWER---
+m <- mean(neur$csa)
+
+```
+
+![R](../pics/R.png) Calculate and assign the standard error to se
+
+```{r include=FALSE}
+#---CODING ANSWER---
+sd <- sd(neur$csa)
+n <- length(neur$csa)
+se <- sd / sqrt(n)
+```
+
+To work out the confidence interval for our sample mean we need to use the *t* distribution because it is a small sample. This means we need to determine the degrees of freedom (the number in the sample minus one).
+
+![R](../pics/R.png) We can assign this to a variable using:
+
+```{r}
+df <- length(neur$csa) - 1; df
+```
+
+![R](../pics/R.png) The *t* value is found by:
+
+```{r}
+t <- qt(0.975, df = df); t
+```
+
+![R](../pics/R.png) And the confidence interval by:
+
+```{r}
+round(m + t * se, 2)
+round(m - t * se, 2)
+```
+
+![Q](../pics/Q.png) Given the upper and lower confidence values for the estimate of the population mean, what do you think about the effect of the DHA deficient diet? <!--
+#---THINKING ANSWER---
+the 95% confidence interval from 132.75 $\mu m^2$ to 151.95 $\mu m^2$ doesn't include 155 $\mu m^2$ so we can conclude that DHA deficiency significantly lowers csa
+-->
+
+# `r emo::ji("party")` Well Done! `r emo::ji("party")`
+
+![Artwork by @allison_horst](../pics/horst/nominal_ordinal_binary.png)
+
+# Independent study following the workshop
+
+## 1. Calculate confidence intervals
+
+Adiponectin is exclusively secreted from adipose tissue and modulates a number of metabolic processes. Nicotinic acid can affect adiponectin secretion. 3T3-L1 adipocytes were treated with nicotinic acid or with a control treatment and adiponectin concentration (pg/mL) measured. The data are in [adipocytes.txt](../data/adipocytes.txt). Each row represents an independent sample of adipocytes and the first column gives the concentration adiponectin and the second column indicates whether they were treated with nicotinic acid or not. Estimate the mean Adiponectin concentration in each group - this means calculate the sample mean and construct a confidence interval around it for each group. Something to bear in mind is that R works 'elementwise' which means you can use vectors of two values in a formula to get a vector of two results in the same way that you would use a single value. See [workshop 1](https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/workshops/01IntroductionToModuleAndRStudio.html#Why_it_works)
+
+```{r include=FALSE}
+#---CODING AND THINKING ANSWER---
+adip <- read.table("../data/adipocytes.txt", header = T)
+str(adip)
+adip_summary <- adip %>% 
+  group_by(treatment) %>% 
+  summarise(mean = mean(adiponectin),
+            sd = sd(adiponectin),
+            n = length(adiponectin),
+            se = sd/sqrt(n))
+# since there are only 15 values in each group we need to use the 
+# t value to construct our ci
+t <- qt(0.975, df = 14)
+#And the confidence interval are:
+round(adip_summary$mean + t * adip_summary$se, 2)
+round(adip_summary$mean - t * adip_summary$se, 2)
+# we conclude we're 95% certain the mean for the control group is 
+# between 4.73 and 6.36 and the mean for the nicotinic group is 
+# between 6.52 and 8.50. More usually we might put is like this:
+round(t * adip_summary$se, 2)
+# the mean for the control group is 5.55 +/- 0.82 and that for the nicotinic group is 7.51 +/- 0.99
+
+```
+
+
+# The Code files
+
+These contain all the code needed in the workshop even where it is not visible on the webpage.
+
+[Rmd file](03NormalDistributionCalculatingProbabilitiesAndCI.Rmd) The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/03NormalDistributionCalculatingProbabilitiesAndCI.Rmd).
+
+[Plain script file](../scripts/03NormalDistributionCalculatingProbabilitiesAndCI.R) This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/03NormalDistributionCalculatingProbabilitiesAndCI.R).
+
+Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra` `r Cite(myBib, "kableExtra")`, `RefManager` `r Cite(myBib, "RefManager")`
+
+# References
+
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(myBib)  
+```
+
+![](../pics/17Cend.png)

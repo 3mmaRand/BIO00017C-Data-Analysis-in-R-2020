@@ -1,0 +1,4 @@
+Distribution/Probability/Quantile
+Binomial distribution/pbinom()/qbinom()
+Normal distribution/pnorm()/qnorm()
+t distribution/pt()/qt()
