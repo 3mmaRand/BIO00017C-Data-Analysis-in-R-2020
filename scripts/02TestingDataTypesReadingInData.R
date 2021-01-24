@@ -1,135 +1,215 @@
-## ---- message=FALSE, warning=FALSE, include=FALSE------------------------
-# I have my files organised differently so I use a different 'path' to my file
-pigeon <- read.table("../data/pigeon.txt")
+## ----setup, include=FALSE-----------------------------------------------------------------------------
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
 
 
-## ---- message=FALSE, warning=FALSE, include=FALSE------------------------
-#---CODING ANSWER---
-str(pigeon)
+## ----include=FALSE------------------------------------------------------------------------------------
+library(tidyverse)
+library(kableExtra)
+library(RefManageR)
 
 
-## ---- message=FALSE, warning=FALSE---------------------------------------
-names(pigeon)[1] <- "interorbital"
-
-#and look again with str
-str(pigeon)
-
-
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE---------------
-#---CODING ANSWER---
-pigeon$interorbital[14]
-#or
-pigeon[14, 1] 
+## ---- load-refs, include=FALSE, cache=FALSE-----------------------------------------------------------
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
 
 
-## ------------------------------------------------------------------------
-hist(pigeon$interorbital)
-
-
-## ----echo=FALSE----------------------------------------------------------
-#---CODING ANSWER---
-names(pigeon)[1] <- "interorbital"
-hist(pigeon$interorbital,
-     xlim = c(8, 14),
-     main = NULL,
-     xlab = "Width (mm)",
-     ylab = "Number of pigeons",
-     col = "grey")
-
-
-## ---- message=FALSE, warning=FALSE---------------------------------------
-# library statement is only needed once per session
+## -----------------------------------------------------------------------------------------------------
 library(tidyverse)
 
-ggplot(data = pigeon, aes(x = interorbital)) +
+
+## ----eval=FALSE---------------------------------------------------------------------------------------
+## pigeon <- read_table2("pigeon.txt")
+
+
+## ----include=FALSE------------------------------------------------------------------------------------
+# I have my files organised differently so I use a different 'path' to my file
+pigeon <- read_table2("../data/pigeon.txt")
+
+
+## ----echo=FALSE---------------------------------------------------------------------------------------
+#---CODING ANSWER---
+str(pigeon)
+
+
+## ----include=FALSE------------------------------------------------------------------------------------
+#---CODING ANSWER---
+mean(pigeon$distance)
+
+
+## ----include=FALSE------------------------------------------------------------------------------------
+#---CODING ANSWER---
+# standard deviation
+sd(pigeon$distance)
+# number of values
+length(pigeon$distance) 
+
+
+## -----------------------------------------------------------------------------------------------------
+ggplot(data = pigeon, aes(x = distance)) +
   geom_histogram()
 
 
 
-## ---- message=FALSE, warning=FALSE---------------------------------------
-ggplot(data = pigeon, aes(x = interorbital)) +
-  geom_histogram(bins = 10, colour = "black")
+## -----------------------------------------------------------------------------------------------------
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 10)
 
 
 
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE---------------
-#---CODING ANSWER---
-mean(pigeon$interorbital)
-sd(pigeon$interorbital)
-length(pigeon$interorbital) 
+## ----echo=FALSE---------------------------------------------------------------------------------------
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 10) +
+  scale_x_continuous(name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0))
 
 
-## ---- message=FALSE, warning=FALSE, include=FALSE------------------------
+
+## ----echo=FALSE---------------------------------------------------------------------------------------
+# I chose a green
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 10,
+                 colour = "black",
+                 fill = "#d8e39f") +
+  scale_x_continuous(name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0)) 
+
+
+
+## -----------------------------------------------------------------------------------------------------
+ggplot(data = pigeon, aes(x = distance)) +
+  geom_histogram(bins = 10,
+                 colour = "black",
+                 fill = "#d8e39f") +
+  scale_x_continuous(name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0)) +
+  theme_classic()
+
+
+
+## ----eval=FALSE---------------------------------------------------------------------------------------
+## pigeon2 <- read_table2("data/pigeon2.txt")
+
+
+## ----echo=FALSE---------------------------------------------------------------------------------------
 #I have my files organised differently so I use a different 'path' to my file
-data2 <- read.table("../data/pigeon2.txt", header = T)
+pigeon2 <- read_table2("../data/pigeon2.txt")
 
 
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE---------------
+## ----include=FALSE------------------------------------------------------------------------------------
 #---CODING ANSWER---
-str(data2) 
+mean(pigeon2$A)
+mean(pigeon2$B) 
 
 
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE---------------
-#---CODING ANSWER---
-mean(data2$A)
-mean(data2$B) 
+## ----echo=FALSE, out.width="200px"--------------------------------------------------------------------
+knitr::kable(pigeon2[1:3,], 
+             format = "html") %>%
+  kable_styling(font_size = 16,
+                full_width = F, position = "left")
 
 
-## ------------------------------------------------------------------------
-# library statement is only needed once per session
-data3 <- gather(data = data2, key = population, value = distance)
-str(data3)
+## ----echo=FALSE---------------------------------------------------------------------------------------
+pigeon3 <- pivot_longer(data = pigeon2, 
+                        cols = everything(), 
+                        names_to = "population", 
+                        values_to = "distance")
 
 
-## ------------------------------------------------------------------------
-mean(data3$distance[data3$population == "A"])
+## ----echo=FALSE---------------------------------------------------------------------------------------
+knitr::kable(head(pigeon3[c(1:3,41:43),]), 
+             format = "html",
+             row.names = FALSE) %>%
+  kable_styling(font_size = 16,
+                full_width = F, position = "left")
 
 
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE---------------
-#---CODING ANSWER---
-mean(data3$distance[data3$population == "B"])
+## -----------------------------------------------------------------------------------------------------
+pigeon3 <- pivot_longer(data = pigeon2, 
+                        cols = everything(), 
+                        names_to = "population", 
+                        values_to = "distance")
 
 
-## ------------------------------------------------------------------------
-data3 %>% 
+
+## -----------------------------------------------------------------------------------------------------
+pigeon3 %>% 
   group_by(population) %>% 
-  summarise(mean(distance))
+  summarise(mean = mean(distance))
 
 
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE---------------
-#---CODING ANSWER---
-# variance
-data3 %>% 
+## -----------------------------------------------------------------------------------------------------
+pigeon3 %>% 
   group_by(population) %>% 
-  summarise(var(distance))
+  summarise(mean = mean(distance),
+            n = length(distance))
 
-# the number of cases (rows) is given by the length of the vector
-data3 %>% 
+
+## ----include=FALSE------------------------------------------------------------------------------------
+pigeon3 %>% 
   group_by(population) %>% 
-  summarise(length(distance))
+  summarise(mean = mean(distance),
+            n = length(distance),
+            sd = sd(distance), 
+            se = sd/sqrt(n))   
 
 
-## ----echo=FALSE,results="hide",warning=FALSE,message=FALSE,fig.width=4,fig.height=4----
-#---CODING ANSWER---
-# histograms for the word document
-# Create a histogram for each population, trying to match those illustrated.
-hist(data3$distance[data3$population == "A"],
-     xlim = c(8, 14),
-     ylim = c(0, 15),
-     main = NULL,
-     xlab = "Width (mm)",
-     ylab = "Number of pigeons",
-     col = "pink")
-hist(data3$distance[data3$population == "B"],
-     xlim = c(8, 14),
-     ylim = c(0, 15),
-     main = NULL,
-     xlab = "Width (mm)",
-     ylab = "Number of pigeons",
-     col = "lightblue")
+## -----------------------------------------------------------------------------------------------------
+ggplot(data = pigeon3, aes(x = distance)) +
+  geom_histogram()
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------
+ggplot(data = pigeon3, aes(x = distance)) +
+  geom_histogram()
+
+
+## -----------------------------------------------------------------------------------------------------
+ggplot(data = pigeon3, aes(x = distance)) +
+  geom_histogram() +
+  facet_grid(.~population)
+
+
+## ----echo=FALSE---------------------------------------------------------------------------------------
+ggplot(data = pigeon3, aes(x = distance)) +
+   geom_histogram(bins = 10,
+                 colour = "black",
+                 fill = "#d8e39f") +
+  scale_x_continuous(name = "Interorbital distance (mm)",
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Frequency",
+                     expand = c(0, 0),
+                     limits = c(0, 15)) +
+  theme_classic() +
+  theme(strip.background = element_blank()) +
+  facet_grid(.~population)
+
+
+## -----------------------------------------------------------------------------------------------------
+ggsave("fig1.png",
+       width = 5,
+       height = 4,
+       units = "in")
+
+
+## -----------------------------------------------------------------------------------------------------
 # generate some numbers
 nums <- sample(1:100, size = 10, replace = FALSE)
 
@@ -141,14 +221,18 @@ sqrtnums <- sqrt(nums)
 tnums <- log(sqrtnums)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------
 tnums <- nums %>% 
   sqrt() %>% 
   log()
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------------------
 tnums <- nums %>% 
   sqrt(.) %>% 
   log(.)
+
+
+## ----refs, echo=FALSE, results="asis"-----------------------------------------------------------------
+PrintBibliography(myBib)  
 

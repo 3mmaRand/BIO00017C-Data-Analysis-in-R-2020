@@ -82,7 +82,9 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 ![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png).
 
-![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop3.
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop3.
+
+![R](../pics/R.png) On the Files tab click on New Folder. In the box that appears type "data". This will be the folder that we save data files to.
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
 
@@ -118,9 +120,9 @@ kable_styling(knitr::kable(stattable, "html") )
 
 Look up `pnorm()` in the manual using `?pnorm`
 
-You give it a values for which you want a probability and by default it gives you the probability of getting that value or less from a normal distribution with a mean of 0 and a standard deviation of 1. If you want the probability of a value from a different normal distribution you need to set the mean and standard deviation appropriately.
+The default normal distribution has a mean of 0 and a standard deviation of 1. This is known as the standard normal distribution. You give `pnorm()` a value and it gives you the probability of getting that value or less from a normal distribution with a mean of 0 and a standard deviation of 1. If you want the probability of a value from a different normal distribution you need to set the mean and standard deviation appropriately.
 
-For example, I.Q. in the U.K. population is normally distributed with a mean of 100 and a standard deviation of 15. We can use `pnorm()` to calculate probabilities associated with having a particular range of IQs.
+For example, I.Q. in the U.K. population is normally distributed with a mean of 100 and a standard deviation of 15. 
 
 ```{r echo=FALSE, fig.width=4,fig.height=4}
 # figure to show IQ
@@ -135,6 +137,7 @@ axis(1, pos = 0)
     
 ```
 
+We can use `pnorm()` to calculate probabilities associated with having a particular range of IQs.
 We can use the values of mean = 100 and standard deviation = 15 in `pnorm()` to work out the probability of having an I.Q. of *115 or less*.
 
 ![R](../pics/R.png) First, create variables for the parameter values - this is considered good practice.
@@ -152,7 +155,7 @@ sd <- 15
 pnorm(115, m, sd)
 ```
 
-![R](../pics/R.png) Look at the manual page. Because the default is lower.tail = TRUE, we get the probability we want, P[IQ \< 115]
+![R](../pics/R.png) Look at the manual page. Because the default is `lower.tail = TRUE`, we get the probability we want, $P[IQ < 115]$
 
 ```{r echo=FALSE, fig.width=4,fig.height=4}
 # fig to illustrate IQ < 115
@@ -170,14 +173,14 @@ axis(1, pos = 0)
 
 I recommend sketching the distribution and shading the area you want to work out what arguments you want to give the function.
 
-![R](../pics/R.png) Determine the probability of having an IQ of 115 OR MORE? Do a sketch first.
+![R](../pics/R.png) Determine the probability of having an IQ of 115 OR MORE? **Do a sketch first.**
 
 ```{r echo=FALSE,results="hide"}
 #---CODING ANSWER---
 pnorm(115, m, sd, lower.tail = FALSE)
 ```
 
-![R](../pics/R.png) Determine the probability of having an IQ between 85 and 115? Do a sketch first.
+![R](../pics/R.png) Determine the probability of having an IQ between 85 and 115? **Do a sketch first.**
 
 ```{r echo=FALSE, fig.width=4,fig.height=4}
 # fig to illustrate IQ between 85 and 115
@@ -198,9 +201,9 @@ axis(1, pos = 0)
 pnorm(115, m, sd) - pnorm(85, m, sd)
 ```
 
-![Q](../pics/Q.png)Is this what you expect? <!-- #---THINKING ANSWER--- --> <!-- # You should expect this if you remember from the lecture that about 68% of the values are between - 1 s.d. and + 1 s.d and that 15 is the s.d. in this case -->
+![Q](../pics/Q.png) Is this what you expect? <!-- #---THINKING ANSWER--- --> <!-- # You should expect this if you remember from the independent study that about 68% of the values are between - 1 s.d. and + 1 s.d and that 15 is the s.d. in this case -->
 
-![R](../pics/R.png) What is 1.96 $\times$ standard deviation?
+![R](../pics/R.png) What is 1.96 $\times$ the standard deviation?
 
 ```{r include=FALSE}
 #---CODING ANSWER---
@@ -212,7 +215,7 @@ v <- 1.96 * 15
 ```{r include=FALSE}
 #---CODING ANSWER---
 pnorm(m + v, m, sd) - pnorm(m - v, m, sd)
-# 95% because 95% of values lies between +1.96 s.d. and -1.96 s.d.
+# this should be what you expect because 95% of values lies between +1.96 s.d. and -1.96 s.d.
 
 ```
 
@@ -225,7 +228,7 @@ We will again use the values of mean = 100 and standard deviation = 15 in `qnorm
 ![R](../pics/R.png) To find the I.Q. value that 20% people fall below:
 
 ```{r}
- qnorm(0.2, m, sd)
+qnorm(0.2, m, sd)
 ```
 
 ```{r echo=FALSE, fig.width=4,fig.height=4}
@@ -258,7 +261,7 @@ axis(1, pos = 0, labels = FALSE)
 qnorm(0.025, m, sd)
 ```
 
-![R](../pics/R.png) In what range do 99% of the population fall? Note that 99% means 1% (0.01) in both tails so 0.5% (0.005) in each tail. The figure may help you.
+![R](../pics/R.png) In what range do 99% of the population fall? Note that 99% means 1% (0.01) in **both** tails so 0.5% (0.005) in **each** tail. The figure may help you.
 
 ```{r echo=FALSE, fig.width=6,fig.height=4.5}
 # the figure for 99% 
@@ -333,21 +336,20 @@ Where 1.96 is the quantile for 95% confidence.
 
 You may need to refer to previous practicals to remind yourself how to carry out some of the following steps.
 
-![W](../pics/W.png) Save a copy of the file. I saved mine to my 'data' directory
+![W](../pics/W.png) Save a copy of the file to your 'data' directory
 
 ![R](../pics/R.png) Read in the data and check the structure of the resulting dataframe
 
-```{r include=FALSE}
+```{r eval=FALSE, echo=FALSE}
 #---CODING ANSWER---
-bee <- read.table("../data/beewing.txt", header = FALSE)
+# assuming you have set up your folders as instructed earlier
+bee <- read_table2("data/beewing.txt")
 str(bee)
 ```
 
-![R](../pics/R.png) Rename the column to 'wing'
-
 ```{r include=FALSE}
-#---CODING ANSWER---
-names(bee) <- "wing"
+# note my directory structure differs so I need a different path
+bee <- read_table2("../data/beewing.txt")
 str(bee)
 ```
 
@@ -361,7 +363,7 @@ n <- length(bee$wing)
 se <- sd / sqrt(n)
 ```
 
-![R](../pics/R.png) To calculate the 95% confidence interval we need to look up quantile (multiplier) using `qnorm()`
+![R](../pics/R.png) To calculate the 95% confidence interval we need to look up the quantile (multiplier) using `qnorm()`
 
 ```{r}
 q <- qnorm(0.975)
@@ -374,10 +376,19 @@ lcl <- m - q * se
 ucl <- m + q * se
 ```
 
+![R](../pics/R.png) Print the values
+
+```{r}
+lcl
+ucl
+```
+
+
 ![R](../pics/R.png) Between what values would you be 99% confident of the population mean being?
 
 ```{r include=FALSE}
 #---CODING ANSWER---
+# qnorm(0.975) gives the quantile for 95%. For 99% we need qnorm(0.995)
 q <- qnorm(0.995)
 lcl <- m - q * se
 ucl <- m + q * se
@@ -395,13 +406,19 @@ The fatty acid Docosahexaenoic acid (DHA) is a major component of membrane phosp
 
 ![R](../pics/R.png) Read in the data and check the structure of the resulting dataframe
 
-```{r include=FALSE}
+```{r eval=FALSE, echo=FALSE}
 #---CODING ANSWER---
-neur <- read.table("../data/neuron.txt", header = TRUE)
+## assuming you have set up your folders as instructed earlier
+neur <- read_table2("data/neuron.txt")
 str(neur)
 ```
 
-![R](../pics/R.png) Assign the mean to m
+```{r include=FALSE}
+# note my directory structure differs so I need a different path
+neur <- read_table2("../data/neuron.txt")
+```
+
+![R](../pics/R.png) Assign the mean to `m`
 
 ```{r include=FALSE}
 #---CODING ANSWER---
@@ -409,10 +426,11 @@ m <- mean(neur$csa)
 
 ```
 
-![R](../pics/R.png) Calculate and assign the standard error to se
+![R](../pics/R.png) Calculate and assign the standard error to `se`
 
 ```{r include=FALSE}
 #---CODING ANSWER---
+# I created intermediate variables for sd and n
 sd <- sd(neur$csa)
 n <- length(neur$csa)
 se <- sd / sqrt(n)
@@ -420,24 +438,34 @@ se <- sd / sqrt(n)
 
 To work out the confidence interval for our sample mean we need to use the *t* distribution because it is a small sample. This means we need to determine the degrees of freedom (the number in the sample minus one).
 
-![R](../pics/R.png) We can assign this to a variable using:
+![R](../pics/R.png) We can assign this to a variable, `df`, using:
 
 ```{r}
-df <- length(neur$csa) - 1; df
+df <- length(neur$csa) - 1
 ```
 
 ![R](../pics/R.png) The *t* value is found by:
 
 ```{r}
-t <- qt(0.975, df = df); t
+t <- qt(0.975, df = df)
 ```
 
-![R](../pics/R.png) And the confidence interval by:
+Note that we are using `qt()` rather than `qnorm()` but that the probability used is the same. 
+Finally, we need to put our mean, standard error and *t* value in the equation. $\bar{x} \pm \sf t_{[d.f]} \times s.e.$. 
+
+![R](../pics/R.png) The upper confidence limit is:
 
 ```{r}
-round(m + t * se, 2)
-round(m - t * se, 2)
+(m + t * se) %>% round(2)
 ```
+The first part of the command, `(m + t * se)` calculates the upper limit. This is 'piped' in to the `round()` function to round the result to two decimal places.
+
+![R](../pics/R.png) Calculate the lower confidence limit:
+
+```{r include=FALSE}
+(m - t * se) %>% round(2)
+```
+
 
 ![Q](../pics/Q.png) Given the upper and lower confidence values for the estimate of the population mean, what do you think about the effect of the DHA deficient diet? <!--
 #---THINKING ANSWER---
@@ -452,12 +480,22 @@ the 95% confidence interval from 132.75 $\mu m^2$ to 151.95 $\mu m^2$ doesn't in
 
 ## 1. Calculate confidence intervals
 
-Adiponectin is exclusively secreted from adipose tissue and modulates a number of metabolic processes. Nicotinic acid can affect adiponectin secretion. 3T3-L1 adipocytes were treated with nicotinic acid or with a control treatment and adiponectin concentration (pg/mL) measured. The data are in [adipocytes.txt](../data/adipocytes.txt). Each row represents an independent sample of adipocytes and the first column gives the concentration adiponectin and the second column indicates whether they were treated with nicotinic acid or not. Estimate the mean Adiponectin concentration in each group - this means calculate the sample mean and construct a confidence interval around it for each group. Something to bear in mind is that R works 'elementwise' which means you can use vectors of two values in a formula to get a vector of two results in the same way that you would use a single value. See [workshop 1](https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/workshops/01IntroductionToModuleAndRStudio.html#Why_it_works)
+Adiponectin is exclusively secreted from adipose tissue and modulates a number of metabolic processes. Nicotinic acid can affect adiponectin secretion. 3T3-L1 adipocytes were treated with nicotinic acid or with a control treatment and adiponectin concentration (pg/mL) measured. The data are in [adipocytes.txt](../data/adipocytes.txt). Each row represents an independent sample of adipocytes and the first column gives the concentration adiponectin and the second column indicates whether they were treated with nicotinic acid or not. Estimate the mean Adiponectin concentration in each group - this means calculate the sample mean and construct a confidence interval around it for each group. This exercise forces you to bring together ideas from several workshops:  
+
+* How to calculate a confidence intervals (this workshop)  
+* how to summarise variables in more than one group [workshop 2](02TestingDataTypesReadingInData.html#Tidy_format)  
+* that R works 'elementwise' which means you can use vectors of two values in a formula to get a vector of two results in the same way that you would use a single value [workshop 1](https:01IntroductionToModuleAndRStudio.html#Why_it_works).  
 
 ```{r include=FALSE}
 #---CODING AND THINKING ANSWER---
-adip <- read.table("../data/adipocytes.txt", header = T)
+# data import
+# if you continue with the directory structure you have for this workshop and have saved adipocytes.txt to the data folder, you will need:
+# adip <- read_table2("data/adipocytes.txt")
+# I have a different structure and need:
+adip <- read_table2("../data/adipocytes.txt")
+# examine the structure
 str(adip)
+# summarise
 adip_summary <- adip %>% 
   group_by(treatment) %>% 
   summarise(mean = mean(adiponectin),
@@ -468,12 +506,12 @@ adip_summary <- adip %>%
 # t value to construct our ci
 t <- qt(0.975, df = 14)
 #And the confidence interval are:
-round(adip_summary$mean + t * adip_summary$se, 2)
-round(adip_summary$mean - t * adip_summary$se, 2)
+(adip_summary$mean + t * adip_summary$se) %>% round(2)
+(adip_summary$mean - t * adip_summary$se) %>% round(2)
 # we conclude we're 95% certain the mean for the control group is 
 # between 4.73 and 6.36 and the mean for the nicotinic group is 
 # between 6.52 and 8.50. More usually we might put is like this:
-round(t * adip_summary$se, 2)
+(t * adip_summary$se) %>% round(2)
 # the mean for the control group is 5.55 +/- 0.82 and that for the nicotinic group is 7.51 +/- 0.99
 
 ```

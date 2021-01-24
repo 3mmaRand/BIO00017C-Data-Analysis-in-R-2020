@@ -91,7 +91,7 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 ![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png). 
 
-![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop2.
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop2.
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work. 
 
