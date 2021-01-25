@@ -252,14 +252,42 @@ class: inverse
    |__pigeons.Rproj
 ```
 ]
+
 ---
 # Example
 
-`r emo::ji("clapper")` Open the two script files check you can alter the paths for file import and export commands if you set your working directory to
+`r emo::ji("clapper")` Open the project from the Project menu in the top right. Navigate to the pigeons folder and open the `pigeons.Rproj` file.
+
+This will open the project and set the working directory to the RStudio Project directory. In this case, `pigeons`.
+
+`r emo::ji("clapper")` Verify this using `getwd()`
+
+`[1] "C:/Users/er13/Desktop/pigeons"`
+
+---
+# Example
+
+Normally, you should **not** change your working directory when working in a project. However, in the next exercise you will so that you can practice and check your understanding of relative paths. 
+
+The working directory can be changed through the File panel (instructions later). 
+---
+# Example
+
+`r emo::ji("clapper")` Open the two script files check the commands work. 
+
+The commands work because the paths are written *relative* to the project directory, `pigeons` which is the working directory
+
+---
+# Example
+
+The working directory can be changed by navigating to the folder you want to set it to in the File window and then using the More menu and choosing Set As Working directory
+
+`r emo::ji("clapper")` Now alter your working directory and then edit the paths appropriately to make the import and export commands work. Set your working directory to each of the following:
    * `pigeons`
    * `scripts`
    * the directory above `pigeons` on your set up
    * the directory two directories above `pigeons` on your set up
+
 
 ---
 

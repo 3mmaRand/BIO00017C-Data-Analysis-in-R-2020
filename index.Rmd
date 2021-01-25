@@ -48,7 +48,7 @@ xaringanExtra::use_extra_styles(
 [Workshop 2](workshops/02TestingDataTypesReadingInData.html) 
 
 **Week 4**
-
+[Slides pdf](slides/3.pdf)  
 [Workshop 3](workshops/03NormalDistributionCalculatingProbabilitiesAndCI.html) 
 
 **Week 5**
