@@ -239,7 +239,7 @@ The data in [pigeon2.txt](../data/pigeon2.txt) are similar data of interorbital 
 
 ![W](../pics/W.png) Save a copy of [pigeon2.txt](../data/pigeon2.txt) to the 'data' folder
 
-![R](../pics/R.png) To read the data in to R you need to use the relative path to the file in the `read-table2()` command:
+![R](../pics/R.png) To read the data in to R you need to use the relative path to the file in the `read_table2()` command:
 
 ```{r eval=FALSE}
 pigeon2 <- read_table2("data/pigeon2.txt")
