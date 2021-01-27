@@ -80,9 +80,19 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 # Getting started
 
+<div class = "key">
+
+**Top Tip**
+
+Did you set up a folder called 'data-analysis-in-r' (or similar) as directed in the first workshop?
+If not, you might want to do that now. [Workshop 1](workshops/01IntroductionToModuleAndRStudio.html) 
+
+</div>
+
+
 ![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png).
 
-![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop3.
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop3'.
 
 ![R](../pics/R.png) On the Files tab click on New Folder. In the box that appears type "data". This will be the folder that we save data files to.
 
@@ -114,15 +124,56 @@ kable_styling(knitr::kable(stattable, "html") )
 
 ```
 
-## Calculating Probabilities for single value
+## Using `pnorm()`
 
-### Using `pnorm()`
+![R](../pics/R.png) Look up `pnorm()` in the manual using `?pnorm`
 
-Look up `pnorm()` in the manual using `?pnorm`
+The normal distribution functions are documented together. The default normal distribution has a mean of 0 and a standard deviation of 1. This is known as the standard normal distribution. You give `pnorm()` a value and it gives you the probability of getting that value or less from a normal distribution with a mean of 0 and a standard deviation of 1. 
 
-The default normal distribution has a mean of 0 and a standard deviation of 1. This is known as the standard normal distribution. You give `pnorm()` a value and it gives you the probability of getting that value or less from a normal distribution with a mean of 0 and a standard deviation of 1. If you want the probability of a value from a different normal distribution you need to set the mean and standard deviation appropriately.
 
-For example, I.Q. in the U.K. population is normally distributed with a mean of 100 and a standard deviation of 15. 
+```{r echo=FALSE, fig.width=5,fig.height=6}
+# only for illustration
+IQ <- seq(40, 160, 1)
+cord.x <- c(0, seq(0, 115, 1), 115) 
+cord.y <- c(0, dnorm(seq(0, 115, 1), 100, 15), 0) 
+curve(dnorm(x, 100, 15),
+      xlim = c(40, 160),
+      ylim = c(-0.006, 0.03),
+      bty = "n",axes = F,
+      xlab = "", ylab = "") 
+polygon(cord.x, cord.y, col = "gray")
+text(90, 0.03, "pnorm(x) returns this probability")
+arrows(90, 0.028, 100, 0.015, length = .15)
+text(115, -0.001, "x")
+text(115, -0.006, "You give this value in brackets")
+arrows(115, -0.0045,115, -0.002, length = .15, col = "blue")
+axis(1, pos = 0, labels = FALSE)
+
+```
+![R](../pics/R.png) For example, the probability of getting a value of 1, $P[x < 1]$ , or less from this distribution is:
+```{r}
+pnorm(1)
+```
+There are two ways to find the probability of getting 1 or more, $P[x > 1]$.
+
+![R](../pics/R.png) 1. By subtracting $P[x < 1]$ from 1:
+
+```{r}
+1 - pnorm(1)
+```
+
+![R](../pics/R.png) 2. By using the `lower.tail` argument:
+```{r}
+pnorm(1, lower.tail = FALSE)
+```
+
+![R](../pics/R.png) Read the manual for `pnorm()`! Notice that the `lower.tail` is set to `TRUE` as a default. If you do not give the argument, `TRUE` is the value it will take and is why you get the probability of getting a particular value *or less*. If we set `lower.tail = FALSE`, we get the upper tail and thus the probability of a particular value *or more*.
+
+If you want the probability of a value from a different normal distribution you need to set the mean and standard deviation because `mean = 0` and `sd = 1` are the defaults.
+
+## IQ example
+
+I.Q. in the U.K. population is normally distributed with a mean of 100 and a standard deviation of 15. We will work with this distribution over the next few exercises.
 
 ```{r echo=FALSE, fig.width=4,fig.height=4}
 # figure to show IQ
@@ -137,13 +188,19 @@ axis(1, pos = 0)
     
 ```
 
-We can use `pnorm()` to calculate probabilities associated with having a particular range of IQs.
-We can use the values of mean = 100 and standard deviation = 15 in `pnorm()` to work out the probability of having an I.Q. of *115 or less*.
+### Calculating Probabilities for an individual
 
-![R](../pics/R.png) First, create variables for the parameter values - this is considered good practice.
+We can use `pnorm()` to calculate probabilities associated with having a particular range of IQs.
+
+We can use the values of `mean = 100` and `sd = 15` in `pnorm()` to work out the probability of having an I.Q. of 115 or less.
+
+![R](../pics/R.png) First, create variables for the parameter values:
 
 ```{r}
 # create variables for the parameter values
+# we do this so we don't have to keep typing the values
+# and if we want to use the same code on a different example,
+# we only have to change two lines of code. This is good practice
 m <- 100
 sd <- 15
 ```
@@ -155,7 +212,7 @@ sd <- 15
 pnorm(115, m, sd)
 ```
 
-![R](../pics/R.png) Look at the manual page. Because the default is `lower.tail = TRUE`, we get the probability we want, $P[IQ < 115]$
+Because the default is `lower.tail = TRUE`, we get the probability we want, $P[IQ < 115]$
 
 ```{r echo=FALSE, fig.width=4,fig.height=4}
 # fig to illustrate IQ < 115
@@ -170,8 +227,14 @@ curve(dnorm(x, 100, 15),
 polygon(cord.x, cord.y, col = "gray")
 axis(1, pos = 0)
 ```
+<div class = "key">
 
-I recommend sketching the distribution and shading the area you want to work out what arguments you want to give the function.
+**Top Tip**
+
+Sketch the distribution on paper and shade the area you want. This will help you  to work out values to give the function.
+
+</div>
+
 
 ![R](../pics/R.png) Determine the probability of having an IQ of 115 OR MORE? **Do a sketch first.**
 

@@ -375,13 +375,6 @@ ggplot(data = pigeon3, aes(x = distance)) +
   geom_histogram()
 ```
 
-![R](../pics/R.png) Create a histogram of the whole dataset:
-
-```{r}
-ggplot(data = pigeon3, aes(x = distance)) +
-  geom_histogram()
-```
-
 ![R](../pics/R.png) Add 'facets' to put each population of a separate figure:
 
 ```{r}
