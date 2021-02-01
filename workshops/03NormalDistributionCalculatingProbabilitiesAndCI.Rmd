@@ -150,6 +150,7 @@ arrows(115, -0.0045,115, -0.002, length = .15, col = "blue")
 axis(1, pos = 0, labels = FALSE)
 
 ```
+
 ![R](../pics/R.png) For example, the probability of getting a value of 1, $P[x < 1]$ , or less from this distribution is:
 ```{r}
 pnorm(1)

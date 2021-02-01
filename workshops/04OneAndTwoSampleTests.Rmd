@@ -1,0 +1,640 @@
+---
+title:  "Normal distributions, calculating probabilities and Confidence Intervals"
+author: "Emma Rand"
+output:
+  html_document:
+    toc: true
+    depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: flatly
+    highlight: pygments
+    css: [../css_files/emma-workshop.css, ../css_files/emma-fonts.css]
+  word_document: default
+---
+
+![](../pics/17C.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(RefManageR)
+```
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+# Introduction
+
+## Session overview
+
+In this workshop you will get practice in choosing between, performing, and presenting the results of one- and two- sample *t*-tests and their non-parametric equivalents in R.
+ 
+## Learning Outcomes
+
+By actively following the materials and carrying out the independent study before and after the contact hours the successful student will be able to:
+
+-   Explain the difference between dependent and independent samples (MLO 2)
+-   Select, appropriately, *t*-tests and their non-parametric equivalents (the Wilcoxon tests) (MLO 2)
+-   Apply, interpret and evaluate the legitimacy of  the tests in R (MLO 3 and 4)
+-   Summarise and illustrate with appropriate R figures test results scientifically (MLO 3 and 4)
+
+## Philosophy
+
+Workshops are not a test. It is expected that you often don't know how to start, make a lot of mistakes and need help. Do not be put off and don't let what you can not do interfere with what you can do. You will benefit from collaborating with others and/or discussing your results. It is expected that you are familiar with independent study content before the workshop. However, you need not remember or understand every detail as the workshop should build and consolidate your understanding. You may wish to refer to the independent study materials for reference.
+
+Materials are indexed here: <https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/>
+
+## Key
+
+These four symbols are used at the beginning of each instruction so you know where to carry out the instruction.
+
+![W](../pics/W.png) is something you need to do on your computer. It may be opening programs or documents or locating a file.
+
+![R](../pics/R.png) is something you should do in RStudio. It will often be typing a command or using the menus but might also be creating folders, locating or moving files.
+
+![GC](../pics/GC.png) is something you should do in your browser on the internet. It may be searching for information, going to the VLE or downloading a file.
+
+![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.
+
+![Artwork by Allison Horst](../pics/horst/not_normal.png)
+
+# Getting started
+
+<div class = "key">
+
+**Top Tip**
+
+Did you set up a folder called 'data-analysis-in-r' (or similar) as directed in the first workshop?
+If not, you might want to do that now. [Workshop 1](workshops/01IntroductionToModuleAndRStudio.html) 
+
+</div>
+
+
+![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png).
+
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop3'.
+
+![R](../pics/R.png) On the Files tab click on New Folder. In the box that appears type "data". This will be the folder that we save data files to.
+
+![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
+
+![R](../pics/R.png) Load the `tidyverse`:
+
+```{r}
+library(tidyverse)
+```
+
+# Exercises
+
+## Egg laying in parasitic wasps 
+
+The data in [wasp.txt](../data/wasp.txt) concern the egg-laying behaviour of a species of parasitic wasp, laying its eggs on a beetle larva. Wasps and other Hymenopterans (Ants and Bees) are haplo-diplod: unfertilised eggs are haploid and develop into males, whereas fertilised eggs are diploid and develop into females. Researchers wanted to know if mating status affected the time (in hours) the wasp takes to lay its eggs. Each row represents an individual wasp. The first column gives the time taken and the second column indicates whether they are mated or unmated. 
+
+![W](../../pics/W.png) Save a copy of the data file [wasp.txt](../data/wasp.txt)
+
+![R](../../pics/R.png) Read in the data and check the structure
+```{r waspimport, echo = FALSE}
+#---CODING ANSWER---
+# I have all my data in a folder called data; your directory structure may differ
+wasp  <-  read.table("../data/wasp.txt", header = T)
+```
+
+![R](../../pics/R.png) Do a quick plot of the data:
+```{r}
+ggplot(data = wasp, aes(x = status, y = time)) +
+  geom_violin()
+```
+
+
+### Summarising the data
+
+![R](../../pics/R.png) Find the means for each group. You may need to look this up [Week 3: Testing, Data types and Reading in data](02TestingDataTypesReadingInData.html#import_data_2)
+```{r waspmean, echo = FALSE, results='hide'}
+#---CODING ANSWER---
+wasp %>% 
+  group_by(status) %>% 
+  summarise(mean(time))
+
+```
+
+
+![R](../../pics/R.png) Create a data frame called `waspsummary` that contains the means, standard deviations, sample sizes and standard errors for the mated and unmated females. You may want to look this up in the [lecture notes](../lects/web06Two sample tests.pdf).
+```{r waspsummary, echo = FALSE, results='hide'}
+#---CODING ANSWER---
+waspsummary <- wasp %>%
+  group_by(status) %>%
+  summarise(mean = mean(time),
+            std = sd(time),
+            n = length(time),
+            se = std/sqrt(n))
+
+```
+
+
+
+### Selecting
+
+![Q](../../pics/Q.png) Do you think this is a one/paired test or two-sample test?
+<!--
+#---THINKING ANSWER---
+Two sample - the females are either mated or unmated, not both. There is no link between the first mated value and the first unmated value
+-->
+
+
+### Applying, interpreting and reporting
+
+![R](../../pics/R.png) Carry out a two-sample _t_-test:
+
+```{r waspt}
+t.test(data = wasp,
+       time ~ status,
+       var.equal = T)
+```
+
+![Q](../../pics/Q.png) What do you conclude from the test? Write your conclusion in a form suitable for a report. 
+<!--
+#---THINKING ANSWER---
+Unmated females take significantly longer ($\bar{x} \pm s.e.$: 31.1 $\pm$ 1.9 hr) than mated females (23.4  $\pm$ 1.6 hr) to complete egg laying (t-test: _t_ = 3.14;_d.f._ = 58; _p_ = 0.003)
+-->
+
+
+### Check assumptions
+
+We need to calculate the residuals – the difference between predicted (i.e., the group mean) and observed values. We can do this in two steps:
+
+![R](../../pics/R.png) First by adding a column that holds the mean for the group each value belongs to by 'merging' the summary data into the raw data:
+
+```{r}
+# add the group means to the data
+wasp <- merge(wasp, waspsummary, by = "status")
+```
+
+I suggest you look at the `wasp` dataframe to see what this code has done.
+
+![R](../../pics/R.png) Second by adding a column for each 'residual'
+
+```{r}
+# add the group means to the data
+# add the residuals
+wasp <- wasp %>%
+  mutate(residual = time - mean)
+```
+
+Now we are ready to examine the distribution of the residuals. 
+
+![R](../../pics/R.png) Run a normality test:
+```{r}
+shapiro.test(wasp$residual)
+```
+
+
+Usually, when we are doing statistical tests we 'hope' we will find significance. In this case, we hope it will not be significant. A non-significant result means that there is no significant difference between the distribution of the residuals and a normal distribution.
+
+![Q](../../pics/Q.png) What do you conclude from the result of the normality tests? 
+<!--
+#---THINKING ANSWER---
+Not significant - our data are consistent with meeting the assumption.
+--> 
+
+![R](../../pics/R.png) Check the residuals are homogenously distributed (variance is the same in both groups):
+```{r}
+ggplot(data = wasp,
+       aes(x = mean, y = residual)) +
+  geom_point()
+```
+
+There's a bit of an outlier in one group but this looks 'ok'.
+
+
+### Illustrating
+
+We are going to create a figure like this:
+
+```{r waspfigdemo, echo = FALSE, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "gray50") +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean - se, ymax = mean + se),
+                width = 0.3) +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean, ymax = mean),
+                width = 0.2) +
+  ylab("Time (hr)") +
+  xlab(NULL) +
+    ylim(0, 70) +
+  scale_x_discrete(labels = c("Mated", "Unmated")) +
+  theme_classic()
+
+```
+
+In this figure, we have the data points themselves which are in `wasp` dataframe and the means and standard errors which are in the `waspsummary` dataframe. That is, we have two dataframes we want to plot.
+Here you will learn that dataframes and aesthetics can be specified within a `geom_...` (rather than in the `ggplot()`) if the geom only applies to some of the data you want to plot.
+
+We will build the plot up in small steps but as you get more used to `ggplot` you'll probably be able to create figures in fewer steps. Each time you run `ggplot()` you get a *new* plot, you are not actually adding to an existing plot.
+
+
+![R](../../pics/R.png) First, create an empty plot:
+```{r, fig.width = 4, fig.height = 4}
+ggplot()
+```
+
+![R](../../pics/R.png) Now add the data points:
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time))
+```
+
+Notice how we have given the data argument and the aesthetics inside the geom. The variables `status` and `time` are in the `wasp` dataframe
+
+![R](../../pics/R.png) So the data points don't overlap, we can add some random jitter in the *x* direction:
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0))
+```
+
+We've set the vertical jitter to 0 because, in contrast to the categorical *x*-axis,  movement on the *y*-axis has meaning (time). 
+
+
+![R](../../pics/R.png) Let's make the points a light grey:
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "grey50")
+```
+
+Now to add the errorbars. These go from one standard error below the mean to one standard error above the mean.
+
+![R](../../pics/R.png) Add a `geom_errorbar()` for errorbars:
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "grey50") +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean - se, ymax = mean + se),
+                width = 0.3) 
+  
+```
+
+We have specified the `waspsummary` dataframe and the variables `status`, `mean` and `se` are in that.
+
+There are several ways you could add the mean. You could use `geom_point()` but I like to use errorbars that start and stop in the same place, the mean.
+
+![R](../../pics/R.png) Add a `geom_errorbar()` for the mean:
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "grey50") +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean - se, ymax = mean + se),
+                width = 0.3) +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean, ymax = mean),
+                width = 0.3)
+  
+```
+
+![R](../../pics/R.png) Alter the axis labels and limits:
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "grey50") +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean - se, ymax = mean + se),
+                width = 0.3) +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean, ymax = mean),
+                width = 0.3) +
+  ylab("Time (hr)") +
+  xlab(NULL) +
+  ylim(0, 70)
+  
+```
+
+![R](../../pics/R.png) And finally format the figure in a way that is more suitable for including in a report:
+
+```{r, fig.width = 4, fig.height = 4}
+ggplot() +
+  geom_point(data = wasp, aes(x = status, y = time),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "gray50") +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean - se, ymax = mean + se),
+                width = 0.3) +
+  geom_errorbar(data = waspsummary, 
+                aes(x = status, ymin = mean, ymax = mean),
+                width = 0.2) +
+  ylab("Time (hr)") +
+  xlab(NULL) +
+  ylim(0, 70) +
+  scale_x_discrete(labels = c("Mated", "Unmated")) +
+  theme_classic()
+```  
+
+
+
+## Grouse Parasites
+
+These data come from a sample of grouse shot in Scotland. The grouse livers were dissected and the number of individuals of a parasitic nematode were counted. 
+We want to know if males and females have different infection rates.
+ 
+males: 5, 16, 8, 64, 51, 11, 9, 7
+
+females: 0, 2, 1, 3, 6, 10, 4, 12
+
+![R](../../pics/R.png) Create dataframe for these data. Mine ended up like this ![](../../pics/grouse.png). You might find it useful to look at [workshop 2](02TestingDataTypesReadingInData.html#tidy_format)
+```{r grousedata, echo = FALSE}
+# I did this by putting the data in two columns then using gather() f
+# dataframe of males and females
+grouse <- data.frame(males = c(5, 16, 8, 64, 51, 11, 9, 7), 
+                     females = c(0, 2, 1, 3, 6, 10, 4, 12)) %>% 
+  gather(key = sex, value = nematodes)
+
+```
+### Selecting
+![Q](../../pics/Q.png) Do these data look normally distributed? 
+<!--
+#---THINKING ANSWER---
+No and little need to test/plot - they're counts, skewed and have unequal variances
+-->
+
+![Q](../../pics/Q.png) What is the null hypothesis?
+<!--
+#---THINKING ANSWER---
+no difference infection rates between males and females
+-->
+
+![Q](../../pics/Q.png) What test do you suggest?
+<!--
+#---THINKING ANSWER---
+Wilcoxon unpaired AKA Mann-Whitney
+-->
+
+### Applying, interpreting and reporting
+
+![R](../../pics/R.png) Summarise the data by finding the median of each group.
+```{r echo=FALSE}
+grouse %>% 
+  group_by(sex) %>% 
+  summarise(median(nematodes))
+```
+
+
+![R](../../pics/R.png)  Carry out a two-sample Wilcoxon test (also known as a Mann-Whitney):
+```{r grousewilcox}
+wilcox.test(data = grouse, nematodes ~ sex)
+```
+![Q](../../pics/Q.png) What do you conclude from the test? Write your conclusion in a form suitable for a report. 
+<!--
+#---THINKING ANSWER---
+Males (median = 10) had signifcantly more nemtodes than females (median = 3.5) (_W_ = 54, _p_ = 0.02067).
+-->
+
+### Illustrating
+
+A box plot is a usually good choice for illustrating a two-sample Wilcoxon test because it shows the median and interquartile range.
+
+![R](../../pics/R.png) We can create a boxplot with:  
+```{r grousefig, fig.width = 4, fig.height = 4}
+ggplot(grouse, aes(x = sex, y = nematodes) ) +
+  geom_boxplot() + 
+  xlab("Sex") +
+  ylab("Number of nematodes") +
+  theme_classic()
+```
+
+
+## Gene Expression
+
+Researchers are interested in the expression levels of a particular set of 35 _E.coli_ genes in response to heat stress. They measure the expression of the genes at 37 and 42 degrees C (labelled low and high temperature). These samples are **not** independent because we might expect there to be a relationship between expression at 37 and 42 degrees within a gene.
+
+### Selecting
+![Q](../../pics/Q.png) What is the null hypothesis?
+<!--
+#---THINKING ANSWER---
+expression is not affected by temperature / for each gene, the expression at the higher t   = expression at the lower t
+-->
+
+![W](../../pics/W.png) Save a copy of [coliexp.txt](../data/coliexp.txt)
+
+![R](../../pics/R.png) Read the data in
+```{r geneimport, echo = FALSE}
+#---CODING ANSWER---
+# I have my data files in a folder called data
+coliexp  <-  read.table("../data/coliexp.txt", header = T)
+```
+
+![Q](../../pics/Q.png) What is the appropriate parametric test?
+<!--
+#---THINKING ANSWER---
+the appropriate parametric test is the paired sample t 
+-->
+
+### Applying, interpreting and reporting
+
+![R](../../pics/R.png) Now carry out a paired-sample _t_-test. 
+```{r genepairedt}
+t.test(data = coliexp, expression ~ temperature, paired = T)
+
+```
+
+![Q](../../pics/Q.png) State your conclusion from the test in a form suitable for including in a report. Make sure you give the direction of any signifcant effect.
+<!--
+#---THINKING ANSWER---
+The expression of individual gens is signifcantly higher are high temperatures than low temperatures (_t_ = 3.20, _d.f._ = 34, _p_ = 0.0029).
+-->
+
+# Independent study
+
+## Analyses
+
+Decide which test you should use to analyse the following data sets. In each case give the reasons for your choice of test and state the null hypothesis. Write your conclusions in a form suitable for including in a report. Can you make figures?
+
+### Plant Biotech
+Some plant biotechnologists are trying to increase the quantity of omega 3 fatty acids in _Cannabis sativa_. They have developed a genetically modified line using genes from _Linum usitatissimum_ (linseed). They grow 50 wild type and fifty modified plants to maturity, collect the seeds and determine the amount of omega 3 fatty acids. The data are in [csativa.txt](../data/csativa.txt) Do you think their modification has been successful?
+   
+```{r csativa, include=FALSE}
+#---THINKING AND CODING ANSWER---
+csativa  <-  read.table("../data/csativa.txt", header = T)
+str(csativa)
+
+# First realise that this is a two sample test. You have two independent samples
+#  - there are a total of 100 different plants and the values in one 
+#  group have no relationship to the values in the other.
+
+# create a rough plot of the data  
+ggplot(data = csativa, aes(x = plant, y = omega)) +
+  geom_violin()
+# note the modified plants seem to have lowere omega!
+
+# create a summary of the data
+csativasum <- csativa %>%
+  group_by(plant) %>%
+  summarise(mean = mean(omega),
+            std = sd(omega),
+            n = length(omega),
+            se = std/sqrt(n))
+
+# The data seem to be continuous so it is likely that a t-test will be fine
+t.test(data = csativa, omega ~ plant, var.equal = TRUE)
+# So there is a significant difference but you need to make sure you know the direction!
+
+# let's check the assumptions
+# add the group means to the data
+csativa <- merge(csativa, csativasum[,1:2], by = "plant")
+# add the residuals
+csativa <- csativa %>%
+  mutate(residual = omega - mean)
+
+# normality test and plot
+shapiro.test(csativa$residual)
+ggplot(data = csativa,
+       aes(x = mean, y = residual)) +
+  geom_point()
+
+# One could argue that the variance is greater in one group. In which case you could run a Welch's t-test
+t.test(data = csativa, omega ~ plant)
+
+
+# You would write it up like this:
+# Wild plants have a significantly higher omega 3 content (($\bar{x} \pm s.e.$ =  56.41 $\pm$ 1.11) than modified plants (49.46 $\pm$ 0.82)(Welch's t-test: t = 5.03; _d.f._ = 90.36; _n1_ =  50, _n2_ = 50; _p_ < 0.001).
+
+# A figure 
+ggplot() +
+  geom_point(data = csativa, aes(x = plant, y = omega),
+             position = position_jitter(width = 0.1, height = 0),
+             colour = "gray50") +
+  geom_errorbar(data = csativasum, 
+                aes(x = plant, ymin = mean - se, ymax = mean + se),
+                width = 0.3) +
+  geom_errorbar(data = csativasum, 
+                aes(x = plant, ymin = mean, ymax = mean),
+                width = 0.2) +
+  xlab("Plant type") +
+  ylab("Amount of Omega 3 (units)") +
+  scale_x_discrete(labels = c("GMO", "WT")) +
+  ylim(0, 80) +
+  theme_classic()
+   
+```
+
+### Sheep diet
+In order to investigate the effects of feeding fertilised grass to sheep, one of each pair of fourteen sets of twins was fed fertilised grass whilst the other was fed unfertilised grass and the adult weight of the sheep was recorded. The data are in [sheep.txt](../data/sheep.txt) . Is there difference in the effect of fertilised and unfertilised grass on sheep weight?
+```{r sheep, include=FALSE}
+#---THINKING AND CODING ANSWER---
+#the data are paired. although the two treatments are not applied to the same individual, they are applied to each of a set of twins. the first sheep fed unfertilised grass is the twin of the first sheep fed fertilsed grass. this means the columns are not independent and we need to do a paired test (either a paired wilcoxon or a paired t). These data do not appear to be normally distributed (not many values, integers) a non-parametric test is probably preferable. 
+
+# read in the data
+sheep  <-  read.table("../data/sheep.txt", header = T)
+str(sheep)
+
+# summarise the data
+sheep %>% 
+  group_by(grass) %>% 
+  summarise(median(weight))
+
+# run the wilcoxon
+wilcox.test(data = sheep, weight ~ grass, paired = T)
+
+
+# You would write it up like this:
+# Within a set of twins, the individual fed unfertilissed grass achieved a signifcantly greater adult weight than that fed fertilsed grass (Wilcoxon signed rank test: V = 8, p-value = 0.009).
+
+sheep <- sheep %>% mutate(twin = factor(c(1:14, 1:14)))
+ggplot(data = sheep, aes(x = grass, 
+                         y = weight, 
+                         group = twin, 
+                         colour = twin)) +
+  scale_x_discrete(labels = c("Fertilised", "Unfertilised"), 
+                   name = "Grass") +
+  geom_point() +
+  geom_line() +
+  ylab("Weight (Kg)") +
+  ylim(0, 55) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+```
+
+## Reading
+[Wickham, H (2013). Tidy Data. Journal of Statistical Software.](https://www.jstatsoft.org/article/view/v059i10)
+
+# The Code files
+
+These contain answers and code even though they do not appear on the webpage itself.
+
+[Rmd file](05OneAndTwoSampleTests.Rmd)
+The Rmd file is the file I use to compile the practical. Rmd stands for R markdown allow R code and ordinary text to be inter weaved to produce well-formatted reports including webpages.
+
+[Plain script file](../scripts/05OneAndTwoSampleTests.R)
+This is plain script (.R) version of the practical
+
+
+# Script example
+This is an example of a well formatted analysis script for the wasp data.
+
+[Script example](../scripts/exampleprac5.R)
+
+
+# Objectives from previous sessions
+
+[Introduction to module and RStudio](01IntroductionToModuleAndRStudio.html)
+
+* to explain why we need statistical tests and the logic of hypothesis testing (MLO 1)
+* use the R command line as a calculator and to assign variables (MLO 3)
+* create and use the basic data types in R (MLO 3)
+* find their way around the RStudio windows (MLO 3)
+* create, use and save a script file to run r commands (MLO 3)
+* search and understand manual pages (MLO 3)
+
+[Testing, Data types and reading in data](02TestingDataTypesReadingInData.html)
+
+* to able to explain what response and explanatory variables are, distinguish between data types and describe how these impact choice of test (MLO 1 and 2)
+* demonstrate the process of hypothesis testing with an example and evaluate potential inferences (MLO 1 and 2)
+* read in data in to RStudio, create simple summaries and plots using manual pages where necessary (MLO 3)
+* create neat reports in Word which include text and figures (MLO 4)
+
+[Goodness of Fit and Contingency chi-squared tests](03ChiSquaredTests.html)
+
+* recognise when to use chi-squared Goodness of Fit and Contingency tests (MLO 2)
+* be able to carry out, interpret and report scientifically both types in R (MLO 3 and 4)
+
+
+[Calculating summary statistics, probabilities and confidence intervals](04CalculatingSummaryStatisticsProbabilitiesAndCI.html)
+
+* Explain the properties of 'normal distributions' and their use in statistics (MLO 1 and 2)
+* Define, select and calculate with R probabilities, quantiles and confidence intervals (MLO 3 and 4)
+
+![](../../pics/17Cend.png)
+
