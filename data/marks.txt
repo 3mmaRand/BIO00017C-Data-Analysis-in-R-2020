@@ -1,0 +1,21 @@
+subject mark
+1 maths 97
+2 maths 58
+3 maths 65
+4 maths 65
+5 maths 80
+6 maths 48
+7 maths 85
+8 maths 63
+9 maths 58
+10 maths 98
+11 stats 89
+12 stats 49
+13 stats 68
+14 stats 70
+15 stats 74
+16 stats 30
+17 stats 78
+18 stats 69
+19 stats 40
+20 stats 85

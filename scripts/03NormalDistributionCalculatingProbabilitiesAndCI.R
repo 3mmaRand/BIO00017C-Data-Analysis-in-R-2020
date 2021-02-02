@@ -39,6 +39,38 @@ kable_styling(knitr::kable(stattable, "html") )
 
 
 
+## ----echo=FALSE, fig.width=5,fig.height=6-------------------------------------------------------------
+# only for illustration
+IQ <- seq(40, 160, 1)
+cord.x <- c(0, seq(0, 115, 1), 115) 
+cord.y <- c(0, dnorm(seq(0, 115, 1), 100, 15), 0) 
+curve(dnorm(x, 100, 15),
+      xlim = c(40, 160),
+      ylim = c(-0.006, 0.03),
+      bty = "n",axes = F,
+      xlab = "", ylab = "") 
+polygon(cord.x, cord.y, col = "gray")
+text(90, 0.03, "pnorm(x) returns this probability")
+arrows(90, 0.028, 100, 0.015, length = .15)
+text(115, -0.001, "x")
+text(115, -0.006, "You give this value in brackets")
+arrows(115, -0.0045,115, -0.002, length = .15, col = "blue")
+axis(1, pos = 0, labels = FALSE)
+
+
+
+## -----------------------------------------------------------------------------------------------------
+pnorm(1)
+
+
+## -----------------------------------------------------------------------------------------------------
+1 - pnorm(1)
+
+
+## -----------------------------------------------------------------------------------------------------
+pnorm(1, lower.tail = FALSE)
+
+
 ## ----echo=FALSE, fig.width=4,fig.height=4-------------------------------------------------------------
 # figure to show IQ
 # only for illustration    
@@ -54,6 +86,9 @@ axis(1, pos = 0)
 
 ## -----------------------------------------------------------------------------------------------------
 # create variables for the parameter values
+# we do this so we don't have to keep typing the values
+# and if we want to use the same code on a different example,
+# we only have to change two lines of code. This is good practice
 m <- 100
 sd <- 15
 

@@ -538,8 +538,6 @@ the 95% confidence interval from 132.75 $\mu m^2$ to 151.95 $\mu m^2$ doesn't in
 
 # `r emo::ji("party")` Well Done! `r emo::ji("party")`
 
-![Artwork by @allison_horst](../pics/horst/nominal_ordinal_binary.png)
-
 # Independent study following the workshop
 
 ## 1. Calculate confidence intervals
