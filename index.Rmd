@@ -1,5 +1,5 @@
 ---
-title: "Index of slides, workshops and data"
+title: "Index"
 subtitle: "Data Analysis in R section of Laboratory and BIO00017C Professional Skills for Bioscientists"
 author: "Emma Rand"
 institute: "University of York, UK"
@@ -31,54 +31,92 @@ xaringanExtra::use_extra_styles(
   mute_unhighlighted_code = TRUE)
 ```
 
-# slides, workshops, data
+# Index
 
-.font50[
+.font40[
 .pull-left[
 **Week 2**
 
-Slides [powerpoint](slides/01-Introduction-to-module.pptx) or [pdf](slides/01-Introduction-to-module.pdf) (will load in your browser)  
-[RStudio Anatomy](x-slides/rstudio-anatomy.html)  
-[Workshop 1](workshops/01IntroductionToModuleAndRStudio.html) 
+-   Slides [powerpoint](slides/01-Introduction-to-module.pptx) or [pdf](slides/01-Introduction-to-module.pdf) (will load in your browser)
+-   [Video for slides](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=78563b32-6a62-4b16-b9a8-acb100aa793c) Panopto, UoY users only
+-   [Getting started with Rstudio video](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=10b5193a-c246-49bf-9746-acaf00cd1781) Panopto, UoY users only
+-   [RStudio Anatomy](x-slides/rstudio-anatomy.html)  
+-   [Data Structures and functions video](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=b9bc2b49-1c73-416e-b20f-acaf00e917dd) Panopto, UoY users only
+-   ["On the psychology of statistics" Section 1.1](https://learningstatisticswithr.com/book/why-do-we-learn-statistics.html#whywhywhy)
+-   [Workshop 1](workshops/01IntroductionToModuleAndRStudio.html) 
+-   [Getting help in Rstudio video](https://www.youtube.com/watch?v=tVQHFuitFJw&feature=youtu.be) Youtube
 
 **Week 3**
 
-Slides [powerpoint](slides/02-logic-data-types-importing.pptx) or [pdf](slides/02-logic-data-types-importing.pdf) (will load in your browser)   
-[Working directories and Paths](x-slides/working_dir_and_paths.html)  
-[Workshop 2](workshops/02TestingDataTypesReadingInData.html) 
+-   Slides [powerpoint](slides/02-logic-data-types-importing.pptx) or [pdf](slides/02-logic-data-types-importing.pdf) (will load in your browser)
+-   Video for slides: [Welcome to Week 3!](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=7047d58a-546a-4ded-ae69-acb70077dc09) Panopto, UoY users only
+-   Video for slides: [Data Types](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=78563b32-6a62-4b16-b9a8-acb100aa793c) Panopto, UoY users only
+-   Video for slides: [Logic of hypothesis testing](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=ca648362-7c9d-432c-895b-acb70113daf7) Panopto, UoY users only
+-   [Working directories and Paths](x-slides/working_dir_and_paths.html)  
+-   [Workshop 2](workshops/02TestingDataTypesReadingInData.html) 
+-   ["Data visualisation" 3.1 to 3.6](https://r4ds.had.co.nz/data-visualisation.html)
+
 
 **Week 4**
 
-Slides [powerpoint](slides/03-normal-distributions-probabilities-ci.pptx) or [pdf](slides/03-normal-distributions-probabilities-ci.pdf) (will load in your browser)  
-[Workshop 3](workshops/03NormalDistributionCalculatingProbabilitiesAndCI.html) 
-
-**Week 5**
-
-Slides [powerpoint](slides/04-one-sample-tests.pptx) or [pdf](slides/04-one-sample-tests.pdf) (will load in your browser)  
-
-
-
-**Week 6**
-
-[Workshop 4](workshops/04OneAndTwoSampleTests.html) 
+-   Slides [powerpoint](slides/03-normal-distributions-probabilities-ci.pptx) or [pdf](slides/03-normal-distributions-probabilities-ci.pdf) (will load in your browser) 
+-   Video for slides: [Welcome to Week 4!](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=b3573f53-834d-4ad8-b668-acbb009f4253) Panopto, UoY users only
+-   Video for slides: [What is the normal distribution](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=0d7bf934-e0b2-4956-8996-acbb00a297d5) Panopto, UoY users only
+-   ["An introduction to the normal distribution"](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html)
+-   Video for slides: [Sampling distributions and the Standard Error](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=e6e22c7c-213c-4953-aa3d-acbc00d468e7) Panopto, UoY users only
+-   Video for slides: [Confidence Intervals](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=d9aad8e3-2efb-4f66-87b6-acbc00eec3eb) Panopto, UoY users only
+-   Video for slides: [Confidence Intervals - small samples](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=21c518d8-8449-4fd6-a756-acbd00cf4eba) Panopto, UoY users only
+-   [Workshop 3](workshops/03NormalDistributionCalculatingProbabilitiesAndCI.html) 
 
 ]
 
 .pull-right[
 
+**Week 5**
+
+-   Slides [powerpoint](slides/04-one-sample-tests.pptx) or [pdf](slides/04-one-sample-tests.pdf) (will load in your browser)  
+-   Video for slides: [Welcome to Week 5 and an introduction to one- and two-sample tests](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=e3e4235a-4cb8-4d6b-8a45-acc2009b5356) Panopto, UoY users only
+-   ["Workflow: basics"](https://r4ds.had.co.nz/workflow-basics.html)
+-   ["Workflow: projects"](https://r4ds.had.co.nz/workflow-projects.html)
+-   Video for slides: [The one-sample t-test](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=30b205bc-a63c-4902-b8ff-acc200f8ab3d) Panopto, UoY users only
+-   Video for slides: [The paired-sample t-test](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=ed62a0f9-5f85-4695-9556-acc200fee1fd) Panopto, UoY users only
+-   Video for slides: [The one-sample Wilcoxon](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=875c405b-13e5-4740-b81a-acc201024eb8) Panopto, UoY users only
+-   ["Fun and easy R graphs with images"](https://buzzrbeeline.blog/2018/06/13/fun-and-easy-r-graphs-with-images/)
+
+
+**Week 6**
+
+-   [Workshop 4](workshops/04OneAndTwoSampleTests.html) 
+
+
+]
+]
+---
+# Index
+
+.font40[
+.pull-left[
 **Week 7**
+
 
 
 **Week 8**
 
+
+]
+
+.pull-right[
 **Week 9**
 
+]
+]
+---
+# Index
+
+.font40[
+.pull-left[
 **Week 10**
 
-
-**Data**
-
-[data](data/) 
 
 ]
 ]
