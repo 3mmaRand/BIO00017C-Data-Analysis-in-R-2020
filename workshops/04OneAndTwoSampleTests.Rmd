@@ -366,7 +366,8 @@ ggplot() +
   scale_y_continuous(name = "Adiponectin (pg/mL)", 
                      limits = c(0, 12), 
                      expand = c(0, 0)) +
-  scale_x_discrete(name = "Treatment", labels = c("Control", "Nicotinic acid"))
+  scale_x_discrete(name = "Treatment", 
+                   labels = c("Control", "Nicotinic acid"))
   
 ```
 
@@ -386,6 +387,8 @@ ggplot() +
   scale_y_continuous(name = "Adiponectin (pg/mL)", 
                      limits = c(0, 12), 
                      expand = c(0, 0)) +
+  scale_x_discrete(name = "Treatment", 
+                   labels = c("Control", "Nicotinic acid")) +
   theme_classic()
 ```  
 <div class = "key">
@@ -396,6 +399,14 @@ The code required to summarise, test, and plot data for any two-sample *t*-test 
 Take some time to comment it. Consider making a script called ttest.R or similar with all the code and information you need to reuse it.
 
 </div>
+
+![R](../pics/R.png) Save the figure to file. You may need to look up how to do that from workshop 2.
+```{r echo = FALSE}
+ggsave("adipocytes.png",
+       width = 5,
+       height = 4,
+       units = "in")
+```
 
 Later in the module, you'll learn how to put annotation on the figure like this:
 
@@ -413,6 +424,8 @@ ggplot() +
   scale_y_continuous(name = "Adiponectin (pg/mL)", 
                      limits = c(0, 12), 
                      expand = c(0, 0)) +
+  scale_x_discrete(name = "Treatment", 
+                   labels = c("Control", "Nicotinic acid")) +
   annotate("segment", x = 1, xend = 2, 
            y = 11.3, yend = 11.3,
            colour = "black") +
