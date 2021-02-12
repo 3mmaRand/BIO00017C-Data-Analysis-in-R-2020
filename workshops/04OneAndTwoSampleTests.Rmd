@@ -568,6 +568,8 @@ The expression of individual gens is signifcantly higher are high temperatures t
 
 # `r emo::ji("party")` Well Done! `r emo::ji("party")`
 
+![](../pics/horst/tidydata_2.jpg)Illustration from the Openscapes blog Tidy Data for reproducibility, efficiency, and collaboration by Julia Lowndes and Allison Horst: https://www.openscapes.org/blog/2020/10/12/tidy-data/
+
 # Independent study following the workshop
 
 Decide which test you should use to analyse the each following data sets. In each case give the reasons for your choice of test and state the null hypothesis. Write your conclusions in a form suitable for including in a report. Can you make figures?

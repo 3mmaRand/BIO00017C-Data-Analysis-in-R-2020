@@ -86,6 +86,12 @@ xaringanExtra::use_extra_styles(
 
 **Week 6**
 
+-   Slides [powerpoint](slides/05-two-sample-tests.pptx) or [pdf](slides/05-two-sample-tests.pdf) (will load in your browser)  
+-   Video for slides: [Welcome to Week 6 and a recap on independent and non-independent samples](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=906ee048-8995-4525-9c79-accb00fc08be) Panopto, UoY users only
+-   Video for slides: [Two-sample t-tests](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=d4976439-fc2f-4f2c-8f6f-accb00fe61ef) Panopto, UoY users only
+-   ["Tidy Data"](https://vita.had.co.nz/papers/tidy-data.pdf)
+-   Video for slides: [Two-sample Wilcoxon](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=0112b946-bd28-4bb7-a692-accb01171eda) Panopto, UoY users only
+-   ["Data tranformation 5.1 to 5.6"](https://r4ds.had.co.nz/transform.html)
 -   [Workshop 4](workshops/04OneAndTwoSampleTests.html) 
 
 
@@ -98,7 +104,7 @@ xaringanExtra::use_extra_styles(
 .pull-left[
 **Week 7**
 
-
+-   [Workshop 4](workshops/05OnewayANOVAandKruskalWallis.html) 
 
 **Week 8**
 
