@@ -284,7 +284,7 @@ ggplot() +
    
 Notice the use of `expression()` to allow you to specify special characters. `expression()` takes strings or latex formatting. Each string or piece of latex is separated by a `*` or a `~`. The `*` puts them together without a space, and `~` with a space. `Kg^{-1}`makes the -1 a superscript. 
 
-This figure is good .... but it would be nice to show the result of the post-hoc host by annotating the figure. 
+This figure is good .... but it would be nice to show the result of the post-hoc test by annotating the figure. 
 
 We can add annotation to a `ggplot` using `annotate()`
 
@@ -333,10 +333,6 @@ ggplot() +
 Use comments at the end of `ggplot` lines to help you remember what the line does. You can use white space to line these up
 
 </div>
-
-
-This figure is good but it would be nice to show the result of the post-hoc host by annotating the figure. Again, ggplot makes this fairly easy.
-
 
 
 ![R](../pics/R.png) Make a new folder called 'figures' and write your figure to file. This will allow you to check your understanding of paths.
