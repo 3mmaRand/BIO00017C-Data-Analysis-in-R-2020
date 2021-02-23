@@ -105,7 +105,7 @@ The myoglobin concentration of skeletal muscle of three species of seal in grams
 
 ![W](../pics/W.png) Save a copy of the data file [seal.csv](../data/seal.csv)
 
-![W](../pics/W.png) Compare [seal.csv](../data/seal.txt) and [adipocytes.txt](../data/adipocytes.txt) by opening the file. You can do this in RStudio by clicking on the files in the files window.
+![W](../pics/W.png) Compare [seal.csv](../data/seal.csv) and [adipocytes.txt](../data/adipocytes.txt) by opening the file. You can do this in RStudio by clicking on the files in the files window.
 
 ![Q](../pics/Q.png) How do the data files differ? How might this influence your data import?
 

@@ -12,24 +12,15 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
-
 ---
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
+knitr::opts_chunk$set(echo = FALSE, 
                       message = FALSE,	
                       warning = FALSE)
 options(htmltools.dir.version = FALSE)
 ```
 
-```{r style-share-again, echo=FALSE}
-xaringanExtra::use_share_again()
-xaringanExtra::style_share_again(
-  share_buttons = "all")
-xaringanExtra::use_clipboard()
-xaringanExtra::use_extra_styles(
-  hover_code_line = TRUE,         
-  mute_unhighlighted_code = TRUE)
-```
 
 # Index
 
@@ -97,26 +88,33 @@ xaringanExtra::use_extra_styles(
 
 ]
 ]
+
 ---
 # Index
 
 .font40[
 .pull-left[
+
 **Week 7**
 -   Slides [powerpoint](slides/06-one-way-anova-kw.pptx) or [pdf](slides/06-one-way-anova-kw.pdf) (will load in your browser)  
--   Video for slides: [ Welcome to Week 7 and Review and rationale video](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=e0c87ebf-521d-4240-b604-acd20123c9de) Panopto, UoY users only
+-   Video for slides: [Welcome to Week 7 and Review and rationale](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=e0c87ebf-521d-4240-b604-acd20123c9de) Panopto, UoY users only
 -   Video for slides: [One-way ANOVA](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=f380201e-f639-450f-89f1-acd300cb657f) Panopto, UoY users only
 -   Video for slides: [Kruskal-Wallis](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=f49a44c3-d0f0-4552-bd71-acd3011a41b0) Panopto, UoY users only
 -   ["readr"](https://readr.tidyverse.org/)
 -   ["The R Graph Gallery"](https://www.r-graph-gallery.com/)
--   [Workshop 4](workshops/05OnewayANOVAandKruskalWallis.html) 
+-   [Workshop 5](workshops/05OnewayANOVAandKruskalWallis.html) 
 
 **Week 8**
-
+-   Slides [powerpoint](slides/07-two-way-anova.pptx) or [pdf](slides/07-two-way-anova.pdf) (will load in your browser)  
+-   Video for slides: [Welcome to Week 8!](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=f9d10cd9-7876-4071-81a9-acd70110348d) Panopto, UoY users only
+-   Video for slides: [Two-way ANOVA](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=20727f59-e25b-49f3-8b1c-acd70117f016) Panopto, UoY users only
+-   Video for slides: [Understanding the interaction](https://york.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=20727f59-e25b-49f3-8b1c-acd70117f016) Panopto, UoY users only
+-   [Workshop 6](workshops/06Two-wayAnova.html) 
 
 ]
 
 .pull-right[
+
 **Week 9**
 
 

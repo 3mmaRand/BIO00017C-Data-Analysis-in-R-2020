@@ -1,0 +1,17 @@
+type leaves
+mutant 3
+mutant 5
+mutant 6
+mutant 7
+mutant 3
+mutant 4
+mutant 5
+mutant 8
+wild 8
+wild 9
+wild 6
+wild 10
+wild 7
+wild 8
+wild 9
+wild 10
