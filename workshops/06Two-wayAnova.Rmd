@@ -1,5 +1,5 @@
 ---
-title:  "One-way ANOVA and Kruskal-Wallis"
+title:  "Two-way ANOVA"
 author: "Emma Rand"
 output:
   html_document:
@@ -132,6 +132,14 @@ file <- "../data/periwinkle.xlsx"
 ```
 
 We are doing this because we will use the file path three times.
+
+<div class = "key">
+
+**Top Tip**
+
+Setting the file path to a variable is useful when you need to use the path several times. If you later want to apply the same process for another analysis you only need edit the one reference to the file.
+</div>
+
 
 `readxl` has a useful function, `excel_sheets()` for listing the sheets in an Excel workbook.
 
