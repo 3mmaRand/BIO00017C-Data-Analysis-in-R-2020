@@ -1,0 +1,503 @@
+---
+title:  "Correlation and Regression"
+author: "Emma Rand"
+output:
+  html_document:
+    toc: true
+    depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: flatly
+    highlight: pygments
+    css: [../css_files/emma-workshop.css, ../css_files/emma-fonts.css]
+  word_document: default
+---
+
+![](../pics/17C.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(RefManageR)
+```
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+# Introduction
+
+## Session overview
+
+In this workshop you will get practice in applying, interpreting and reporting correlation and regression.
+ 
+## Learning Outcomes
+
+By actively following the materials and carrying out the independent study before and after the contact hours the successful student will be able to:
+
+-   Explain the principles of correlation and of regression and know when each can be applied (MLO 1)
+-   Select, appropriately correlation and regression (MLO 2)
+-   Apply and interpret a correlation in R (MLO 3 and 4)
+-   Appreciate the difference between statistical significance and biological significance (MLO 1 and 4)
+-   Apply and interpret a simple linear regression in R (MLO 3 and 4)
+-   Evaluate whether the assumptions of regression are met (MLO 2)
+-   Summarise and illustrate with appropriate R figures test results scientifically (MLO 3 and 4)
+
+## Philosophy
+
+Workshops are not a test. It is expected that you often don't know how to start, make a lot of mistakes and need help. Do not be put off and don't let what you can not do interfere with what you can do. You will benefit from collaborating with others and/or discussing your results. It is expected that you are familiar with independent study content before the workshop. However, you need not remember or understand every detail as the workshop should build and consolidate your understanding. You may wish to refer to the independent study materials for reference.
+
+Materials are indexed here: <https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/>
+
+## Key
+
+These four symbols are used at the beginning of each instruction so you know where to carry out the instruction.
+
+![W](../pics/W.png) is something you need to do on your computer. It may be opening programs or documents or locating a file.
+
+![R](../pics/R.png) is something you should do in RStudio. It will often be typing a command or using the menus but might also be creating folders, locating or moving files.
+
+![GC](../pics/GC.png) is something you should do in your browser on the internet. It may be searching for information, going to the VLE or downloading a file.
+
+![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.
+
+![Artwork by Allison Horst](../pics/horst/rainbowr.gif)
+
+# Getting started
+
+
+![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png).
+
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop7'.
+
+![R](../pics/R.png) On the Files tab make three folders `data-raw` and `figures`
+
+![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
+
+![R](../pics/R.png) Load the `tidyverse`:
+
+```{r}
+library(tidyverse)
+```
+
+# Exercises
+
+## Pearson's Correlation 
+
+The data given in [height.txt](../data/height.txt) are the heights of eleven brother and sister pairs. 
+
+![R](../pics/R.png) Save a copy of [height.txt](../data/height.txt) to your `data-raw` folder and import it.
+    
+```{r echo=FALSE, eval=FALSE}
+#---CODING ANSWER---
+height <- read_table2("data-raw/height.txt")
+```
+
+```{r echo=FALSE}
+height <- read_table2("../data/height.txt")
+```
+
+**Top Tip**
+
+Did you know you can also read files directly from the internet instead of saving it first?
+`read_table2("https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/data/height.txt")`
+
+</div>
+
+
+### Exploring
+
+![Q](../pics/Q.png) What type of variables are 'brother' and  'sister'? What are the implications for the test? 
+<!--
+#---THINKING ANSWER---
+They have decimal places and height is a variable we would expect to be normally distributed. It's probable that a parametric correlation is fine. However they are quite small samples, making it difficult to show that so doing a non-parametric would not be especially over cautious. 
+-->
+
+
+![Q](../pics/Q.png) Do a quick plot of the data. We don't have a causal relationship here so either variable can go on the *x*-axis.
+   
+```{r,fig.width=4,fig.height=4}
+ggplot(height, aes(x = sister, y = brother) ) +
+  geom_point()
+  
+```
+
+![Q](../pics/Q.png) Remembering that one of the assumptions for parametric correlation is that any correlation should be linear, what do you conclude from the plot? 
+<!--
+#---THINKING ANSWER---
+I'm not totally convinced these look linear - but then I wouldn't be convinced of any other relationship either. There are not always 'right' answers to these questions - sometimes we have to make a judgement .
+--> 
+
+### Applying, interpreting and reporting
+
+We will do a parametric correlation in any case. 
+
+![R](../pics/R.png) We can carry out a Pearson's product moment correlation with:
+```{r}
+cor.test(data = height, ~ brother + sister, method = "pearson")
+```
+
+Notice that were are not using the `response ~ explanatory` form here because this is not a causal relationship.
+  
+![Q](../pics/Q.png) What do you conclude from the test?  
+<!--
+#---THINKING ANSWER---
+There is no significant correlation between the heights of brothers and sisters - the p value is greater than 0.05
+ -->
+
+### Illustrating
+
+![R](../pics/R.png) Create a better figure for our data using:
+```{r,fig.width=4,fig.height=4}
+fig1 <- ggplot(height, aes(x = sister, y = brother)) +
+  geom_point() +
+  scale_x_continuous(name = "Heights of sister (cm)",
+                     limits = c(120, 190),
+                     expand = c(0, 0)) +
+  scale_y_continuous(name = "Heights of brother (cm)",
+                     limits = c(120, 190),
+                     expand = c(0, 0)) +
+   theme_classic()
+
+fig1
+```
+
+Figure 1. Correlation in height between brothers and sisters.
+
+![R](../pics/R.png) Use `ggsave()` to save your figure to file in your `figures` folder.
+
+```{r echo = FALSE}
+# I choose to do a png but you may have a different preference
+ggsave("figures/sis-bro.png",
+       plot = fig1,
+       width = 3.5,
+       height = 3.5,
+       units = "in",
+       dpi = 300)
+
+```
+
+
+
+
+## Effect of sample size on correlation
+
+Now we will explore the effect of sample size on the value of the correlation coefficient and its significance. 
+
+![R](../pics/R.png) Create a dataset with twice the number of observations and examine it like this: 
+
+```{r}
+height2 <- rbind(height, height)
+View(height2)
+```
+
+Each pair of values will appear twice.
+
+![R](../pics/R.png) Now repeat the correlation with height2
+```{r include=FALSE}
+#---CODING ANSWER---
+cor.test(data = height2, ~ brother + sister, method = "pearson")
+```
+   
+![Q](../pics/Q.png) What do you conclude? What does this tell you about the sensitivity of correlation to sample size? 
+<!--
+#---THINKING ANSWER---
+The correlation coefficient is the same but now it's significant!
+When you are carrying out correlations you should take note of the sample size. Often you see people carrying out correlations on very large datasets and, for example finding a correlation coefficient of r = 0.03 which is highly significant and drawing the conclusion that the correlation is very strong/meaningful. It isn't. Yes it is highly statistically significant, but that doesn't necessarily mean it is biologically significant. You need to both consider both the r value and the p value - especially with large datasets.
+--> 
+
+## Spearman's rank Correlation
+
+Since our brother-sister dataset is so small we might very reasonably have chosen to do a non-parametric correlation. The same function is used but we specify a different value for the `method` argument.
+
+![R](../pics/R.png) Carry out a Spearman's rank correlation: 
+
+```{r}
+cor.test(data = height, ~ brother + sister, method = "spearman")
+```
+  ![Q](../pics/Q.png) What do you conclude?  
+<!--
+#---THINKING ANSWER---
+the correlation coefficient is different (r = 0.501), as is the p value (0.116). Still not significant - as we would expect as non-parametric tests are (usually) more conservative than parametric tests.
+-->
+
+## Linear Regression
+
+The data in [plant.xlsx](../data/plant.xlsx) is a set of observations of plant growth over two months. The researchers planted the seeds and harvested, dried and weighed a plant each day from day 10 so all the data points are independent of each other.
+
+```{r}
+library(readxl)
+```
+
+![R](../pics/R.png) Save a copy of [plant.xlsx](../data/plant.xlsx) to your `data-raw` folder and import it.
+
+```{r eval=FALSE, echo=FALSE}
+#---CODING ANSWER---
+# we need the readxl package that was introduced in the last workshop
+library(readxl)
+# assign file name to variable because I'll use it more than once
+file <- "data-raw/plant.xlsx"
+# list the sheets in the file
+excel_sheets(file)
+# You might want to open th file in excel to make sure you know what is in it. 
+# I'm a bit lazy - and worried by being wrong - so will just guess the are data in the one named sheet. If I guess wrong, then I might open the file!
+plant <- read_excel(file, sheet = "plant")
+
+```
+
+    
+```{r include=FALSE}
+#---CODING ANSWER---
+# my directory structure differs so I need
+library(readxl)
+file <- "../data/plant.xlsx"
+excel_sheets(file)
+plant <- read_excel(file, sheet = "plant")
+
+```
+
+
+![Q](../pics/Q.png) What type of variables do you have? Which is the response and which is the explanatory? What is the null hypothesis?
+<!--
+#---THINKING ANSWER---
+Day is discrete (but ordered) and is the explanatory; mass looks continuous and is the response. The null hypothesis can be expressed as one of the following: day does not explain the variation in mass; there is no linear relationship between day and mass; slope of the best fitting straight line is zero
+-->
+
+
+
+### Exploring
+
+![R](../pics/R.png) Do a quick plot of the data (as shown)
+```{r include=FALSE}
+#---CODING ANSWER---
+ggplot(plant, aes(x = day, y = mass)) +
+  geom_point()
+```
+
+![Q](../pics/Q.png) What are the assumptions of linear regression? Do these seem to be met?
+<!--
+#---THINKING ANSWER---
+linear relationship - looks ok on the scatter
+each y is drawn from a normal distribution for each x and these normal distributions have the same variance - looks ok too. We'd expect y to be continuous and the scatter around a best fitting line we imagine is about even.
+The values of y are independent of each other - yes it was a different plant each day (in fact plant was destroyed). Measuring the height of the SAME plants each day would violate this assumption
+ x has been chosen by the experimenter - yes.
+-->
+
+### Applying, interpreting and reporting
+
+![R](../pics/R.png) We now carry out a regression assigning the result of the `lm()` procedure to a variable and examining it with `summary()`.
+```{r}
+mod <- lm(data = plant, mass ~ day)
+summary(mod)
+```
+
+The Estimates in the Coefficients table give the intercept (first line) and the slope (second line) of the best fitting straight line. The _p_-values in the same table are tests of whether that coefficient is different from zero. 
+
+The _F_ value and _p_-value in the last line are a test of whether the model as a whole explains a significant amount of variation in the dependent variable. For a single linear regression this is exactly equivalent to the test of the slope against zero.
+
+![Q](../pics/Q.png) What is the equation of the line? What do you conclude from the analysis? 
+<!--
+#---THINKING ANSWER---
+ mass = 1.606*day - 8.683
+ the slope of the line is significantly different from zero / the day explains a significant amount of the variation in mass (ANOVA: F = 88.4; d.f. = 1,49; p < 0.0001). 
+ -->
+ 
+![Q](../pics/Q.png) Does the line go through (0,0)? 
+<!--
+#---THINKING ANSWER---
+yes it could - whilst the intercept is -8.683 it is not significantly different from zero thus it could be zero 
+-->
+
+![Q](../pics/Q.png) What percentage of variation is explained by the line? 
+<!--
+#---THINKING ANSWER---
+64% 
+-->
+
+
+### Checking selection
+
+![R](../pics/R.png) Check the assumptions of the test by looking at the distribution of the 'residuals'.
+```{r include=FALSE}
+#---CODING AND THINKING ANSWER---
+plot(mod, which = 1)
+hist(mod$residuals)
+shapiro.test(mod$residuals)
+#These look ok
+```
+
+### Illustrating
+We want a figure with the points and a best fitting straight line.
+
+![R](../pics/R.png) Create a figure with using both `geom_point()` and `geom_smooth()`
+
+ 
+```{r,fig.width=4,fig.height=4}
+ggplot(plant, aes(x = day, y = mass)) +
+  geom_point() +
+  geom_smooth(method = lm, 
+              se = FALSE, 
+              colour = "black") +
+  scale_x_continuous(name = "Day",
+                     limits = c(0, 65),
+                     expand = c(0,0)) +
+  scale_y_continuous(name = "Mass (g)",
+                     limits = c(0, 120),
+                     expand = c(0,0)) +
+  theme_classic()
+  
+```
+
+Figure 2. The relationship between day since planting and mass. 
+
+![R](../pics/R.png) Can you workout how to add the equation of the line to the figure like this?
+
+```{r, echo = FALSE, fig.width=4,fig.height=4}
+fig2 <- ggplot(plant, aes(x = day, y = mass)) +
+   geom_point() +
+  geom_smooth(method = lm, 
+              se = FALSE, 
+              colour = "black") +
+  scale_x_continuous(name = "Day",
+                     limits = c(0, 65),
+                     expand = c(0,0)) +
+  scale_y_continuous(name = "Mass (g)",
+                     limits = c(0, 120),
+                     expand = c(0,0)) +
+  annotate("text", x = 15, y = 100, label = expression(italic("y = 1.6 x - 8.69"))) +
+  theme_classic()
+fig2  
+```
+
+
+![R](../pics/R.png) Save your figure to your `figures` folder.
+```{r echo = FALSE}
+ggsave("figures/plant-growth.png",
+       plot = fig2,
+       width = 3.5,
+       height = 3.5,
+       units = "in",
+       dpi = 300)
+
+```
+
+![W](../pics/W.png) Close your project, locate the folder Explorer/Finder and zip it by doing: Right click, Send to | Compressed (zipped) folder. Then email it to your friend and check they can open your unzipped project and run your code without having to chang anything.
+
+# `r emo::ji("party")` Well Done! `r emo::ji("party")`
+
+# Independent study
+
+Decide how to analyse the following data sets. In each, use an RStudio project with logical directory structure. Organise and comment your code well and include your reasoning and decisions. Write your conclusions as comments in a form suitable for including in a report. Create and save an appropriate figure.
+
+## 1 Effect of anxiety status and sporting performance
+The data in [sprint.txt](../data/sprint.txt) are from an investigation of the effect of anxiety status and sporting performance. A group of 40 100m sprinters undertook a psychometric test to measure their anxiety shortly before competing. The data are their anxiety scores and the 100m times achieved. What you do conclude from these data?
+
+
+```{r include=FALSE}
+#---CODING AND THINKING ANSWER---
+# this example is designed to emphasise the importance of plotting your data first
+sprint <- read_table2("../data/sprint.txt")
+# Anxiety is discrete but ranges from 16 to 402 meaning the gap between possible measures is small and 
+# the variable could be treated as continuous if needed. Time is a continuous measure that has decimal places and which we would expect to follow a normal distribution 
+
+# explore with a plot
+ggplot(sprint, aes(x = anxiety, y = time) ) +
+  geom_point()
+
+# A scatterplot of the data clearly reveals that these data are not linear. There is a good relationship between the two variables but since it is not linear, a correlation (either parametric or non-parametric) is inappropriate. A Pearson's correlation comes out at close to zero and NS (since the scatter around a linear correlation would be great).
+
+```  
+
+
+## 2. Juvenile hormone in stag beetles
+The concentration of juvenile hormone in stag beetles is known to influence mandible growth. Groups of stag beetles were injected with different concentrations of juvenile hormone (arbitrary units) and their average mandible size (mm) determined. The experimenters planned to analyse their data with regression. The data are in [stag.txt](../data/stag.txt) 
+
+
+```{r include=FALSE}
+#---CODING AND THINKING ANSWER---
+#read the data in and check the structure
+stag <- read_table2("../data/stag.txt")
+str(stag)
+
+# jh is discrete but order and has been chose by the experimenter - it is the explanatory variable.  
+# the response is mandible size which has decimal places and is something we would expect to be 
+# normally distributed. So far, common sense suggests the assumptions of regression are met.
+
+# exploratory plot
+ggplot(stag, aes(x = jh, y = mand)) +
+  geom_point()
+# looks linear-ish on the scatter
+# regression still seems appropriate
+# we will check the other assumptions after we have run the lm
+
+# build the statistical model
+mod <- lm(data = stag, mand ~ jh)
+
+# examine it
+summary(mod)
+# mand = 0.032*jh + 0.419
+# the slope of the line is significantly different from zero / the jh explains a significant amount of the variation in mand (ANOVA: F = 16.63; d.f. = 1,14; p = 0.00113).
+# the intercept is 0.419 and differs significantly from zero 
+
+# checking the assumption
+plot(mod, which = 1) 
+# we're looking for the variance in the residuals to be equal along the x axis.
+# with a small data set there is some apparent heterogeneity but it doesn't look too.
+# 
+hist(mod$residuals)
+# We have some skew which gain might be partly a result of a small sample size.
+shapiro.test(mod$residuals) # the also test not sig diff from normal
+
+# On balance the use of regression is probably justifiable but it is borderline
+# but ideally the experiment would be better if multiple individuals were measure at
+# each of the chosen juvenile hormone levels.
+
+# a better plot
+ggplot(stag, aes(x = jh, y = mand) ) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE, colour = "black") +
+  scale_x_continuous(name = "Juvenile hormone (arbitrary units)",
+                     expand = c(0, 0),
+                     limits = c(0, 32)) +
+  scale_y_continuous(name = "Mandible size (mm)",
+                     expand = c(0, 0),
+                     limits = c(0, 2)) +
+  theme_classic()
+#Figure x. The effect of juvenile hormone injections on the mandible size of stag beetles.   
+```
+
+# The Code files
+
+These contain all the code needed in the workshop even where it is not visible on the webpage.
+
+[Rmd file]() The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/07CorrelationAndRegression.Rmd).
+
+[Plain script file](../scripts/07CorrelationAndRegression.R) This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/07CorrelationAndRegression.R).
+
+Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra` `r Cite(myBib, "kableExtra")`, `RefManager` `r Cite(myBib, "RefManager")`
+
+# References
+
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(myBib)  
+```
+
+![](../pics/17Cend.png)
