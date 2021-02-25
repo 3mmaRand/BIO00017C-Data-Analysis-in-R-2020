@@ -115,6 +115,8 @@ height <- read_table2("data-raw/height.txt")
 height <- read_table2("../data/height.txt")
 ```
 
+
+<div class = "key">
 **Top Tip**
 
 Did you know you can also read files directly from the internet instead of saving it first?
@@ -233,7 +235,8 @@ Since our brother-sister dataset is so small we might very reasonably have chose
 ```{r}
 cor.test(data = height, ~ brother + sister, method = "spearman")
 ```
-  ![Q](../pics/Q.png) What do you conclude?  
+
+![Q](../pics/Q.png) What do you conclude?  
 <!--
 #---THINKING ANSWER---
 the correlation coefficient is different (r = 0.501), as is the p value (0.116). Still not significant - as we would expect as non-parametric tests are (usually) more conservative than parametric tests.
