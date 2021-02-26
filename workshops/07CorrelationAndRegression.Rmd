@@ -158,6 +158,8 @@ cor.test(data = height, ~ brother + sister, method = "pearson")
 ```
 
 Notice that were are not using the `response ~ explanatory` form here because this is not a causal relationship.
+
+Pearson is the default method, therefore we could omit `method = "pearson"`.
   
 ![Q](../pics/Q.png) What do you conclude from the test?  
 <!--
