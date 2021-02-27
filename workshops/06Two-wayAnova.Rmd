@@ -447,9 +447,9 @@ We are nearly there!
 ```{r include = FALSE, results = 'hide', fig.height=5, fig.width=6}
 
 # the signifcant comparisons are                           p adj
-# Summer:Littorina saxatilis-Spring:Littorina saxatilis    0.0000041
-# Summer:Littorina nigrolineata-Spring:Littorina saxatilis 0.0003558
-# Spring:Littorina nigrolineata-Summer:Littorina saxatilis 0.0198124
+# Summer: saxatilis-Spring: saxatilis    0.0000041
+# Summer: nigrolineata-Spring: saxatilis 0.0003558
+# Spring: nigrolineata-Summer: saxatilis 0.0198124
 perfig <- ggplot() +
   geom_point(data = periwinkle, 
              aes(x = season, y = para, shape = species),
@@ -476,51 +476,51 @@ perfig <- ggplot() +
                      expand = c(0, 0),
                      limits = c(0, 140)) +
   scale_x_discrete(name = "Season") +
-  # Spring:Littorina nigrolineata-Summer:Littorina saxatilis *
+  # Summer: nigrolineata-Spring: saxatilis 0.0003558
   annotate("segment", 
            x = 1.25, xend = 1.75, 
-           y = 110, yend = 110,
+           y = 112, yend = 112,
            colour = "black") +
   annotate("segment", 
            x = 1.25, xend = 1.25,
-           y = 110, yend = 105,
+           y = 112, yend = 110,
            colour = "black") +
   annotate("segment", 
            x = 1.75, xend = 1.75,
-           y = 110, yend = 105,
+           y = 112, yend = 110,
            colour = "black") +
   annotate("text", 
-           x = 1.5,  y = 112,
+           x = 1.5,  y = 114,
            label = "***", size = 6) +
-  # Summer:Littorina nigrolineata-Spring:Littorina saxatilis: ***
+  # Spring: nigrolineata-Summer: saxatilis 0.0198124
   annotate("segment", 
-           x = 1.25, xend = 0.75,
-           y = 90, yend = 90,
+           x = 1.75, xend = 0.75,
+           y = 104, yend = 104,
            colour = "black") +
   annotate("segment", 
-           x = 1.25, xend = 1.25,
-           y = 90, yend = 85,
+           x = 1.75, xend = 1.75,
+           y = 104, yend = 102,
            colour = "black") +
   annotate("segment", 
            x = 0.75, xend = 0.75,
-           y = 90, yend = 85,
+           y = 104, yend = 102,
            colour = "black") +
-  annotate("text", x = 1,  y = 92,
-           label = "**", size = 6) +
-# Summer:Littorina saxatilis-Spring:Littorina saxatilis: ***
+  annotate("text", x = 1.25,  y = 106,
+           label = "*", size = 6) +
+# Summer: saxatilis-Spring: saxatilis    0.0000041
   annotate("segment",
-           x = 0.75, xend = 1.75,
+           x = 1.25, xend = 2.25,
            y = 120, yend = 120,
            colour = "black") +
   annotate("segment",
-           x = 0.75, xend = 0.75,
-           y = 120, yend = 115,
+           x = 1.25, xend = 1.25,
+           y = 120, yend = 118,
            colour = "black") +
   annotate("segment",
-           x = 1.75, xend = 1.75,
-           y = 120, yend = 115,
+           x = 2.25, xend = 2.25,
+           y = 120, yend = 118,
            colour = "black") +
-  annotate("text", x = 1.25,  y = 123,
+  annotate("text", x = 1.75,  y = 122,
            label = "***", size = 6) +
   theme_classic() +
   theme(legend.title = element_blank(),
