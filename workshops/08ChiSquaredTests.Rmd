@@ -1,0 +1,581 @@
+---
+title:  "Chi-squared tests"
+author: "Emma Rand"
+output:
+  html_document:
+    toc: true
+    depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    theme: flatly
+    highlight: pygments
+    css: [../css_files/emma-workshop.css, ../css_files/emma-fonts.css]
+  word_document: default
+---
+
+![](../pics/17C.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = FALSE,	
+                      warning = FALSE,
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(RefManageR)
+```
+
+```{r, load-refs, include=FALSE, cache=FALSE}
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = FALSE,
+           longnamesfirst = FALSE,
+           max.names = 2)
+myBib <- ReadBib("../refs/refs.bib", check = FALSE)
+```
+
+# Introduction
+
+## Session overview
+
+In this workshop you will get practice analysing data that are counts falling into mutually exclusive categories using two types of chi-squared test choosing between these two tests.
+
+## Learning Outcomes
+
+By actively following the materials and carrying out the independent study before and after the contact hours the successful student will be able to:
+
+-   recognise when to use chi-squared Goodness of Fit and Contingency tests (MLO 2)
+-   be able to carry out, interpret and report scientifically both types in R (MLO 3 and 4)
+
+## Philosophy
+
+Workshops are not a test. It is expected that you often don't know how to start, make a lot of mistakes and need help. Do not be put off and don't let what you can not do interfere with what you can do. You will benefit from collaborating with others and/or discussing your results. It is expected that you are familiar with independent study content before the workshop. However, you need not remember or understand every detail as the workshop should build and consolidate your understanding. You may wish to refer to the independent study materials for reference.
+
+Materials are indexed here: <https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/>
+
+## Key
+
+These four symbols are used at the beginning of each instruction so you know where to carry out the instruction.
+
+![W](../pics/W.png) is something you need to do on your computer. It may be opening programs or documents or locating a file.
+
+![R](../pics/R.png) is something you should do in RStudio. It will often be typing a command or using the menus but might also be creating folders, locating or moving files.
+
+![GC](../pics/GC.png) is something you should do in your browser on the internet. It may be searching for information, going to the VLE or downloading a file.
+
+![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.
+
+![Artwork by Allison Horst](../pics/horst/code_hero.jpg)
+
+# Getting started
+
+![W](../pics/W.png) Start RStudio from the [Start menu](../pics/startmenu.png).
+
+![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop8'.
+
+![R](../pics/R.png) On the Files tab make three folders `data-raw`, `data-processed` and `figures`
+
+![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
+
+![R](../pics/R.png) Load the `tidyverse`:
+
+```{r}
+library(tidyverse)
+```
+
+# Exercises
+
+## Inductions
+
+In a local maternity hospital, the total numbers of births induced on each day of the week over a six week period were recorded a
+
+| Day       | No.inductions |
+|-----------|---------------|
+| Monday    | 43            |
+| Tuesday   | 36            |
+| Wednesday | 35            |
+| Thursday  | 38            |
+| Friday    | 48            |
+| Saturday  | 26            |
+| Sunday    | 24            |
+| Total     | 250           |
+
+### Inductions - coding the ${\chi}^2$
+
+We can use a chi-squared test to ascertain whether there is a pattern in these data that might suggest that surgeons are more reluctant to perform inductions on some days than on others.
+
+![R](../pics/R.png) Make a vector `obs` that holds the number of inductions on each day.
+
+```{r echo=FALSE}
+#---CODING ANSWER---
+obs <- c(43, 36, 35, 38, 48, 26, 24) 
+```
+
+
+![Q](../pics/Q.png) What is your null hypothesis and what type of test is required?
+
+<!-- One obvious null hypothesis is that the proportion of inductions is the same on each day (as one might expect if medical considerations were of overriding concern) - we know what the proportions should be so we have a Goodness of Fit test. -->
+
+We can carry out a Goodness of Fit chi-squared test on these data by coding the how the test works ourselves. If the null hypothesis is true, 1/7th of inductions would be expected to occur each day *i.e.,* 1/7th of 250
+
+![R](../pics/R.png) Assign the total number of inductions to a variable called `totalinductions`
+
+```{r}
+# the total number of inductions
+totalinductions <- sum(obs)
+
+```
+
+![R](../pics/R.png) Now calculate the expected values:
+
+```{r}
+# the expected values
+# note that R multiplies every element in the c() by totalinductions
+exp <- c(1/7, 1/7, 1/7, 1/7, 1/7, 1/7, 1/7) * totalinductions
+
+```
+
+The formula for chi-squared is: ${\chi}^2 = \Sigma \frac{(O - E)^2}{E}$
+
+![R](../pics/R.png) We can write this in R using:
+
+```{r}
+# calculate the chisquared
+chisqd <- sum(((obs - exp)^2) / exp)
+
+```
+
+We have ${\chi}^2 =$ `r chisqd`
+
+The degrees of freedom for a chi-squared Goodness of fit test are the number of categories minus one.
+
+![R](../pics/R.png) Calculate and assign the *d.f.* to a variable called `df`
+
+```{r echo=FALSE}
+#---CODING ANSWER---
+df <- length(obs) - 1
+# note: you might have used df = 6 but using the length of the 
+# observation data is more reproducible. You can use the same code
+#  for any goodness of fit test and only have to update the obs vector (the data).
+```
+
+![R](../pics/R.png) The $p$ value can be calculated with:
+
+```{r}
+pchisq(chisqd, df = df, lower.tail = FALSE)
+
+```
+
+This `pchisq()` function does for a chi-squared distribution what the `pnorm()` function does for the normal distribution and `pt()` does for the *t* distribution: it gives the probability of getting a value of `r chisqd` or more (since `lower.tail = FALSE`)
+
+
+
+
+```{r fig.width = 6, echo=FALSE}
+p <- pchisq(chisqd, df = df, lower.tail = FALSE) %>% round(3)
+ggplot(data.frame(x = c(0, 20)), aes(x)) +
+  stat_function(fun = dchisq,
+                geom = "area",
+                fill = "gray",
+                args = list(
+                  df = df),
+                xlim = c(chisqd, 20)) +
+  stat_function(fun = dchisq,
+                geom = "line",
+                args = list(
+                  df = df)) +
+  scale_y_continuous(name = "", expand = c(0, 0)) +
+  scale_x_continuous(name = "Chi-squared value", 
+                     expand = c(0, 0),
+                     breaks = seq(0, 20, 2)) +
+  annotate("text", x = 15, y = 0.03,
+           label = paste("p = ",p)) +
+  annotate("segment", 
+           x = 15, y = 0.025,
+           xend = 13.5, yend = 0.01,
+           label = paste("p = ",p)) +
+  theme_classic() 
+```
+
+![R](../pics/Q.png) What do you conclude about the pattern of birth inductions?
+
+<!-- so it's a little over 0.05 and thus (just!), not significant. We have no reason to reject the null hypothesis that clinical needs dictate when inductions occur. -->
+
+We could have decided to test a different null hypothesis. Instead of testing whether we had 1/7 of the inductions each day (7 categories) we could test whether we had 2/7 and 5/7 in two categories, 'weekends' and 'weekdays'.
+
+![R](../pics/R.png) You can pool your observed data like this:
+
+```{r}
+# Combining the weekdays and the weekend days
+obs2 <- c(sum(obs[1:5]), sum(obs[6:7])) 
+
+```
+
+![R](../pics/R.png) Then calculate the expected values:
+
+```{r}
+exp2 <- c(5/7, 2/7) * totalinductions
+```
+
+
+
+![R](../pics/R.png) Carry out the Goodness of fit test on this two-category situation.
+
+```{r include=FALSE}
+#---CODING ANSWER---
+# calculate the chisquared
+chisqd <- sum(((obs2 - exp2)^2) / exp2)
+df <- length(obs2) - 1
+pchisq(chisqd, df = df, lower.tail = FALSE)
+# Significant
+```
+
+![Q](../pics/Q.png) Do your conclusions alter?
+
+<!-- p = 0.0027 - reject the null hypothesis, fewer inductions are being performed during the weekend (look at the peaks on Fridays and Mondays!).  Note that now we have divided the data into two categories - weekend and weekdays - so the chi-squared value is associated with just 1 d.f.  It appears that clinical need may not be uppermost in surgeon's minds!
+This is why it is important to determine what you are going to test before you collect your data. Testing in different ways until you find significance is called p-hacking and is not legitimate.-->
+
+### Inductions - alternative method (inbuilt test)
+
+We have carried out a Goodness of Fit chi-squared test by coding the how the test works ourselves. R also has an inbuilt function. ![R](../pics/R.png) The inbuilt function `chisq.test()` is used like this:
+
+```{r}
+chisq.test(obs)
+```
+
+This looks much easier but it is only that straightforward when the expected numbers are  equal in each category, *i.e.*, 1:1:1:1:1:1:1
+
+For other cases, such as we had for on combining the weekdays and the weekend days, then we have to give the expected ratios. 
+
+![R](../pics/R.png) Use the inbuilt function `chisq.test()` when expected values are not equal in each category:
+
+```{r}
+exp2 <- c(5/7, 2/7)
+chisq.test(obs2, p = exp2)
+```
+
+<div class = "key">
+**Top Tip**
+
+R has an inbuilt chi-squared test, `chisq.test()` which can be used for Goodness of fit tests. By default it tests against equal numbers in each category. If you want test other null hypotheses, you must give the expected proportions with the `p` argument
+
+</div>
+
+
+### Inductions - alternative data format
+
+The data we were given was already tabulated however, data often comes to us with an observation in each row. In this case that would mean a column of 250 values which indicated which day and induction was performed. Data formatted this way is in [inductions.txt](../data/inductions.txt).
+
+
+It might seem strange to you that data like these would come in this form but it is actually common when a study has collected many variables. For example, imagine the hospital collected data about every birth, you might have a dataframe similar to this:
+```{r echo=FALSE}
+births <- read_table2("../data/births.txt")
+```
+
+```{r echo=FALSE}
+DT::datatable(births)
+```
+
+
+![W](../pics/W.png) Save a copy of [inductions.txt](../data/inductions.txt) to the `data-raw` folder
+
+![R](../pics/R.png) Read the data in to R. Remember, you need to use the relative path to the file in the `read.table()` command and decide whether you need header to be TRUE or FALSE:
+
+```{r echo=FALSE, eval=FALSE}
+#---CODING ANSWER---
+inductions <- read_table2("data-raw/inductions.txt")
+```
+
+
+```{r echo=FALSE}
+#---I have a different directory structure so need
+inductions <- read_table2("../data/inductions.txt")
+```
+
+
+![R](../pics/R.png) We can tabulate the data and assign it using the `table()` command:
+
+```{r}
+indtab <- table(inductions$day)
+```
+
+The `table()` outputs the days in alphabetical order which is a common default in R. This does not matter since days are just arbitrary categories for the chi-squared test.
+
+![R](../pics/R.png) Now carry out the 7 category goodness of fit like this:
+
+```{r}
+chisq.test(indtab)
+```
+
+### Illustrating
+
+![R](../pics/R.png) We could create a figure using ggplot like this:
+
+```{r}
+# load tidyverse for ggplot2 - you only have to load once in a session
+# tidyverse gives us ggplot and several other packages. tidyverse is known as a metapackage (it's several packages)
+library(tidyverse)
+
+ggplot(data = inductions, aes(x = day)) +
+  geom_bar() +
+  theme_classic()
+
+# themes change several things at once about the appearance. 
+# Classic is useful one but there are others you can play
+# with. Type theme_ and use the tab key to see the options
+```
+
+Remember - the ggplot geom_bar() will count the number of each day for us which is great! `r emo::ji("party")`
+
+What is not so great is the alphbetical ordering `r emo::ji("annoyed")`
+
+```{r}
+ levels(inductions$day)
+```
+
+![R](../pics/R.png) Reordering factor levels is something we quite often want to do.
+
+```{r}
+inductions$day <- fct_relevel(inductions$day,
+                              "mon", 
+                              "tues",
+                              "wed",
+                              "thurs",
+                              "fri",
+                              "sat",
+                              "sun")
+
+levels(inductions$day)
+```
+
+![R](../pics/R.png) Redraw the figure.
+
+## Blood group and ulcers
+
+A human geneticist is interested in whether there is an association between ABO blood group phenotypes and the incidence of peptic ulcers. He found that in a sample of 477 blood group O people 65 had peptic ulcers whereas in a sample of 387 blood group A people 31 had peptic ulcers.
+
+![Q](../pics/Q.png) Draw a table of these data (on a piece of paper).
+
+<!-- 2 x 2 contingency table. -->
+
+<!--                Blood group  Total -->
+
+<!--                    O       A            -->
+
+<!-- Ulcers Yes    65    31         96 -->
+
+<!--        No      412     356        768 -->
+
+<!-- Total          477     387      864 -->
+
+![Q](../pics/Q.png) What is your null hypothesis and what type of test is required?
+
+<!-- Here we are scoring two characters on each individual and we want to see if there is an association between the characters i.e. we want to perform a test of association. Our null hypothesis is that there is no difference in the proportion of people with peptic ulcers in the two blood-group phenotypes  so we have a contingency test -->
+
+### Blood group and ulcers - inbuilt test
+
+![R](../pics/R.png) Make a vector `obs` that holds the observed numbers. For the moment, don't worry about what order they are in:
+
+```{r echo=FALSE,results="hide"}
+#---CODING ANSWER---
+obs <- c(65, 412, 31, 356)
+```
+
+For a contingency chi squared test, the inbuilt chi-squared test can be used in a straightforward way. However, we need to structure our data as a 2 x 2 table rather than as a 1 x 4 vector. A 2 x 2 table can be created with the `matrix()` function. We can also name the rows and columns which helps us interpret the results.
+
+![R](../pics/R.png) To create a list containing two elements which are vectors for the two groups in each variable we do:
+
+```{r}
+# list of two elments
+# the two variables are whether someone has an ulcer or not and whether they are blood group O or A
+vars <- list(ulcer = c("yes","no"), blood = c("O", "A"))
+vars
+
+```
+
+![R](../pics/R.png) Now we can create the matrix from our vector of numbers `obs` and use our list `vars` to give the column and row names:
+
+```{r}
+ulcers <- matrix(obs, nrow = 2, dimnames = vars)
+```
+
+![R](../pics/R.png) Check the content of `ulcers` and recreate if the numbers are not in the correct place (*i.e.*, do not match your table)
+
+![R](../pics/R.png) Run a contingency chi-squared with:
+
+```{r}
+chisq.test(ulcers, correct = FALSE)
+# you should look up the command in the manual to see what correct = FALSE does
+```
+
+To help us discover what is the direction of any deviation from the null hypothesis it is helpful to see what the expected values were. These are accessible in the `$expected` variable in the output value of the `chisq.test()` method (See the manual!).
+
+![R](../pics/R.png) View the expected values with:
+
+```{r}
+chisq.test(ulcers, correct = FALSE)$expected
+```
+
+![Q](../pics/Q.png) What do you conclude about the association between ABO blood group and peptic ulcers?
+
+<!-- People with group O seem to get more ulcers: 65 observed is higher than the expected 53. People with group A have fewer than expected: 31 observed is lower than the expected 43. -->
+
+<!-- For a contingency table such as this d.f. = (r - 1)(c - 1) = 1 i.e. (number of rows - 1)( number of columns - 1) -->
+
+### Blood group and ulcers- alternative data format.
+
+The data we were given was already tabulated. There are raw data in [blood_ulcers.txt](../data/blood_ulcers.txt). Examine this file and compare its content to [inductions.txt](../data/inductions.txt)
+
+![W](../pics/W.png) Save a copy of [blood_ulcers.txt](../data/blood_ulcers.txt) to the 'data' folder
+
+![R](../pics/R.png) Read the data in to R. Remember, you need to use the relative path to the file in the `read.table()` command and decide whether you need header to be TRUE or FALSE:
+
+```{r echo=FALSE}
+#---CODING ANSWER---
+#I have my files organised differently so I use a different 'path' to my file
+blood_ulcers <- read.table("../data/blood_ulcers.txt", header = T)
+```
+
+![R](../pics/R.png) look at the structure of the dataframe using `str()`
+
+```{r echo=FALSE,results="hide"}
+#---CODING ANSWER---
+str(blood_ulcers) 
+```
+
+Notice that we have two variables this time.
+
+![R](../pics/R.png) We can tabulate the data and assign it using the `table()` command:
+
+```{r}
+ulctab <- table(blood_ulcers$blood, blood_ulcers$ulcer)
+# examine the result
+ulctab
+```
+
+We need to give both variables to cross tabulate.
+
+![R](../pics/R.png) Now carry out the contingency chi-squared like this:
+
+```{r}
+chisq.test(ulctab, correct = FALSE)
+```
+
+## Genetics
+
+In a particular species of ground beetle, red and yellow elytral colours are controlled by alleles at one locus, with red (R) dominant to yellow (r). Spotted and plain elytral patterns are controlled by alleles at another locus, with spotted elytra (S) dominant to plain (s). You set up a cross between two indivuals that are heterozygous at both loci (RrSs). If the two loci are unlinked you would expect a phenotype ratio of 9 : 3 : 3 : 1 ratio of red/spotted : red/plain : yellow/spotted : yellow plain, respectively. The numbers you actually observe for these four phenotypes are: 79, 17, 19 and 20 (total = 135).
+
+![R](../pics/R.png) Make a vector `obs` that holds the number of phenotype .
+
+```{r echo=FALSE}
+#---CODING ANSWER---
+obs <- c(79, 17, 19, 20) 
+```
+
+![R](../pics/R.png) Examine the 'structure' of the `obs` object using `str()`
+
+```{r echo=FALSE, results="hide"}
+#---CODING ANSWER---
+str(obs)
+# it's a vector containing integers
+```
+
+![Q](../pics/Q.png) What is your null hypothesis and what type of test is required? <!-- Here we expected values dictated by Mendel's Laws - we would expect a 9:3:3:1 ratio in our total of 135 beetles. This is Goodness of fit because we are testing the fit of our data to a known ratio - our expectations are based on a particular theory that determines 9:3:3:1. We are not making setting the expected values based on the observed ration. -->
+
+![R](../pics/R.png) Carry out the appropriate chi-squared test on these data either with or withour using inbuilt test, whatever you prefer.
+
+```{r echo=FALSE, results="hide"}
+# using the inbuilt test
+# give the expected ratio
+exp <- c(9/16, 3/16, 3/16, 1/16)
+chisq.test(obs, p = exp)
+
+# we can examine the expected values
+chisq.test(obs, p = exp)$expected
+```
+
+![Q](../pics/Q.png) What do you conclude about results? <!-- Reject  X-squared = 20.272, df = 3, p-value = 0.000149 --> <!-- There is an excess of red/spotted and yellow/plain and a deficiency of red/plain and yellow/spotted.  Considering the character states of the original parents, these deviations are in a direction consistent with the two loci being linked on the same chromosome.  -->
+
+# Independent study
+
+## Slug colour forms - tabulated
+
+The slug *Arion ater* has three major colour forms, black, chocolate brown and red. Sampling in population X revealed 27 black, 17 brown and 9 red individuals, whereas in population Y the corresponding numbers were 39, 10 and 21. Create an appropriate data structure and run the appropriate chi-squared test
+
+```{r echo=FALSE,results="hide"}
+#---CODING ANSWER---
+##################################################################################
+#                            Slugs - tabulated                                   #
+##################################################################################
+#  name the rows and columns
+vars <- list(pop = c("x","y"), colour = c("black", "brown", "red"))
+slugs <- matrix(c(27, 39, 17, 10, 9, 21), nrow = 2, dimnames = vars)
+# gives me
+#    colour
+# pop black brown red
+#   x    27    17   9
+#   y    39    10  21
+
+# for a contingency test like this one where the expected values are
+# derived from the data, the inbuilt chi squared test works well
+#
+chisq.test(slugs)
+# X-squared = 6.5726, df = 2, p-value = 0.03739
+# p < 0.05 so we reject the null hypothesis i.e., the proportions of the colour 
+# forms are significantly different in the two populations 
+# (mostly as a result of differences in the brown and red classes - 
+# look at the differences between observed and expected values for 
+# the three colour forms in the table above).
+chisq.test(slugs)$expected
+#       colour
+# pop    black    brown      red
+#   x 28.43902 11.63415 12.92683
+#   y 37.56098 15.36585 17.07317
+
+```
+
+## Slug colour forms - raw data
+
+The raw, untabulated data are in [slugs.txt](../data/slugs.txt). Perform the test on these data.
+
+```{r echo=FALSE,results="hide"}
+#---CODING ANSWER---
+##################################################################################
+#                            Slugs - raw                                         #
+##################################################################################
+# import the data
+slugs <- read.table("../data/slugs.txt", header = T)
+
+# put it into a table
+slugtab <- table(slugs$colour, slugs$pop)
+
+# carry out the test
+chisq.test(slugtab)
+```
+
+# The Code files
+
+These contain all the code needed in the workshop even where it is not visible on the webpage.
+
+[Rmd file](08ChiSquaredTests.Rmd) The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/08ChiSquaredTests.Rmd).
+
+[Plain script file](../scripts/08ChiSquaredTests.R) This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/08ChiSquaredTests.R).
+
+Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra` `r Cite(myBib, "kableExtra")`, `RefManager` `r Cite(myBib, "RefManager")`
+
+# References
+
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(myBib)  
+```
+
+![](../pics/17Cend.png)

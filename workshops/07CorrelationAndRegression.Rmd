@@ -88,7 +88,7 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 ![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop7'.
 
-![R](../pics/R.png) On the Files tab make three folders `data-raw` and `figures`
+![R](../pics/R.png) On the Files tab make two folders `data-raw` and `figures`
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
 
@@ -112,6 +112,7 @@ height <- read_table2("data-raw/height.txt")
 ```
 
 ```{r echo=FALSE}
+# I have a different directory structure so need
 height <- read_table2("../data/height.txt")
 ```
 
@@ -291,7 +292,7 @@ Day is discrete (but ordered) and is the explanatory; mass looks continuous and 
 ### Exploring
 
 ![R](../pics/R.png) Do a quick plot of the data (as shown)
-```{r include=FALSE}
+```{r echo=FALSE}
 #---CODING ANSWER---
 ggplot(plant, aes(x = day, y = mass)) +
   geom_point()
