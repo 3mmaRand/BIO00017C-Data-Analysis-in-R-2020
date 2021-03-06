@@ -281,15 +281,14 @@ It might seem strange to you that data like these would come in this form but it
 births <- read_table2("../data/births.txt")
 ```
 
+In such a case you might find the add a column for day calculated from the date (using the function `wday()`)
+
 ```{r echo=FALSE}
 DT::datatable(births)
 ```
 
 
-![W](../pics/W.png) Save a copy of [inductions.txt](../data/inductions.txt) to the `data-raw` folder
-
-![R](../pics/R.png) Read the data in to R. Remember, you need to use the relative path to the file in the `read.table()` command and decide whether you need header to be TRUE or FALSE:
-
+![R](../pics/R.png) Save a copy of [inductions.txt](../data/inductions.txt) to the `data-raw` folder and read it in.
 ```{r echo=FALSE, eval=FALSE}
 #---CODING ANSWER---
 inductions <- read_table2("data-raw/inductions.txt")
@@ -306,6 +305,7 @@ inductions <- read_table2("../data/inductions.txt")
 
 ```{r}
 indtab <- table(inductions$day)
+indtab
 ```
 
 The `table()` outputs the days in alphabetical order which is a common default in R. This does not matter since days are just arbitrary categories for the chi-squared test.
@@ -316,33 +316,37 @@ The `table()` outputs the days in alphabetical order which is a common default i
 chisq.test(indtab)
 ```
 
+You have the same ${\chi}^2$ and $p$ value as previously.
+
 ### Illustrating
 
 ![R](../pics/R.png) We could create a figure using ggplot like this:
 
 ```{r}
-# load tidyverse for ggplot2 - you only have to load once in a session
-# tidyverse gives us ggplot and several other packages. tidyverse is known as a metapackage (it's several packages)
-library(tidyverse)
-
 ggplot(data = inductions, aes(x = day)) +
   geom_bar() +
   theme_classic()
-
-# themes change several things at once about the appearance. 
-# Classic is useful one but there are others you can play
-# with. Type theme_ and use the tab key to see the options
 ```
 
-Remember - the ggplot geom_bar() will count the number of each day for us which is great! `r emo::ji("party")`
+A `geom`'s `stat` determines what the `geom` plots. Look up `geom_bar()` with:
 
-What is not so great is the alphbetical ordering `r emo::ji("annoyed")`
-
-```{r}
- levels(inductions$day)
+```{r eval=FALSE}
+?geom_bar
 ```
 
-![R](../pics/R.png) Reordering factor levels is something we quite often want to do.
+Notice that the default `stat` for `geom_bar()` is `count` which means it count the number of each day for us. Other `stat`s are `identity`, `density` and `bin`. 
+
+<div class = "key">
+**Top Tip**
+
+`geom_bar()` will tabulate raw data before plotting. `geom_col()` can be used for data which are already tabulated. What a `geom` does is determined by its `stat` argument.
+
+</div>
+
+
+What is not so great in this plot is the alphabetical ordering. We can reorder the categories with `fct_relevel()` ("factor relevel"). Reordering factor levels is something we quite often want to do to create the most useful plots. 
+
+![R](../pics/R.png) Put the days of the week in order:
 
 ```{r}
 inductions$day <- fct_relevel(inductions$day,
@@ -357,7 +361,27 @@ inductions$day <- fct_relevel(inductions$day,
 levels(inductions$day)
 ```
 
-![R](../pics/R.png) Redraw the figure.
+![R](../pics/R.png) Redraw the figure also making sure the bars sit on the axis and the axis labels are improved. I've added `coord_flip()` too. 
+
+```{r echo=FALSE}
+ggplot(data = inductions, aes(x = day)) +
+  geom_bar() + 
+  scale_y_continuous(name = "Frequency", 
+                     expand = c(0, 0)) +
+  scale_x_discrete(name = "", 
+                   expand = c(0, 0),
+                   labels = c("Monday",
+                              "Tuesday",
+                              "Wednesday",
+                              "Thursday",
+                              "Friday",
+                              "Saturday",
+                              "Sunday")) +
+  coord_flip() +
+  theme_classic()
+```
+
+
 
 ## Blood group and ulcers
 
@@ -367,15 +391,15 @@ A human geneticist is interested in whether there is an association between ABO 
 
 <!-- 2 x 2 contingency table. -->
 
-<!--                Blood group  Total -->
+<!--              Blood group   Total -->
 
-<!--                    O       A            -->
+<!--                  O     A         -->
 
-<!-- Ulcers Yes    65    31         96 -->
+<!-- Ulcers Yes      65     31     96 -->
 
-<!--        No      412     356        768 -->
+<!--        No      412    356    768 -->
 
-<!-- Total          477     387      864 -->
+<!-- Total          477    387    864 -->
 
 ![Q](../pics/Q.png) What is your null hypothesis and what type of test is required?
 
@@ -406,6 +430,7 @@ vars
 
 ```{r}
 ulcers <- matrix(obs, nrow = 2, dimnames = vars)
+ulcers
 ```
 
 ![R](../pics/R.png) Check the content of `ulcers` and recreate if the numbers are not in the correct place (*i.e.*, do not match your table)
@@ -437,19 +462,17 @@ The data we were given was already tabulated. There are raw data in [blood_ulcer
 
 ![W](../pics/W.png) Save a copy of [blood_ulcers.txt](../data/blood_ulcers.txt) to the 'data' folder
 
-![R](../pics/R.png) Read the data in to R. Remember, you need to use the relative path to the file in the `read.table()` command and decide whether you need header to be TRUE or FALSE:
+![R](../pics/R.png) Read the data in to R and check the structure.
 
-```{r echo=FALSE}
+```{r eval=FALSE}
 #---CODING ANSWER---
-#I have my files organised differently so I use a different 'path' to my file
-blood_ulcers <- read.table("../data/blood_ulcers.txt", header = T)
+blood_ulcers <- read_table2("data-raw/blood_ulcers.txt")
+str(blood_ulcers)
 ```
 
-![R](../pics/R.png) look at the structure of the dataframe using `str()`
-
-```{r echo=FALSE,results="hide"}
-#---CODING ANSWER---
-str(blood_ulcers) 
+```{r include=FALSE}
+#I have a different directory structure
+blood_ulcers <- read_table2("../data/blood_ulcers.txt")
 ```
 
 Notice that we have two variables this time.
@@ -481,19 +504,12 @@ In a particular species of ground beetle, red and yellow elytral colours are con
 obs <- c(79, 17, 19, 20) 
 ```
 
-![R](../pics/R.png) Examine the 'structure' of the `obs` object using `str()`
-
-```{r echo=FALSE, results="hide"}
-#---CODING ANSWER---
-str(obs)
-# it's a vector containing integers
-```
 
 ![Q](../pics/Q.png) What is your null hypothesis and what type of test is required? <!-- Here we expected values dictated by Mendel's Laws - we would expect a 9:3:3:1 ratio in our total of 135 beetles. This is Goodness of fit because we are testing the fit of our data to a known ratio - our expectations are based on a particular theory that determines 9:3:3:1. We are not making setting the expected values based on the observed ration. -->
 
-![R](../pics/R.png) Carry out the appropriate chi-squared test on these data either with or withour using inbuilt test, whatever you prefer.
+![R](../pics/R.png) Carry out the appropriate chi-squared test on these data either with or without using inbuilt test, whatever you prefer.
 
-```{r echo=FALSE, results="hide"}
+```{r include=FALSE}
 # using the inbuilt test
 # give the expected ratio
 exp <- c(9/16, 3/16, 3/16, 1/16)
@@ -511,7 +527,7 @@ chisq.test(obs, p = exp)$expected
 
 The slug *Arion ater* has three major colour forms, black, chocolate brown and red. Sampling in population X revealed 27 black, 17 brown and 9 red individuals, whereas in population Y the corresponding numbers were 39, 10 and 21. Create an appropriate data structure and run the appropriate chi-squared test
 
-```{r echo=FALSE,results="hide"}
+```{r include=FALSE}
 #---CODING ANSWER---
 ##################################################################################
 #                            Slugs - tabulated                                   #
@@ -547,13 +563,14 @@ chisq.test(slugs)$expected
 
 The raw, untabulated data are in [slugs.txt](../data/slugs.txt). Perform the test on these data.
 
-```{r echo=FALSE,results="hide"}
+```{r include=FALSE}
 #---CODING ANSWER---
 ##################################################################################
 #                            Slugs - raw                                         #
 ##################################################################################
 # import the data
-slugs <- read.table("../data/slugs.txt", header = T)
+# my path differs, yours should be "data-raw/slugs.txt"
+slugs <- read_table2("../data/slugs.txt")
 
 # put it into a table
 slugtab <- table(slugs$colour, slugs$pop)
