@@ -494,7 +494,7 @@ ggplot(stag, aes(x = jh, y = mand) ) +
 
 These contain all the code needed in the workshop even where it is not visible on the webpage.
 
-[Rmd file]() The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/07CorrelationAndRegression.Rmd).
+[Rmd file](07CorrelationAndRegression.Rmd) The Rmd file is the file I use to compile the practical. Rmd stands for R markdown. It allows R code and ordinary text to be interweaved to produce well-formatted reports including webpages. If you right-click on the link and choose Save-As, you will be able to open the Rmd file in RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/workshops/07CorrelationAndRegression.Rmd).
 
 [Plain script file](../scripts/07CorrelationAndRegression.R) This is plain script (.R) version of the practical generated from the Rmd. Again, you can save this and open it RStudio. Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Analysis-in-R-2020/blob/main/scripts/07CorrelationAndRegression.R).
 
