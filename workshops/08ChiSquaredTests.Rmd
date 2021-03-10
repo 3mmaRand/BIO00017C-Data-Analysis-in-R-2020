@@ -74,7 +74,7 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 ![Q](../pics/Q.png) is question for you to think about an answer. You will usually want to record your answers in your script for future reference.
 
-![Artwork by Allison Horst](../pics/horst/code_hero.jpg)
+![Artwork by Allison Horst](../pics/horst/alison_horst_length().jpg)
 
 # Getting started
 
