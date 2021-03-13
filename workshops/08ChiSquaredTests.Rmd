@@ -82,7 +82,7 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 ![R](../pics/R.png) Make an RStudio project for this workshop by clicking on the drop-down menu on top right where it says [Project: (None)](../pics/new-project.png) and choosing New Project and then New Directory, then New Project. Navigate to the "data-analysis-in-r" folder. Name the RStudio Project 'workshop8'.
 
-![R](../pics/R.png) On the Files tab make three folders `data-raw`, `data-processed` and `figures`
+![R](../pics/R.png) On the Files tab make a folder `data-raw`
 
 ![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
 
@@ -96,7 +96,7 @@ library(tidyverse)
 
 ## Inductions
 
-In a local maternity hospital, the total numbers of births induced on each day of the week over a six week period were recorded a
+In a local maternity hospital, the total numbers of births induced on each day of the week over a six week period were recorded as follows:
 
 | Day       | No.inductions |
 |-----------|---------------|
@@ -273,7 +273,7 @@ R has an inbuilt chi-squared test, `chisq.test()` which can be used for Goodness
 
 ### Inductions - alternative data format
 
-The data we were given was already tabulated however, data often comes to us with an observation in each row. In this case that would mean a column of 250 values which indicated which day and induction was performed. Data formatted this way is in [inductions.txt](../data/inductions.txt).
+The data we were given was already tabulated however, data often comes to us with an observation in each row. In this case that would mean a column of 250 values which indicated which day an induction was performed. Data formatted this way is in [inductions.txt](../data/inductions.txt).
 
 
 It might seem strange to you that data like these would come in this form but it is actually common when a study has collected many variables. For example, imagine the hospital collected data about every birth, you might have a dataframe similar to this:
@@ -460,7 +460,7 @@ chisq.test(ulcers, correct = FALSE)$expected
 
 The data we were given was already tabulated. There are raw data in [blood_ulcers.txt](../data/blood_ulcers.txt). Examine this file and compare its content to [inductions.txt](../data/inductions.txt)
 
-![W](../pics/W.png) Save a copy of [blood_ulcers.txt](../data/blood_ulcers.txt) to the 'data' folder
+![W](../pics/W.png) Save a copy of [blood_ulcers.txt](../data/blood_ulcers.txt) to the 'data-raw' folder
 
 ![R](../pics/R.png) Read the data in to R and check the structure.
 
