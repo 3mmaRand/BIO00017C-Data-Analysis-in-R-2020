@@ -15,6 +15,10 @@ output:
 ---
 ![](../pics/17C.png)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4701425.svg)](https://doi.org/10.5281/zenodo.4701425)  
+Emma Rand. (2021). Data Analysis in R (BIO00017C) (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.4701425
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
@@ -447,12 +451,16 @@ Alternatively, [View in Browser](https://github.com/3mmaRand/BIO00017C-Data-Anal
 
 Pages made with `rmarkdown` `r Cite(myBib, c("markdown1","markdown2"))`, `kableExtra``r Cite(myBib, "kableExtra")`, `RefManager``r Cite(myBib, "RefManager")` 
 
+
 # References 
 
 ```{r refs, echo=FALSE, results="asis"}
 PrintBibliography(myBib)  
 ```
 
+# Please cite as:
+
+Emma Rand. (2021). Data Analysis in R (BIO00017C) (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.4701425
 
 
 ![](../pics/17Cend.png)
