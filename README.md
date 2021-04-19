@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4701425.svg)](https://doi.org/10.5281/zenodo.4701425)
 ![](pics/17C.png)
 
 # Overview
@@ -33,7 +34,7 @@ By the end of "Data Analysis in R" the successful student will be able to:
 
 Please cite as:
 
-...
+Emma Rand. (2021). Data Analysis in R (BIO00017C) (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.4701425
 
 You can obtain all the workshop materials by using the green 'Clone or download' button above.
 
