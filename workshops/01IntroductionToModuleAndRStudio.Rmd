@@ -23,9 +23,9 @@ Emma Rand. (2021). Data Analysis in R (BIO00017C) (Version v1.0). Zenodo. http:/
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
                       warning = FALSE,
-                      fig.width=4, 
-                      fig.height=4, 
-                      fig.retina=3)
+                      fig.width = 4, 
+                      fig.height = 4, 
+                      fig.retina = 3)
 ```
 
 ```{r include=FALSE}
@@ -237,14 +237,16 @@ Other packages, such as `ggplot2` `r Cite(myBib, "ggplot2")` need to be added.
 
 Added packages need only be installed once but must be loaded each R session.
 
-If you are working on your own computer or using RStudio cloud you will need to install `tidyverse`. If you are working on the VDS you do **not** need to install it.
+**`r emo::ji("loudspeaker")` If you are working on a University Computer or the VDS you do _not_ need to install `tidyverse`. `r emo::ji("loudspeaker")`**
+
+If you are working on your own computer or using RStudio cloud you will need to install `tidyverse`. 
 
 To install a package:  
 ![R](../pics/R.png) Go the Packages tab on the lower right pane. Click Install and type `tidyverse` into the box that appears. 
 
 Wait until you get the prompt back. It will take a few moments, be patient!
 
-To load a package which you have already installed we use the `library()` function.
+To load a package which you have already installed we use the `library()` function. You will need to do this wherever you are working.
 
 ![R](../pics/R.png) Load the `tidyverse`:
 ```{r}
