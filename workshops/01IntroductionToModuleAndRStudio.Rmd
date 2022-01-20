@@ -400,8 +400,8 @@ ggplot(data = nest_data, aes(x = n, y = freq)) +
   geom_col(fill = "lightblue", 
            width = 1, 
            colour = "black") +
-  scale_x_discrete(expand = c(0, 0)) + #<<
-  scale_y_continuous(expand = c(0, 0)) #<<
+  scale_x_discrete(expand = c(0, 0)) + 
+  scale_y_continuous(expand = c(0, 0)) 
 ```
 
 Each 'layer' is added to the ggplot() command with a `+`
