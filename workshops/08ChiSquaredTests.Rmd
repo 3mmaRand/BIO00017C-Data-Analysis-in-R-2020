@@ -282,7 +282,7 @@ The data we were given was already tabulated however, data often comes to us wit
 
 It might seem strange to you that data like these would come in this form but it is actually common when a study has collected many variables. For example, imagine the hospital collected data about every birth, you might have a dataframe similar to this:
 ```{r echo=FALSE}
-births <- read_table2("../data/births.txt")
+births <- read_table("../data/births.txt")
 ```
 
 In such a case you might find the add a column for day calculated from the date (using the function `wday()`)
@@ -295,13 +295,13 @@ DT::datatable(births)
 ![R](../pics/R.png) Save a copy of [inductions.txt](../data/inductions.txt) to the `data-raw` folder and read it in.
 ```{r echo=FALSE, eval=FALSE}
 #---CODING ANSWER---
-inductions <- read_table2("data-raw/inductions.txt")
+inductions <- read_table("data-raw/inductions.txt")
 ```
 
 
 ```{r echo=FALSE}
 #---I have a different directory structure so need
-inductions <- read_table2("../data/inductions.txt")
+inductions <- read_table("../data/inductions.txt")
 ```
 
 
@@ -470,13 +470,13 @@ The data we were given was already tabulated. There are raw data in [blood_ulcer
 
 ```{r eval=FALSE}
 #---CODING ANSWER---
-blood_ulcers <- read_table2("data-raw/blood_ulcers.txt")
+blood_ulcers <- read_table("data-raw/blood_ulcers.txt")
 str(blood_ulcers)
 ```
 
 ```{r include=FALSE}
 #I have a different directory structure
-blood_ulcers <- read_table2("../data/blood_ulcers.txt")
+blood_ulcers <- read_table("../data/blood_ulcers.txt")
 ```
 
 Notice that we have two variables this time.
@@ -574,7 +574,7 @@ The raw, untabulated data are in [slugs.txt](../data/slugs.txt). Perform the tes
 ##################################################################################
 # import the data
 # my path differs, yours should be "data-raw/slugs.txt"
-slugs <- read_table2("../data/slugs.txt")
+slugs <- read_table("../data/slugs.txt")
 
 # put it into a table
 slugtab <- table(slugs$colour, slugs$pop)

@@ -114,14 +114,14 @@ Adiponectin is exclusively secreted from adipose tissue and modulates a number o
 ```{r, eval=FALSE, echo=TRUE}
 #---CODING ANSWER---
 # import
-adip  <-  read_table2("data/adipocytes.txt")
+adip  <-  read_table("data/adipocytes.txt")
 str(adip)
 ```
 
 ```{r, include=FALSE}
 # importing for emma
 # my directory structure differs
-adip  <-  read_table2("../data/adipocytes.txt")
+adip  <-  read_table("../data/adipocytes.txt")
 str(adip)
 ```
 
@@ -546,7 +546,7 @@ expression is not affected by temperature / for each gene, the expression at the
 ```{r geneimport, echo = FALSE}
 #---CODING ANSWER---
 # I have my data files in a folder called data
-coliexp  <-  read_table2("../data/coliexp.txt")
+coliexp  <-  read_table("../data/coliexp.txt")
 ```
 
 ![Q](../pics/Q.png) What is the appropriate parametric test?
@@ -583,7 +583,7 @@ Some plant biotechnologists are trying to increase the quantity of omega 3 fatty
    
 ```{r csativa, include=FALSE}
 #---THINKING AND CODING ANSWER---
-csativa  <-  read_table2("../data/csativa.txt")
+csativa  <-  read_table("../data/csativa.txt")
 str(csativa)
 
 # First realise that this is a two sample test. You have two independent samples
@@ -653,7 +653,7 @@ In order to investigate the effects of feeding fertilised grass to sheep, one of
 #the data are paired. although the two treatments are not applied to the same individual, they are applied to each of a set of twins. the first sheep fed unfertilised grass is the twin of the first sheep fed fertilsed grass. this means the columns are not independent and we need to do a paired test (either a paired wilcoxon or a paired t). These data do not appear to be normally distributed (not many values, integers) a non-parametric test is probably preferable. 
 
 # read in the data
-sheep  <-  read_table2("../data/sheep.txt")
+sheep  <-  read_table("../data/sheep.txt")
 str(sheep)
 
 # summarise the data

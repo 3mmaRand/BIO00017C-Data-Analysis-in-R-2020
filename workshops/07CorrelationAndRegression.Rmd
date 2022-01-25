@@ -112,12 +112,12 @@ The data given in [height.txt](../data/height.txt) are the heights of eleven bro
     
 ```{r echo=FALSE, eval=FALSE}
 #---CODING ANSWER---
-height <- read_table2("data-raw/height.txt")
+height <- read_table("data-raw/height.txt")
 ```
 
 ```{r echo=FALSE}
 # I have a different directory structure so need
-height <- read_table2("../data/height.txt")
+height <- read_table("../data/height.txt")
 ```
 
 
@@ -125,7 +125,7 @@ height <- read_table2("../data/height.txt")
 **Top Tip**
 
 Did you know you can also read files directly from the internet instead of saving it first?
-`read_table2("https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/data/height.txt")`
+`read_table("https://3mmarand.github.io/BIO00017C-Data-Analysis-in-R-2020/data/height.txt")`
 
 </div>
 
@@ -424,7 +424,7 @@ The data in [sprint.txt](../data/sprint.txt) are from an investigation of the ef
 ```{r include=FALSE}
 #---CODING AND THINKING ANSWER---
 # this example is designed to emphasise the importance of plotting your data first
-sprint <- read_table2("../data/sprint.txt")
+sprint <- read_table("../data/sprint.txt")
 # Anxiety is discrete but ranges from 16 to 402 meaning the gap between possible measures is small and 
 # the variable could be treated as continuous if needed. Time is a continuous measure that has decimal places and which we would expect to follow a normal distribution 
 
@@ -444,7 +444,7 @@ The concentration of juvenile hormone in stag beetles is known to influence mand
 ```{r include=FALSE}
 #---CODING AND THINKING ANSWER---
 #read the data in and check the structure
-stag <- read_table2("../data/stag.txt")
+stag <- read_table("../data/stag.txt")
 str(stag)
 
 # jh is discrete but order and has been chose by the experimenter - it is the explanatory variable.  

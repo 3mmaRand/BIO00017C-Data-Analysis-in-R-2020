@@ -113,7 +113,7 @@ The myoglobin concentration of skeletal muscle of three species of seal in grams
 
 ![Q](../pics/Q.png) How do the data files differ? How might this influence your data import?
 
-<!-- the adipocytes data file uses white space to separate - or delimit - the values. This is what read_table2() expects. See the manual for read_table2(). the seal data are in a comma separated values (csv) file and one of the columns contains value that have a space. Using read_table2() will run but the resulting dataframe won't be quite what you want. There will be a message saying two columns were expected but three were included. Two are expected because there only two words and one space on the first row. The myoglobin values won't be in the second column called myoglobin but instead the second word for the first column, Seal, is there. We can use read_csv() instead-->
+<!-- the adipocytes data file uses white space to separate - or delimit - the values. This is what read_table() expects. See the manual for read_table(). the seal data are in a comma separated values (csv) file and one of the columns contains value that have a space. Using read_table() will run but the resulting dataframe won't be quite what you want. There will be a message saying two columns were expected but three were included. Two are expected because there only two words and one space on the first row. The myoglobin values won't be in the second column called myoglobin but instead the second word for the first column, Seal, is there. We can use read_csv() instead-->
 
 ![R](../pics/R.png) Read in the data and check the structure. I used the name `seal` for the dataframe/tibble. What kind of variables do you have?
 ```{r, eval=FALSE, echo=FALSE}
@@ -358,7 +358,7 @@ Larvae of the Ambermarked birch leafminer, *Profenusa thomsoni*, feed on the int
 ```{r, eval=FALSE, echo=FALSE}
 #---CODING ANSWER---
 # import
-leaf  <-  read_table2("data/leaf.txt")
+leaf  <-  read_table("data/leaf.txt")
 str(leaf)
 ```
 
@@ -367,7 +367,7 @@ str(leaf)
 ```{r, include=FALSE}
 # importing for emma
 # my directory structure differs
-leaf  <-  read_table2("../data/leaf.txt")
+leaf  <-  read_table("../data/leaf.txt")
 str(leaf)
 ```
 
@@ -495,7 +495,7 @@ Sports scientists were investigating the effects of fitness and heat acclimatisa
    
 ```{r include=FALSE}
 #read in the data and look at structure
-sweat <- read_table2("../data/sweat.txt")
+sweat <- read_table("../data/sweat.txt")
 str(sweat)
 
 # quick plot of the data
@@ -608,7 +608,7 @@ The data are given in [biomass.txt](../data/biomass.txt) are taken from an exper
 ######################################################################
 
 # data are in ../data
-biom <- read_table2("../data/biomass.txt")
+biom <- read_table("../data/biomass.txt")
 
 # check structure
 str(biom)

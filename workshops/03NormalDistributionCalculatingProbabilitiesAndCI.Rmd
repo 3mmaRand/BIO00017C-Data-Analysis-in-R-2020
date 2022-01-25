@@ -411,13 +411,13 @@ You may need to refer to previous practicals to remind yourself how to carry out
 ```{r eval=FALSE, echo=FALSE}
 #---CODING ANSWER---
 # assuming you have set up your folders as instructed earlier
-bee <- read_table2("data/beewing.txt")
+bee <- read_table("data/beewing.txt")
 str(bee)
 ```
 
 ```{r include=FALSE}
 # note my directory structure differs so I need a different path
-bee <- read_table2("../data/beewing.txt")
+bee <- read_table("../data/beewing.txt")
 str(bee)
 ```
 
@@ -477,13 +477,13 @@ The fatty acid Docosahexaenoic acid (DHA) is a major component of membrane phosp
 ```{r eval=FALSE, echo=FALSE}
 #---CODING ANSWER---
 ## assuming you have set up your folders as instructed earlier
-neur <- read_table2("data/neuron.txt")
+neur <- read_table("data/neuron.txt")
 str(neur)
 ```
 
 ```{r include=FALSE}
 # note my directory structure differs so I need a different path
-neur <- read_table2("../data/neuron.txt")
+neur <- read_table("../data/neuron.txt")
 ```
 
 ![R](../pics/R.png) Assign the mean to `m`
@@ -556,9 +556,9 @@ Adiponectin is exclusively secreted from adipose tissue and modulates a number o
 #---CODING AND THINKING ANSWER---
 # data import
 # if you continue with the directory structure you have for this workshop and have saved adipocytes.txt to the data folder, you will need:
-# adip <- read_table2("data/adipocytes.txt")
+# adip <- read_table("data/adipocytes.txt")
 # I have a different structure and need:
-adip <- read_table2("../data/adipocytes.txt")
+adip <- read_table("../data/adipocytes.txt")
 # examine the structure
 str(adip)
 # summarise

@@ -112,15 +112,15 @@ The data in [pigeon.txt](../data/pigeon.txt) are 40 measurements of [interorbita
 
 ![W](../pics/W.png) Save a copy of the data file (right click and Save) to your working directory (which will be 'workshop2')
 
-![R](../pics/R.png) Read the data in to R by using the `read_table2()` command:
+![R](../pics/R.png) Read the data in to R by using the `read_table()` command:
 ```{r eval=FALSE}
-pigeon <- read_table2("pigeon.txt")
+pigeon <- read_table("pigeon.txt")
 ```
 
 
 ```{r include=FALSE}
 # I have my files organised differently so I use a different 'path' to my file
-pigeon <- read_table2("../data/pigeon.txt")
+pigeon <- read_table("../data/pigeon.txt")
 ```
 
 You should find dataframe object called `pigeon` can be seen in the Environment window. Click on it to open a spreadsheet-like view of the dataframe.
@@ -243,17 +243,17 @@ The data in [pigeon2.txt](../data/pigeon2.txt) are similar data of interorbital 
 
 ![W](../pics/W.png) Save a copy of [pigeon2.txt](../data/pigeon2.txt) to the 'data' folder
 
-![R](../pics/R.png) To read the data in to R you need to use the relative path to the file in the `read_table2()` command:
+![R](../pics/R.png) To read the data in to R you need to use the relative path to the file in the `read_table()` command:
 
 ```{r eval=FALSE}
-pigeon2 <- read_table2("data/pigeon2.txt")
+pigeon2 <- read_table("data/pigeon2.txt")
 ```
 
 The `data/` part is the 'relative path' to the file. It says where the file is *relative* to your working directory:  pigeon2.txt is inside a folder (directory) called 'data' which is in your working directory. 
 
 ```{r echo=FALSE}
 #I have my files organised differently so I use a different 'path' to my file
-pigeon2 <- read_table2("../data/pigeon2.txt")
+pigeon2 <- read_table("../data/pigeon2.txt")
 ```
 
 
