@@ -111,7 +111,7 @@ Adiponectin is exclusively secreted from adipose tissue and modulates a number o
 ![W](../pics/W.png) Save a copy of the data file [adipocytes.txt](../data/adipocytes.txt)
 
 ![R](../pics/R.png) Read in the data and check the structure. I used the name `adip` for the dataframe/tibble.
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 #---CODING ANSWER---
 # import
 adip  <-  read_table("data/adipocytes.txt")
