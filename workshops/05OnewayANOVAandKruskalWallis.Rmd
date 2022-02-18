@@ -113,7 +113,9 @@ The myoglobin concentration of skeletal muscle of three species of seal in grams
 
 ![Q](../pics/Q.png) How do the data files differ? How might this influence your data import?
 
-<!-- the adipocytes data file uses white space to separate - or delimit - the values. This is what read_table() expects. See the manual for read_table(). the seal data are in a comma separated values (csv) file and one of the columns contains value that have a space. Using read_table() will run but the resulting dataframe won't be quite what you want. There will be a message saying two columns were expected but three were included. Two are expected because there only two words and one space on the first row. The myoglobin values won't be in the second column called myoglobin but instead the second word for the first column, Seal, is there. We can use read_csv() instead-->
+<!-- THINKING ANSWER 
+the adipocytes data file uses white space to separate - or delimit - the values. This is what read_table() expects. See the manual for read_table(). the seal data are in a comma separated values (csv) file and one of the columns contains value that have a space. Using read_table() will run but the resulting dataframe won't be quite what you want. There will be a message saying two columns were expected but three were included. Two are expected because there only two words and one space on the first row. The myoglobin values won't be in the second column called myoglobin but instead the second word for the first column, Seal, is there. We can use read_csv() instead
+-->
 
 ![R](../pics/R.png) Read in the data and check the structure. I used the name `seal` for the dataframe/tibble. What kind of variables do you have?
 ```{r, eval=FALSE, echo=FALSE}
@@ -123,7 +125,9 @@ seal  <-  read_csv("data/seal.csv")
 str(seal)
 ```
 
-<!-- we have a categorical variable with three groups and a continuous variable which is the response. -->
+<!-- THINKING ANSWER 
+we have a categorical variable with three groups and a continuous variable which is the response.
+-->
 
 ```{r, include=FALSE}
 # importing for emma
@@ -147,7 +151,7 @@ Do you remember this **Top Tip**?
 
 **Top Tip**
 
-The code required to summarise, test, and plot data for any two-sample *t*-test AND for any for any one-way ANOVA is **exactly the same** except for the names of the dataframe, variables and the axis labels and limits.
+The code required to summarise, and plot data for any two-sample *t*-test AND for any for any one-way ANOVA is **exactly the same** except for the names of the dataframe, variables and the axis labels and limits.
 Take some time to comment it. Consider making a script called ttest.R or similar with all the code and information you need to reuse it.
 
 </div>
@@ -286,7 +290,7 @@ ggplot() +
   theme_classic()
 ```
    
-Notice the use of `expression()` to allow you to specify special characters. `expression()` takes strings or latex formatting. Each string or piece of latex is separated by a `*` or a `~`. The `*` puts them together without a space, and `~` with a space. `Kg^{-1}`makes the -1 a superscript. 
+Notice the use of `expression()` to allow you to specify special characters. `expression()` takes strings or [LaTeX](https://en.wikipedia.org/wiki/LaTeX) formatting. Each string or piece of LaTeX is separated by a `*` or a `~`. The `*` puts them together without a space, and `~` with a space. `Kg^{-1}`makes the -1 a superscript. 
 
 This figure is good .... but it would be nice to show the result of the post-hoc test by annotating the figure. 
 
@@ -317,16 +321,23 @@ ggplot() +
                      expand = c(0, 0)) +
   scale_x_discrete(labels = c("Bladdernose", "Harbour", "Weddell"), 
                    name = "Seal Species") +
-  annotate("segment", x = 1, xend = 2,     # long horizontal. goes from bladdernose (x = 1) to
-           y = 72, yend = 72,              # harbour (xend = 2) the y and yend the same
+  # long horizontal. goes from bladdernose (x = 1) to harbour (xend = 2) 
+  # the y and yend are the same
+  annotate("segment", x = 1, xend = 2,   
+           y = 72, yend = 72, 
            colour = "black") +
-  annotate("segment", x = 2, xend = 2,     # short horizontal, x and xend are the same
-           y = 72, yend = 70,              # y and yend are slightly apart
+  # short horizontal, x and xend are the same at harbour (xend = 2)
+  # y and yend are slightly apart
+  annotate("segment", x = 2, xend = 2, 
+           y = 72, yend = 70,
            colour = "black") +
-  annotate("segment", x = 1, xend = 1,     # short horizontal, x and xend are the same
-           y = 72, yend = 70,              # y and yend are slightly apart
+  # short horizontal, x and xend are the same at bladdernose (x = 1)
+  # y and yend are slightly apart
+  annotate("segment", x = 1, xend = 1,
+           y = 72, yend = 70,
            colour = "black") +
-  annotate("text", x = 1.5,  y = 75,       # the text
+  # the text
+  annotate("text", x = 1.5,  y = 75,
            label = expression(italic(p)~"= 0.005")) +
   theme_classic()
 ```  
@@ -334,13 +345,14 @@ ggplot() +
 
 **Top Tip**
 
-Use comments at the end of `ggplot` lines to help you remember what the line does. You can use white space to line these up
+Use comments anywhere in the `ggplot` block to help you remember what each part does. I find this especially useful for labelled the annotations.
 
 </div>
 
 
 ![R](../pics/R.png) Make a new folder called 'figures' and write your figure to file. This will allow you to check your understanding of paths.
 ```{r echo = FALSE}
+#---CODING ANSWER---
 ggsave("figures/seal.png",
        width = 5,
        height = 4,
@@ -419,6 +431,7 @@ The significant Kruskal-Wallis tells us at least two of the groups differ but wh
 
 ![R](../pics/R.png) Load the package using `library()`
 ```{r include=FALSE}
+#---CODING ANSWER---
 library(pgirmess)
 ```
 
@@ -704,7 +717,7 @@ arrange(biomsum, mean)
 #   no difference in insect biomass. Use other criteria to chose (e.g., price)
 
 # We might report this like:
-# There is a very highly significant effect of spray identity on pest 
+# There is a very highly significant effect of spray type on pest 
 # biomass (F = 26.5; d.f., 5, 54; p < 0.001). Post-hoc testing 
 # showed E was no more effective than the control; A, C and B were 
 # all better than the control but could be equally as good as each

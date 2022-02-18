@@ -1,4 +1,4 @@
-## ----setup, include=FALSE---------------------------------------------------------------
+## ----setup, include=FALSE----------------------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
                       warning = FALSE,
@@ -7,13 +7,13 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.retina = 3)
 
 
-## ----include=FALSE----------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 library(tidyverse)
 library(kableExtra)
 library(RefManageR)
 
 
-## ---- load-refs, include=FALSE, cache=FALSE---------------------------------------------
+## ---- load-refs, include=FALSE, cache=FALSE----------------------------------------------------------------
 BibOptions(check.entries = FALSE,
            bib.style = "authoryear",
            cite.style = "authoryear",
@@ -25,30 +25,30 @@ BibOptions(check.entries = FALSE,
 myBib <- ReadBib("../refs/refs.bib", check = FALSE)
 
 
-## ---------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 library(tidyverse)
 
 
-## ---- eval=FALSE, echo=FALSE------------------------------------------------------------
+## ---- eval=FALSE, echo=FALSE-------------------------------------------------------------------------------
 ## #---CODING ANSWER---
 ## # import
 ## seal  <-  read_csv("data/seal.csv")
 ## str(seal)
 
 
-## ---- include=FALSE---------------------------------------------------------------------
+## ---- include=FALSE----------------------------------------------------------------------------------------
 # importing for emma
 # my directory structure differs
 seal  <-  read_csv("../data/seal.csv", )
 str(seal)
 
 
-## ---- include=FALSE---------------------------------------------------------------------
+## ---- include=FALSE----------------------------------------------------------------------------------------
 ggplot(data = seal, aes(x = species, y = myoglobin)) +
   geom_violin()
 
 
-## ----echo = FALSE-----------------------------------------------------------------------
+## ----echo = FALSE------------------------------------------------------------------------------------------
 #---CODING ANSWER---
 sealsummary <- seal %>%
   group_by(species) %>%
@@ -59,36 +59,36 @@ sealsummary <- seal %>%
 
 
 
-## ----echo=FALSE-------------------------------------------------------------------------
+## ----echo=FALSE--------------------------------------------------------------------------------------------
 knitr::kable(sealsummary) %>% kableExtra::kable_styling()
 
 
-## ----anovatest--------------------------------------------------------------------------
+## ----anovatest---------------------------------------------------------------------------------------------
 mod <- aov(data = seal, myoglobin ~ species)
 summary(mod)
 
 
-## ---------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 TukeyHSD(mod)
 
 
-## ----fig.height=5-----------------------------------------------------------------------
+## ----fig.height=5------------------------------------------------------------------------------------------
 TukeyHSD(mod) %>% plot(cex.axis = 0.7)   # cex.axis just changes the size of the axis labels
 
 
-## ---------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 plot(mod, which = 1)
 
 
-## ---------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 hist(mod$residuals)
 
 
-## ----include=FALSE----------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 shapiro.test(mod$residuals)
 
 
-## ----fig.width = 5, fig.height = 5------------------------------------------------------
+## ----fig.width = 5, fig.height = 5-------------------------------------------------------------------------
 ggplot() +
   geom_point(data = seal, aes(x = species, y = myoglobin),
              position = position_jitter(width = 0.1, height = 0),
@@ -107,11 +107,11 @@ ggplot() +
   theme_classic()
 
 
-## ----eval=FALSE-------------------------------------------------------------------------
+## ----eval=FALSE--------------------------------------------------------------------------------------------
 ## ?annotate
 
 
-## ----fig.width = 4, fig.height = 4------------------------------------------------------
+## ----fig.width = 4, fig.height = 4-------------------------------------------------------------------------
 ggplot() +
   geom_point(data = seal, aes(x = species, y = myoglobin),
              position = position_jitter(width = 0.1, height = 0),
@@ -127,47 +127,55 @@ ggplot() +
                      expand = c(0, 0)) +
   scale_x_discrete(labels = c("Bladdernose", "Harbour", "Weddell"), 
                    name = "Seal Species") +
-  annotate("segment", x = 1, xend = 2,     # long horizontal. goes from bladdernose (x = 1) to
-           y = 72, yend = 72,              # harbour (xend = 2) the y and yend the same
+  # long horizontal. goes from bladdernose (x = 1) to harbour (xend = 2) 
+  # the y and yend are the same
+  annotate("segment", x = 1, xend = 2,   
+           y = 72, yend = 72, 
            colour = "black") +
-  annotate("segment", x = 2, xend = 2,     # short horizontal, x and xend are the same
-           y = 72, yend = 70,              # y and yend are slightly apart
+  # short horizontal, x and xend are the same at harbour (xend = 2)
+  # y and yend are slightly apart
+  annotate("segment", x = 2, xend = 2, 
+           y = 72, yend = 70,
            colour = "black") +
-  annotate("segment", x = 1, xend = 1,     # short horizontal, x and xend are the same
-           y = 72, yend = 70,              # y and yend are slightly apart
+  # short horizontal, x and xend are the same at bladdernose (x = 1)
+  # y and yend are slightly apart
+  annotate("segment", x = 1, xend = 1,
+           y = 72, yend = 70,
            colour = "black") +
-  annotate("text", x = 1.5,  y = 75,       # the text
+  # the text
+  annotate("text", x = 1.5,  y = 75,
            label = expression(italic(p)~"= 0.005")) +
   theme_classic()
 
 
-## ----echo = FALSE-----------------------------------------------------------------------
+## ----echo = FALSE------------------------------------------------------------------------------------------
+#---CODING ANSWER---
 ggsave("figures/seal.png",
        width = 5,
        height = 4,
        units = "in")
 
 
-## ---- eval=FALSE, echo=FALSE------------------------------------------------------------
+## ---- eval=FALSE, echo=FALSE-------------------------------------------------------------------------------
 ## #---CODING ANSWER---
 ## # import
-## leaf  <-  read_table2("data/leaf.txt")
+## leaf  <-  read_table("data/leaf.txt")
 ## str(leaf)
 
 
-## ---- include=FALSE---------------------------------------------------------------------
+## ---- include=FALSE----------------------------------------------------------------------------------------
 # importing for emma
 # my directory structure differs
-leaf  <-  read_table2("../data/leaf.txt")
+leaf  <-  read_table("../data/leaf.txt")
 str(leaf)
 
 
-## ---- include=FALSE---------------------------------------------------------------------
+## ---- include=FALSE----------------------------------------------------------------------------------------
 ggplot(data = leaf, aes(x = birch, y = eggs)) +
   geom_boxplot()
 
 
-## ----include=FALSE----------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 #---CODING ANSWER---
 leaf %>% 
   group_by(birch) %>% 
@@ -176,19 +184,20 @@ leaf %>%
             n = length(eggs))
 
 
-## ---------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 kruskal.test(data = leaf, eggs ~ birch)
 
 
-## ----include=FALSE----------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
+#---CODING ANSWER---
 library(pgirmess)
 
 
-## ---------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 kruskalmc(data = leaf, eggs ~ birch)
 
 
-## ----echo = FALSE, fig.width = 5, fig.height = 5----------------------------------------
+## ----echo = FALSE, fig.width = 5, fig.height = 5-----------------------------------------------------------
 #---CODING ANSWER---
 ggplot(leaf, aes(x = birch, y = eggs) ) +
   geom_boxplot() +
@@ -210,9 +219,9 @@ ggplot(leaf, aes(x = birch, y = eggs) ) +
   theme_classic()
 
 
-## ----include=FALSE----------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 #read in the data and look at structure
-sweat <- read_table2("../data/sweat.txt")
+sweat <- read_table("../data/sweat.txt")
 str(sweat)
 
 # quick plot of the data
@@ -282,7 +291,7 @@ ggplot(sweat, aes(x = gp, y = na) ) +
    
 
 
-## ----include=FALSE----------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 #---CODING AND THINKING ANSWER---
 ######################################################################
 #                                                                    #
@@ -319,7 +328,7 @@ ggplot(sweat, aes(x = gp, y = na) ) +
 ######################################################################
 
 # data are in ../data
-biom <- read_table2("../data/biomass.txt")
+biom <- read_table("../data/biomass.txt")
 
 # check structure
 str(biom)
@@ -415,7 +424,7 @@ arrange(biomsum, mean)
 #   no difference in insect biomass. Use other criteria to chose (e.g., price)
 
 # We might report this like:
-# There is a very highly significant effect of spray identity on pest 
+# There is a very highly significant effect of spray type on pest 
 # biomass (F = 26.5; d.f., 5, 54; p < 0.001). Post-hoc testing 
 # showed E was no more effective than the control; A, C and B were 
 # all better than the control but could be equally as good as each
@@ -517,6 +526,6 @@ ggplot() +
 # Error bars are +/- 1 S.E. Significant comparisons are indicated: * is p < 0.05, ** p < 0.01 and *** is p < 0.001
 
 
-## ----refs, echo=FALSE, results="asis"---------------------------------------------------
+## ----refs, echo=FALSE, results="asis"----------------------------------------------------------------------
 PrintBibliography(myBib)  
 

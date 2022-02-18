@@ -1,4 +1,4 @@
-## ----setup, include=FALSE---------------------------------------------------------------------
+## ----setup, include=FALSE----------------------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
                       warning = FALSE,
@@ -7,13 +7,13 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.retina = 3)
 
 
-## ----include=FALSE----------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 library(tidyverse)
 library(kableExtra)
 library(RefManageR)
 
 
-## ---- load-refs, include=FALSE, cache=FALSE---------------------------------------------------
+## ---- load-refs, include=FALSE, cache=FALSE----------------------------------------------------------------
 BibOptions(check.entries = FALSE,
            bib.style = "authoryear",
            cite.style = "authoryear",
@@ -25,30 +25,30 @@ BibOptions(check.entries = FALSE,
 myBib <- ReadBib("../refs/refs.bib", check = FALSE)
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 library(tidyverse)
 
 
-## ---- eval=FALSE, echo=TRUE-------------------------------------------------------------------
+## ---- eval=FALSE, echo=FALSE-------------------------------------------------------------------------------
 ## #---CODING ANSWER---
 ## # import
 ## adip  <-  read_table("data/adipocytes.txt")
 ## str(adip)
 
 
-## ---- include=FALSE---------------------------------------------------------------------------
+## ---- include=FALSE----------------------------------------------------------------------------------------
 # importing for emma
 # my directory structure differs
 adip  <-  read_table("../data/adipocytes.txt")
 str(adip)
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 ggplot(data = adip, aes(x = treatment, y = adiponectin)) +
   geom_violin()
 
 
-## ----adipsummary, echo = FALSE----------------------------------------------------------------
+## ----adipsummary, echo = FALSE-----------------------------------------------------------------------------
 #---CODING ANSWER---
 adipsummary <- adip %>%
   group_by(treatment) %>%
@@ -59,44 +59,44 @@ adipsummary <- adip %>%
 
 
 
-## ----echo=FALSE-------------------------------------------------------------------------------
+## ----echo=FALSE--------------------------------------------------------------------------------------------
 knitr::kable(adipsummary) %>% kableExtra::kable_styling()
 
 
-## ----adipt------------------------------------------------------------------------------------
+## ----adipt-------------------------------------------------------------------------------------------------
 t.test(data = adip,
        adiponectin ~ treatment,
        var.equal = T)
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 # add the group means to the data
 adip <- merge(adip, adipsummary[1:2], by = "treatment")
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 # add the residuals
 adip <- adip %>%
   mutate(residual = adiponectin - mean)
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 ggplot(data = adip,
        aes(x = mean, y = residual)) +
   geom_point()
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 ggplot(data = adip,
        aes(x = residual)) +
   geom_histogram(bins = 10)
 
 
-## ---------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------------
 shapiro.test(adip$residual)
 
 
-## ----adipfigdemo, echo = FALSE, fig.width = 4, fig.height = 4---------------------------------
+## ----adipfigdemo, echo = FALSE, fig.width = 4, fig.height = 4----------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
@@ -113,29 +113,29 @@ ggplot() +
 
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot()
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin))
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0))
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
              colour = "grey50")
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
@@ -146,7 +146,7 @@ ggplot() +
   
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
@@ -160,7 +160,7 @@ ggplot() +
   
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
@@ -179,7 +179,7 @@ ggplot() +
   
 
 
-## ---- fig.width = 4, fig.height = 4-----------------------------------------------------------
+## ---- fig.width = 4, fig.height = 4------------------------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
@@ -198,14 +198,14 @@ ggplot() +
   theme_classic()
 
 
-## ----echo = FALSE-----------------------------------------------------------------------------
+## ----echo = FALSE------------------------------------------------------------------------------------------
 ggsave("adipocytes.png",
        width = 5,
        height = 4,
        units = "in")
 
 
-## ---- echo = FALSE, fig.width = 4, fig.height = 4---------------------------------------------
+## ---- echo = FALSE, fig.width = 4, fig.height = 4----------------------------------------------------------
 ggplot() +
   geom_point(data = adip, aes(x = treatment, y = adiponectin),
              position = position_jitter(width = 0.1, height = 0),
@@ -235,7 +235,7 @@ ggplot() +
   theme_classic()
 
 
-## ----grousedata, include = FALSE--------------------------------------------------------------
+## ----grousedata, include = FALSE---------------------------------------------------------------------------
 #---CODING ANSWER---
 # I did this by putting the data in two columns then using pivot_longer
 grouse <- data.frame(gordon = c(5, 16, 8, 64, 51, 11, 9, 7, 43, 49), 
@@ -246,27 +246,27 @@ grouse <- data.frame(gordon = c(5, 16, 8, 64, 51, 11, 9, 7, 43, 49),
 
 
 
-## ----echo = FALSE-----------------------------------------------------------------------------
+## ----echo = FALSE------------------------------------------------------------------------------------------
 DT::datatable(grouse)
 
 
-## ----include=FALSE----------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------------
 #---CODING ANSWER---
 grouse %>% 
   group_by(estate) %>% 
   summarise(median(nematodes))
 
 
-## ----grousewilcox-----------------------------------------------------------------------------
+## ----grousewilcox------------------------------------------------------------------------------------------
 wilcox.test(data = grouse, nematodes ~ estate)
 
 
-## ----grousefig, fig.width = 4, fig.height = 4-------------------------------------------------
+## ----grousefig, fig.width = 4, fig.height = 4--------------------------------------------------------------
 ggplot(data = grouse, aes(x = estate, y = nematodes) ) +
   geom_boxplot() 
 
 
-## ----include = FALSE, fig.width = 4, fig.height = 4-------------------------------------------
+## ----include = FALSE, fig.width = 4, fig.height = 4--------------------------------------------------------
 #---CODING ANSWER---
 ggplot(data = grouse, aes(x = estate, y = nematodes) ) +
   geom_boxplot() + 
@@ -275,18 +275,18 @@ ggplot(data = grouse, aes(x = estate, y = nematodes) ) +
   theme_classic()
 
 
-## ----geneimport, echo = FALSE-----------------------------------------------------------------
+## ----geneimport, echo = FALSE------------------------------------------------------------------------------
 #---CODING ANSWER---
 # I have my data files in a folder called data
 coliexp  <-  read_table("../data/coliexp.txt")
 
 
-## ----genepairedt------------------------------------------------------------------------------
+## ----genepairedt-------------------------------------------------------------------------------------------
 t.test(data = coliexp, expression ~ temperature, paired = T)
 
 
 
-## ----csativa, include=FALSE-------------------------------------------------------------------
+## ----csativa, include=FALSE--------------------------------------------------------------------------------
 #---THINKING AND CODING ANSWER---
 csativa  <-  read_table("../data/csativa.txt")
 str(csativa)
@@ -351,7 +351,7 @@ ggplot() +
    
 
 
-## ----sheep, include=FALSE---------------------------------------------------------------------
+## ----sheep, include=FALSE----------------------------------------------------------------------------------
 #---THINKING AND CODING ANSWER---
 #the data are paired. although the two treatments are not applied to the same individual, they are applied to each of a set of twins. the first sheep fed unfertilised grass is the twin of the first sheep fed fertilsed grass. this means the columns are not independent and we need to do a paired test (either a paired wilcoxon or a paired t). These data do not appear to be normally distributed (not many values, integers) a non-parametric test is probably preferable. 
 
@@ -388,6 +388,6 @@ ggplot(data = sheep, aes(x = grass,
 
 
 
-## ----refs, echo=FALSE, results="asis"---------------------------------------------------------
+## ----refs, echo=FALSE, results="asis"----------------------------------------------------------------------
 PrintBibliography(myBib)  
 
