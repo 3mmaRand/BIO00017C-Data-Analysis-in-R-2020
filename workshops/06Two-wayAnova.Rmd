@@ -276,7 +276,8 @@ shapiro.test(mod$residuals)
 
 ![R](../pics/Q.png) What do you conclude about the test assumptions?
 
-<!-- the variance is similar across the values of para -->
+<!-- THINKING ANSWER
+the variance is similar across the values of para -->
 <!-- maybe a little skew (tail to the right) but IMO fairly symmetrical -->
 <!-- and the distribution is not significantly difference from the normal distribution. As there are 100 values, we can be reasonably confident that an NS means there is not difference rather than we just don't have enough data to detect one. -->
 <!-- Overall, it looks like the assumptions are met -->

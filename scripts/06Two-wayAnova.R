@@ -1,4 +1,4 @@
-## ----setup, include=FALSE------------------------------------------------------------------------
+## ----setup, include=FALSE---------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
                       warning = FALSE,
@@ -7,13 +7,13 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.retina = 3)
 
 
-## ----include=FALSE-------------------------------------------------------------------------------
+## ----include=FALSE----------------------------------------------------
 library(tidyverse)
 library(kableExtra)
 library(RefManageR)
 
 
-## ---- load-refs, include=FALSE, cache=FALSE------------------------------------------------------
+## ---- load-refs, include=FALSE, cache=FALSE---------------------------
 BibOptions(check.entries = FALSE,
            bib.style = "authoryear",
            cite.style = "authoryear",
@@ -25,55 +25,55 @@ BibOptions(check.entries = FALSE,
 myBib <- ReadBib("../refs/refs.bib", check = FALSE)
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 library(tidyverse)
 
 
-## ----include=FALSE-------------------------------------------------------------------------------
+## ----include=FALSE----------------------------------------------------
 library(readxl)
 
 
-## ----eval=FALSE----------------------------------------------------------------------------------
+## ----eval=FALSE-------------------------------------------------------
 ## file <- "data-raw/periwinkle.xlsx"
 
 
-## ----echo=FALSE----------------------------------------------------------------------------------
+## ----echo=FALSE-------------------------------------------------------
 # I have a different
 file <- "../data/periwinkle.xlsx"
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 excel_sheets(file)
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 spr <- read_excel(file, sheet = "spring")
 str(spr)
 
 
-## ----echo=FALSE----------------------------------------------------------------------------------
+## ----echo=FALSE-------------------------------------------------------
 #---CODING ANSWER---
 sum <- read_excel(file, sheet = "summer")
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 periwinkle <- bind_rows(spr, sum)
 
 
-## ----echo=FALSE----------------------------------------------------------------------------------
+## ----echo=FALSE-------------------------------------------------------
 glimpse(periwinkle)
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 write_delim(periwinkle, "data-processed/periwinkle.txt")
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 ggplot(data = periwinkle, aes(x = season, y = para, fill = species)) +
   geom_boxplot()
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 perisum <- periwinkle %>% 
   group_by(season, species) %>% 
   summarise(mean = mean(para),
@@ -84,17 +84,17 @@ perisum <- periwinkle %>%
 
 
 
-## ------------------------------------------------------------------------------------------------
+## ---------------------------------------------------------------------
 mod <- aov(data = periwinkle, para ~ season * species)
 summary(mod)
 
 
-## ----echo=FALSE----------------------------------------------------------------------------------
+## ----echo=FALSE-------------------------------------------------------
 #---CODING ANSWER---
 TukeyHSD(mod)
 
 
-## ----include=FALSE-------------------------------------------------------------------------------
+## ----include=FALSE----------------------------------------------------
 #---CODING AND THINKING ANSWER---
 plot(mod, which = 1)
 # the variance is similar across the values of para
@@ -104,7 +104,7 @@ shapiro.test(mod$residuals)
 # and the distribution is not significantly difference from the normal distribution. As there are 100 values, we can be reasonably confident that an NS means there is not difference rather than we just don't have enough data to detect one.
 
 
-## ----echo=FALSE, fig.height=5, fig.width=6-------------------------------------------------------
+## ----echo=FALSE, fig.height=5, fig.width=6----------------------------
 
 ggplot() +
   geom_point(data = periwinkle, 
@@ -138,7 +138,7 @@ ggplot() +
 
 
 
-## ----fig.height=5, fig.width=5-------------------------------------------------------------------
+## ----fig.height=5, fig.width=5----------------------------------------
 ggplot() +
   geom_point(data = periwinkle, 
              aes(x = season, y = para),
@@ -160,7 +160,7 @@ ggplot() +
   
 
 
-## ----fig.height=5, fig.width=6-------------------------------------------------------------------
+## ----fig.height=5, fig.width=6----------------------------------------
 
 ggplot() +
   geom_point(data = periwinkle,
@@ -182,7 +182,7 @@ ggplot() +
   
 
 
-## ----fig.height=5, fig.width=6-------------------------------------------------------------------
+## ----fig.height=5, fig.width=6----------------------------------------
 ggplot() +
   geom_point(data = periwinkle, 
              aes(x = season, y = para, shape = species),
@@ -209,7 +209,7 @@ ggplot() +
   
 
 
-## ----fig.height=5, fig.width=6-------------------------------------------------------------------
+## ----fig.height=5, fig.width=6----------------------------------------
 ggplot() +
   geom_point(data = periwinkle, 
              aes(x = season, y = para, shape = species),
@@ -241,12 +241,12 @@ ggplot() +
         legend.position = c(0.2, 0.95))
 
 
-## ----include = FALSE, results = 'hide', fig.height=5, fig.width=6--------------------------------
+## ----include = FALSE, results = 'hide', fig.height=5, fig.width=6-----
 
 # the signifcant comparisons are                           p adj
-# Summer:Littorina saxatilis-Spring:Littorina saxatilis    0.0000041
-# Summer:Littorina nigrolineata-Spring:Littorina saxatilis 0.0003558
-# Spring:Littorina nigrolineata-Summer:Littorina saxatilis 0.0198124
+# Summer: saxatilis-Spring: saxatilis    0.0000041
+# Summer: nigrolineata-Spring: saxatilis 0.0003558
+# Spring: nigrolineata-Summer: saxatilis 0.0198124
 perfig <- ggplot() +
   geom_point(data = periwinkle, 
              aes(x = season, y = para, shape = species),
@@ -273,58 +273,58 @@ perfig <- ggplot() +
                      expand = c(0, 0),
                      limits = c(0, 140)) +
   scale_x_discrete(name = "Season") +
-  # Spring:Littorina nigrolineata-Summer:Littorina saxatilis *
+  # Summer: nigrolineata-Spring: saxatilis 0.0003558
   annotate("segment", 
            x = 1.25, xend = 1.75, 
-           y = 110, yend = 110,
+           y = 112, yend = 112,
            colour = "black") +
   annotate("segment", 
            x = 1.25, xend = 1.25,
-           y = 110, yend = 105,
+           y = 112, yend = 110,
            colour = "black") +
   annotate("segment", 
            x = 1.75, xend = 1.75,
-           y = 110, yend = 105,
+           y = 112, yend = 110,
            colour = "black") +
   annotate("text", 
-           x = 1.5,  y = 112,
+           x = 1.5,  y = 114,
            label = "***", size = 6) +
-  # Summer:Littorina nigrolineata-Spring:Littorina saxatilis: ***
+  # Spring: nigrolineata-Summer: saxatilis 0.0198124
   annotate("segment", 
-           x = 1.25, xend = 0.75,
-           y = 90, yend = 90,
+           x = 1.75, xend = 0.75,
+           y = 104, yend = 104,
            colour = "black") +
   annotate("segment", 
-           x = 1.25, xend = 1.25,
-           y = 90, yend = 85,
+           x = 1.75, xend = 1.75,
+           y = 104, yend = 102,
            colour = "black") +
   annotate("segment", 
            x = 0.75, xend = 0.75,
-           y = 90, yend = 85,
+           y = 104, yend = 102,
            colour = "black") +
-  annotate("text", x = 1,  y = 92,
-           label = "**", size = 6) +
-# Summer:Littorina saxatilis-Spring:Littorina saxatilis: ***
+  annotate("text", x = 1.25,  y = 106,
+           label = "*", size = 6) +
+# Summer: saxatilis-Spring: saxatilis    0.0000041
   annotate("segment",
-           x = 0.75, xend = 1.75,
+           x = 1.25, xend = 2.25,
            y = 120, yend = 120,
            colour = "black") +
   annotate("segment",
-           x = 0.75, xend = 0.75,
-           y = 120, yend = 115,
+           x = 1.25, xend = 1.25,
+           y = 120, yend = 118,
            colour = "black") +
   annotate("segment",
-           x = 1.75, xend = 1.75,
-           y = 120, yend = 115,
+           x = 2.25, xend = 2.25,
+           y = 120, yend = 118,
            colour = "black") +
-  annotate("text", x = 1.25,  y = 123,
+  annotate("text", x = 1.75,  y = 122,
            label = "***", size = 6) +
   theme_classic() +
   theme(legend.title = element_blank(),
         legend.position = c(0.8, 0.95))
 
 
-## ----echo = FALSE--------------------------------------------------------------------------------
+## ----echo = FALSE-----------------------------------------------------
 ggsave("figures/periwinkle.tif",
        plot = perfig,
        device = "tiff",
@@ -343,7 +343,7 @@ ggsave("figures/periwinkle.png",
 
 
 
-## ---- include=FALSE, results='hide'--------------------------------------------------------------
+## ---- include=FALSE, results='hide'-----------------------------------
 #---CODING AND THINKING ANSWER---
 # import the data 
 # note - if you structured as directed, your path will be data-raw/yield.xlsx
@@ -468,6 +468,6 @@ ggplot() +
 
 
 
-## ----refs, echo=FALSE, results="asis"------------------------------------------------------------
+## ----refs, echo=FALSE, results="asis"---------------------------------
 PrintBibliography(myBib)  
 
