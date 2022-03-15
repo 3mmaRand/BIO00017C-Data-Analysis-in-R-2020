@@ -88,7 +88,7 @@ These four symbols are used at the beginning of each instruction so you know whe
 
 ![R](../pics/R.png) On the Files tab make a folder `data-raw`
 
-![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like analysis.R to carry out the rest of the work.
+![R](../pics/R.png) Make a [new script](../pics/newscript.png) then save it with a name like `analysis.R` to carry out the rest of the work.
 
 ![R](../pics/R.png) Load the `tidyverse`:
 
@@ -185,6 +185,7 @@ This `pchisq()` function does for a chi-squared distribution what the `pnorm()` 
 
 
 ```{r fig.width = 6, echo=FALSE}
+# figure for illustration only
 p <- pchisq(chisqd, df = df, lower.tail = FALSE) %>% round(3)
 ggplot(data.frame(x = c(0, 20)), aes(x)) +
   stat_function(fun = dchisq,
@@ -256,7 +257,7 @@ We have carried out a Goodness of Fit chi-squared test by coding the how the tes
 chisq.test(obs)
 ```
 
-This looks much easier but it is only that straightforward when the expected numbers are  equal in each category, *i.e.*, 1:1:1:1:1:1:1
+This looks much easier but it is only that straightforward when the expected numbers are equal in each category, *i.e.*, 1:1:1:1:1:1:1
 
 For other cases, such as we had for on combining the weekdays and the weekend days, then we have to give the expected ratios. 
 
@@ -285,7 +286,7 @@ It might seem strange to you that data like these would come in this form but it
 births <- read_table("../data/births.txt")
 ```
 
-In such a case you might find the add a column for day calculated from the date (using the function `wday()`)
+In such a case you might add a column for day calculated from the date (using the function `wday()`)
 
 ```{r echo=FALSE}
 DT::datatable(births)
@@ -338,7 +339,7 @@ A `geom`'s `stat` determines what the `geom` plots. Look up `geom_bar()` with:
 ?geom_bar
 ```
 
-Notice that the default `stat` for `geom_bar()` is `count` which means it count the number of each day for us. Other `stat`s are `identity`, `density` and `bin`. 
+Notice that the default `stat` for `geom_bar()` is `count` which means it counts the number of each day *for us*. Other `stat`s are `identity`, `density` and `bin`. 
 
 <div class = "key">
 **Top Tip**
@@ -509,7 +510,7 @@ obs <- c(79, 17, 19, 20)
 ```
 
 
-![Q](../pics/Q.png) What is your null hypothesis and what type of test is required? <!-- Here we expected values dictated by Mendel's Laws - we would expect a 9:3:3:1 ratio in our total of 135 beetles. This is Goodness of fit because we are testing the fit of our data to a known ratio - our expectations are based on a particular theory that determines 9:3:3:1. We are not making setting the expected values based on the observed ration. -->
+![Q](../pics/Q.png) What is your null hypothesis and what type of test is required? <!-- Here we expected values dictated by Mendel's Laws - we would expect a 9:3:3:1 ratio in our total of 135 beetles. This is Goodness of fit because we are testing the fit of our data to a known ratio - our expectations are based on a particular theory that determines 9:3:3:1. We are not making setting the expected values based on the observed ratio. -->
 
 ![R](../pics/R.png) Carry out the appropriate chi-squared test on these data either with or without using inbuilt test, whatever you prefer.
 

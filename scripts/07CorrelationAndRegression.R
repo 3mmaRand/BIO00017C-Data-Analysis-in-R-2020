@@ -1,4 +1,4 @@
-## ----setup, include=FALSE----------------------------------------------------------------------------------------------------
+## ----setup, include=FALSE----------------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, 
                       message = FALSE,	
                       warning = FALSE,
@@ -7,13 +7,13 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.retina = 3)
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------
 library(tidyverse)
 library(kableExtra)
 library(RefManageR)
 
 
-## ---- load-refs, include=FALSE, cache=FALSE----------------------------------------------------------------------------------
+## ---- load-refs, include=FALSE, cache=FALSE----------------------------------------------------------
 BibOptions(check.entries = FALSE,
            bib.style = "authoryear",
            cite.style = "authoryear",
@@ -25,30 +25,31 @@ BibOptions(check.entries = FALSE,
 myBib <- ReadBib("../refs/refs.bib", check = FALSE)
 
 
-## ----------------------------------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
 library(tidyverse)
 
 
-## ----echo=FALSE, eval=FALSE--------------------------------------------------------------------------------------------------
+## ----echo=FALSE, eval=FALSE--------------------------------------------------------------------------
 ## #---CODING ANSWER---
-## height <- read_table2("data-raw/height.txt")
+## height <- read_table("data-raw/height.txt")
 
 
-## ----echo=FALSE--------------------------------------------------------------------------------------------------------------
-height <- read_table2("../data/height.txt")
+## ----echo=FALSE--------------------------------------------------------------------------------------
+# I have a different directory structure so need
+height <- read_table("../data/height.txt")
 
 
-## ----fig.width=4,fig.height=4------------------------------------------------------------------------------------------------
+## ----fig.width=4,fig.height=4------------------------------------------------------------------------
 ggplot(height, aes(x = sister, y = brother) ) +
   geom_point()
   
 
 
-## ----------------------------------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
 cor.test(data = height, ~ brother + sister, method = "pearson")
 
 
-## ----fig.width=4,fig.height=4------------------------------------------------------------------------------------------------
+## ----fig.width=4,fig.height=4------------------------------------------------------------------------
 fig1 <- ggplot(height, aes(x = sister, y = brother)) +
   geom_point() +
   scale_x_continuous(name = "Heights of sister (cm)",
@@ -62,7 +63,7 @@ fig1 <- ggplot(height, aes(x = sister, y = brother)) +
 fig1
 
 
-## ----echo = FALSE------------------------------------------------------------------------------------------------------------
+## ----echo = FALSE------------------------------------------------------------------------------------
 # I choose to do a png but you may have a different preference
 ggsave("figures/sis-bro.png",
        plot = fig1,
@@ -73,25 +74,25 @@ ggsave("figures/sis-bro.png",
 
 
 
-## ----------------------------------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
 height2 <- rbind(height, height)
 View(height2)
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------
 #---CODING ANSWER---
 cor.test(data = height2, ~ brother + sister, method = "pearson")
 
 
-## ----------------------------------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
 cor.test(data = height, ~ brother + sister, method = "spearman")
 
 
-## ----------------------------------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
 library(readxl)
 
 
-## ----eval=FALSE, echo=FALSE--------------------------------------------------------------------------------------------------
+## ----eval=FALSE, echo=FALSE--------------------------------------------------------------------------
 ## #---CODING ANSWER---
 ## # we need the readxl package that was introduced in the last workshop
 ## library(readxl)
@@ -105,7 +106,7 @@ library(readxl)
 ## 
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------
 #---CODING ANSWER---
 # my directory structure differs so I need
 library(readxl)
@@ -115,18 +116,18 @@ plant <- read_excel(file, sheet = "plant")
 
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----echo=FALSE--------------------------------------------------------------------------------------
 #---CODING ANSWER---
 ggplot(plant, aes(x = day, y = mass)) +
   geom_point()
 
 
-## ----------------------------------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
 mod <- lm(data = plant, mass ~ day)
 summary(mod)
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------
 #---CODING AND THINKING ANSWER---
 plot(mod, which = 1)
 hist(mod$residuals)
@@ -134,7 +135,7 @@ shapiro.test(mod$residuals)
 #These look ok
 
 
-## ----fig.width=4,fig.height=4------------------------------------------------------------------------------------------------
+## ----fig.width=4,fig.height=4------------------------------------------------------------------------
 ggplot(plant, aes(x = day, y = mass)) +
   geom_point() +
   geom_smooth(method = lm, 
@@ -150,7 +151,7 @@ ggplot(plant, aes(x = day, y = mass)) +
   
 
 
-## ---- echo = FALSE, fig.width=4,fig.height=4---------------------------------------------------------------------------------
+## ---- echo = FALSE, fig.width=4,fig.height=4---------------------------------------------------------
 fig2 <- ggplot(plant, aes(x = day, y = mass)) +
    geom_point() +
   geom_smooth(method = lm, 
@@ -167,7 +168,7 @@ fig2 <- ggplot(plant, aes(x = day, y = mass)) +
 fig2  
 
 
-## ----echo = FALSE------------------------------------------------------------------------------------------------------------
+## ----echo = FALSE------------------------------------------------------------------------------------
 ggsave("figures/plant-growth.png",
        plot = fig2,
        width = 3.5,
@@ -177,10 +178,10 @@ ggsave("figures/plant-growth.png",
 
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------
 #---CODING AND THINKING ANSWER---
 # this example is designed to emphasise the importance of plotting your data first
-sprint <- read_table2("../data/sprint.txt")
+sprint <- read_table("../data/sprint.txt")
 # Anxiety is discrete but ranges from 16 to 402 meaning the gap between possible measures is small and 
 # the variable could be treated as continuous if needed. Time is a continuous measure that has decimal places and which we would expect to follow a normal distribution 
 
@@ -192,10 +193,10 @@ ggplot(sprint, aes(x = anxiety, y = time) ) +
 
 
 
-## ----include=FALSE-----------------------------------------------------------------------------------------------------------
+## ----include=FALSE-----------------------------------------------------------------------------------
 #---CODING AND THINKING ANSWER---
 #read the data in and check the structure
-stag <- read_table2("../data/stag.txt")
+stag <- read_table("../data/stag.txt")
 str(stag)
 
 # jh is discrete but order and has been chose by the experimenter - it is the explanatory variable.  
@@ -245,6 +246,6 @@ ggplot(stag, aes(x = jh, y = mand) ) +
 #Figure x. The effect of juvenile hormone injections on the mandible size of stag beetles.   
 
 
-## ----refs, echo=FALSE, results="asis"----------------------------------------------------------------------------------------
+## ----refs, echo=FALSE, results="asis"----------------------------------------------------------------
 PrintBibliography(myBib)  
 
