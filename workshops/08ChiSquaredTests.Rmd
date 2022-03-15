@@ -469,7 +469,7 @@ The data we were given was already tabulated. There are raw data in [blood_ulcer
 
 ![R](../pics/R.png) Read the data in to R and check the structure.
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo = FALSE}
 #---CODING ANSWER---
 blood_ulcers <- read_table("data-raw/blood_ulcers.txt")
 str(blood_ulcers)
